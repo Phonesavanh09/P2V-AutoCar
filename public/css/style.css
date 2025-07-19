@@ -190,3 +190,17 @@ body {
 .carousel-control-prev-icon, .carousel-control-next-icon {
     filter: invert(1);
 }
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* ป้องกัน margin ล้น */
+}
+.car-image {
+    width: 100%; /* ใช้เต็มความกว้างของ container */
+    object-fit: contain; /* รักษาสัดส่วนภาพ */
+}
+@media (max-width: 768px) {
+    .car-image {
+        max-height: 200px; /* จำกัดความสูงบนมือถือ */
+    }
+}
