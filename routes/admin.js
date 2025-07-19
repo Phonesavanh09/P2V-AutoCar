@@ -5,12 +5,21 @@ const SellRequest = require('../models/SellRequest');
 const Review = require('../models/Review');
 const multer = require('multer');
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-const storage = multer.diskStorage({
-    destination: './public/uploads/',
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'car_images',
+        allowed_formats: ['jpg', 'jpeg', 'png'],
+    },
 });
 const upload = multer({
     storage: storage,
@@ -65,7 +74,7 @@ router.post('/add-car', (req, res) => {
         }
         try {
             const { brand, model, year, price, transmission, description, province, coverImageIndex } = req.body;
-            const images = req.files.map(file => `/uploads/${file.filename}`);
+            const images = req.files.map(file => file.path);
             const coverImage = images[coverImageIndex] || images[0];
             const car = new Car({
                 brand,
