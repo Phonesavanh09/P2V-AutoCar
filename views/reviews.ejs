@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="<%- lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- lang === 'la' ? 'ຣີວິວ' : 'Reviews' %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .lao-text { font-family: 'Phetsarath', sans-serif; }
+        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/images/logo1.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                <%- lang === 'la' ? 'P2V Laos Auto Car' : 'Used Car Sales' %>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/"><span class="lao-text"><%- lang === 'la' ? 'ໜ້າຫຼັກ' : 'Home' %></span></a>
+                <a class="nav-link" href="/sell-car"><span class="lao-text"><%- lang === 'la' ? 'ສະເໜີຂາຍລົດ' : 'Sell Your Car' %></span></a>
+                <a class="nav-link active" href="/reviews"><span class="lao-text"><%- lang === 'la' ? 'ຣີວິວ' : 'Reviews' %></span></a>
+                <a class="nav-link" href="/contact"><span class="lao-text"><%- lang === 'la' ? 'ຕິດຕໍ່' : 'Contact' %></span></a>
+                <a class="nav-link" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>" class="lao-text"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="lao-text"><%- lang === 'la' ? 'ຣີວິວ' : 'Reviews' %></h2>
+            </div>
+            <div class="card-body">
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%- error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                <% if (typeof req !== 'undefined' && req.query && req.query.success) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%- req.query.success %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                <% if (reviews.length > 0) { %>
+                    <% reviews.forEach(review => { %>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p class="lao-text"><%= review.text %></p>
+                                <small class="lao-text text-muted">By: <%= review.author %> - <%= new Date(review.createdAt).toLocaleDateString() %></small>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p class="lao-text alert alert-warning"><%- lang === 'la' ? 'ຍັງບໍ່ມີຣີວິວ' : 'No reviews yet' %></p>
+                <% } %>
+                <form action="/reviews" method="post" class="mt-4">
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຊື່ຂອງທ່ານ' : 'Your Name' %></label>
+                        <input type="text" name="author" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຄຳຣີວິວ' : 'Review' %></label>
+                        <textarea name="text" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary lao-text"><%- lang === 'la' ? 'ສົ່ງຣີວິວ' : 'Submit Review' %></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

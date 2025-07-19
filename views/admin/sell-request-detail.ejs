@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="<%- lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- lang === 'la' ? 'ລາຍລະອຽດຄຳສະເໜີຂາຍ' : 'Sell Request Detail' %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .lao-text { font-family: 'Phetsarath', sans-serif; }
+        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .gallery img { max-width: 150px; height: auto; margin: 5px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/admin/dashboard"><%- lang === 'la' ? 'ແຜງຄວບຄຸມ' : 'Admin Dashboard' %></a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin/manage-car"><%- lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></a>
+                <a class="nav-link" href="/"><%- lang === 'la' ? 'ໜ້າຫຼັງ' : 'Home' %></a>
+                <a class="nav-link" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>" class="lao-text"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
+                <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm(`<%- lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?' : 'Are you sure you want to logout?' %>`);"><%- lang === 'la' ? 'ອອກຈາກລະບົບ' : 'Logout' %></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="lao-text"><%- lang === 'la' ? 'ລາຍລະອຽດຄຳສະເໜີຂາຍ' : 'Sell Request Detail' %></h2>
+            </div>
+            <div class="card-body">
+                <p class="lao-text"><%- lang === 'la' ? 'ຍີ່ຫໍ້' : 'Brand' %>: <%= sellRequest.brand %></p>
+                <p class="lao-text"><%- lang === 'la' ? 'ຮຸ່n' : 'Model' %>: <%= sellRequest.model %></p>
+                <p class="lao-text"><%- lang === 'la' ? 'ປີ' : 'Year' %>: <%= sellRequest.year %></p>
+                <p class="lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %>: <%= sellRequest.price %> LAK</p>
+                <p class="lao-text"><%- lang === 'la' ? 'ເກຍ' : 'Transmission' %>: <%= sellRequest.transmission %></p>
+                <p class="lao-text"><%- lang === 'la' ? 'ຕິດຕໍ່' : 'Contact' %>: <%= sellRequest.contact %></p>
+                <p class="lao-text"><%- lang === 'la' ? 'ວັນທີ່ສົ່ງ' : 'Submitted Date' %>: <%= new Date(sellRequest.createdAt).toLocaleDateString() %></p>
+                <% if (sellRequest.images && sellRequest.images.length > 0) { %>
+                    <div class="gallery mt-3">
+                        <h5 class="lao-text"><%- lang === 'la' ? 'ຮູບພາບ' : 'Images' %></h5>
+                        <% sellRequest.images.forEach(image => { %>
+                            <img src="<%- image %>" alt="Sell Request Image">
+                        <% }) %>
+                    </div>
+                <% } %>
+                <a href="/admin/dashboard" class="btn btn-secondary mt-3 lao-text"><%- lang === 'la' ? 'ກັບຄືນ' : 'Back' %></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

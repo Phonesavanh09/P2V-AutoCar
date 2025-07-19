@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="<%- lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .lao-text { font-family: 'Phetsarath', sans-serif; }
+        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .car-image { max-width: 100px; height: auto; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/admin/dashboard"><%- lang === 'la' ? 'ແຜງຄວບຄຸມ' : 'Admin Dashboard' %></a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="/admin/manage-car"><%- lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></a>
+                <a class="nav-link" href="/admin/add-car"><%- lang === 'la' ? 'ເພີ່ມລົດ' : 'Add Car' %></a>
+                <a class="nav-link" href="/"><%- lang === 'la' ? 'ໜ້າຫຼັງ' : 'Home' %></a>
+                <a class="nav-link" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>" class="lao-text"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
+                <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm(`<%- lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?' : 'Are you sure you want to logout?' %>`);"><%- lang === 'la' ? 'ອອກຈາກລະບົບ' : 'Logout' %></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="lao-text"><%- lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></h2>
+            </div>
+            <div class="card-body">
+                <% if (error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%- error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                <% if (success) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%- success %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                <div class="mb-3">
+                    <label class="lao-text"><%- lang === 'la' ? 'ຕິດຕໍ່' : 'Filter by Province' %>:</label>
+                    <select id="provinceFilter" class="form-control w-25 d-inline-block" onchange="filterCars()">
+                        <option value=""><%- lang === 'la' ? 'ທັງໝົດ' : 'All' %></option>
+                        <% provinces.forEach(province => { %>
+                            <option value="<%- province %>"><%- province %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <% if (cars.length > 0) { %>
+                    <div id="carList">
+                        <% cars.forEach(car => { %>
+                            <div class="card mb-3">
+                                <div class="card-body row">
+                                    <div class="col-md-2">
+                                        <% if (car.coverImage || (car.images && car.images.length > 0)) { %>
+                                            <img src="<%- car.coverImage || car.images[0] %>" alt="Car Image" class="car-image">
+                                        <% } else { %>
+                                            <img src="/images/placeholder.jpg" alt="Placeholder" class="car-image">
+                                        <% } %>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <h5 class="card-title lao-text"><%- car.brand %> <%- car.model %></h5>
+                                        <p class="card-text lao-text"><%- lang === 'la' ? 'ປີ' : 'Year' %>: <%- car.year %></p>
+                                        <p class="card-text lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %>: <%- car.price.toLocaleString() %> LAK</p>
+                                        <p class="card-text lao-text"><%- lang === 'la' ? 'ຈຸງຮ້ອງ' : 'Province' %>: <%- car.province %></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="/admin/edit-car/<%- car._id %>" class="btn btn-warning btn-sm lao-text"><%- lang === 'la' ? 'ແກ້ໄຂ' : 'Edit' %></a>
+                                        <a href="/admin/delete-car/<%- car._id %>" class="btn btn-danger btn-sm ms-2 lao-text" onclick="return confirm(`<%- lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະລົບ?' : 'Are you sure you want to delete?' %>`);"><%- lang === 'la' ? 'ລົບ' : 'Delete' %></a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p class="text-center alert alert-warning lao-text"><%- lang === 'la' ? 'ບໍ່ມີລົດ' : 'No cars' %></p>
+                <% } %>
+                <a href="/admin/dashboard" class="btn btn-secondary mt-3 lao-text"><%- lang === 'la' ? 'ກັບຄືn' : 'Back' %></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function filterCars() {
+            let province = document.getElementById("provinceFilter").value;
+            let carList = document.getElementById("carList");
+            let cards = carList.getElementsByClassName("card");
+            for (let i = 0; i < cards.length; i++) {
+                let provinceText = cards[i].getElementsByTagName("p")[2].textContent.match(/[A-Za-z\u0E00-\u0E7F]+/)[0];
+                if (province === "" || provinceText === province) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
