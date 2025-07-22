@@ -204,3 +204,19 @@ img {
         max-height: 200px; /* จำกัดความสูงบนมือถือ */
     }
 }
+.gallery {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+    scroll-snap-type: x mandatory;
+}
+
+.gallery img {
+    flex-shrink: 0;
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
+    scroll-snap-align: start;
+    object-fit: cover;
+}
