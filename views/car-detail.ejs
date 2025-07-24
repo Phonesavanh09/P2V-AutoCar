@@ -52,7 +52,14 @@
                     <h4 class="lao-text"><%- lang === 'la' ? 'ລຸ້ນ' : 'Model' %>: <%= car.model %></h4>
                     <p class="lao-text"><%- lang === 'la' ? 'ປີ' : 'Year' %>: <%= car.year %></p>
                     <p class="lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %>: <%= car.price.toLocaleString() %> LAK</p>
-                    <p class="lao-text"><%- lang === 'la' ? 'ເກຍ' : 'Transmission' %>: <%= car.transmission %></p>
+                    <p class="lao-text">
+                        <%- lang === 'la' ? 'ເກຍ' : 'Transmission' %>:
+                        <% if (lang === 'la') { %>
+                            <%= car.transmission === 'Automatic' ? 'ອໍໂຕ້' : (car.transmission === 'Manual' ? 'ກະປຸກ' : car.transmission) %>
+                        <% } else { %>
+                            <%= car.transmission %>
+                        <% } %>
+                    </p>
                     <p class="lao-text"><%- lang === 'la' ? 'ແຂວງ' : 'Province' %>: <%= car.province %></p>
                     <p class="lao-text"><%- lang === 'la' ? 'ລາຍລະອຽດ' : 'Description' %>: <%= car.description || 'ไม่มีรายละเอียด' %></p>
                     <h5 class="lao-text mt-4"><%- lang === 'la' ? 'ຕິດຕໍ່ພວກເຮົາ' : 'Contact Us' %></h5>
