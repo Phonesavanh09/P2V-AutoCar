@@ -30,22 +30,43 @@ const upload = multer({
 router.get('/', async (req, res) => {
     try {
         const { province } = req.query;
-        let cars = [];
+        const page = parseInt(req.query.page) || 1; // หน้าเริ่มต้นคือ 1
+        const limit = 12; // จำนวนรถต่อหน้า
+
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        let carsQuery = Car.find();
         if (province) {
-            // กรองรถจาก MongoDB โดยตรงตามจังหวัดที่เลือก
-            cars = await Car.find({ province: province });
-            if (cars.length === 0) {
-                console.log(`No cars found for province: ${province}`);
-            }
-        } else {
-            // ดึงรถทั้งหมดหากไม่ได้เลือกจังหวัด
-            cars = await Car.find();
+            carsQuery = carsQuery.where('province').equals(province);
+            console.log(`Filtering cars for province: ${province}`);
         }
+        const cars = await carsQuery;
+        const paginatedCars = cars.slice(startIndex, endIndex);
+
+        const totalPages = Math.ceil(cars.length / limit);
+
         const reviews = await Review.find().sort({ createdAt: -1 }).limit(5);
-        res.render('index', { cars, reviews, lang: req.query.lang || 'la', provinces: getProvinces(), selectedProvince: province });
+        res.render('index', { 
+            cars: paginatedCars, 
+            reviews, 
+            lang: req.query.lang || 'la', 
+            provinces: getProvinces(), 
+            selectedProvince: province,
+            currentPage: page,
+            totalPages
+        });
     } catch (err) {
         console.error('Error fetching cars:', err);
-        res.render('index', { cars: [], reviews: [], lang: req.query.lang || 'la', provinces: getProvinces(), selectedProvince: null });
+        res.render('index', { 
+            cars: [], 
+            reviews: [], 
+            lang: req.query.lang || 'la', 
+            provinces: getProvinces(), 
+            selectedProvince: null,
+            currentPage: 1,
+            totalPages: 1
+        });
     }
 });
 
@@ -123,7 +144,7 @@ router.post('/contact', (req, res) => {
 
 function getProvinces() {
     return [
-        'ນະຄອນຫຼວງ','ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
+        'ນະຄອນຫຼວງ', 'ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
         'ຫົວພັນ', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
         'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
         'ຄຳມ່ວນ', 'ອັດຕະປື'
