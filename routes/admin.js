@@ -73,9 +73,9 @@ router.post('/add-car', (req, res) => {
             return res.render('admin/add-car', { lang: req.query.lang || 'la', error: err.message, provinces: getProvinces() });
         }
         try {
-            const { brand, model, year, price, transmission, description, province, coverImageIndex } = req.body;
+            const { brand, model, year, price, transmission, description, province, coverImageIndex, status } = req.body;
             const images = req.files.map(file => file.path);
-            const coverImage = images[coverImageIndex] || images[0];
+            const coverImage = images[parseInt(coverImageIndex)] || images[0];
             const car = new Car({
                 brand,
                 model,
@@ -85,7 +85,8 @@ router.post('/add-car', (req, res) => {
                 images,
                 description,
                 province,
-                coverImage
+                coverImage,
+                status: status || 'available' // เพิ่มสถานะเริ่มต้น
             });
             await car.save();
             res.redirect('/admin/dashboard?success=Car added successfully');
@@ -98,7 +99,7 @@ router.post('/add-car', (req, res) => {
 
 router.get('/manage-car', async (req, res) => {
     try {
-        const cars = await Car.find();
+        const cars = await Car.find().sort({ postedDate: -1 }); // เรียงตามวันที่โพสต์ล่าสุด
         res.render('admin/manage-car', { cars, lang: req.query.lang || 'la', error: null, success: req.query.success, provinces: getProvinces() });
     } catch (err) {
         console.error('Error fetching cars:', err);
@@ -119,8 +120,8 @@ router.get('/edit-car/:id', async (req, res) => {
 
 router.post('/edit-car/:id', upload, async (req, res) => {
     try {
-        const { brand, model, year, price, transmission, description, province, coverImageIndex } = req.body;
-        const images = req.files.length > 0 ? req.files.map(file => `/uploads/${file.filename}`) : undefined;
+        const { brand, model, year, price, transmission, description, province, coverImageIndex, status } = req.body;
+        const images = req.files.length > 0 ? req.files.map(file => file.path) : undefined;
         const updateData = {
             brand,
             model,
@@ -128,11 +129,15 @@ router.post('/edit-car/:id', upload, async (req, res) => {
             price: parseInt(price),
             transmission,
             description,
-            province
+            province,
+            status: status || 'available' // อัปเดตสถานะ
         };
         if (images) {
             updateData.images = images;
-            updateData.coverImage = images[coverImageIndex] || images[0];
+            updateData.coverImage = images[parseInt(coverImageIndex)] || images[0];
+        } else if (coverImageIndex && req.body.existingImages) {
+            const existingImages = JSON.parse(req.body.existingImages);
+            updateData.coverImage = existingImages[parseInt(coverImageIndex)] || existingImages[0];
         }
         await Car.findByIdAndUpdate(req.params.id, updateData);
         res.redirect('/admin/manage-car?success=Car updated successfully');

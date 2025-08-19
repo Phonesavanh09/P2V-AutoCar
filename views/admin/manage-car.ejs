@@ -71,6 +71,8 @@
                                         <p class="card-text lao-text"><%- lang === 'la' ? 'ປີ' : 'Year' %>: <%- car.year %></p>
                                         <p class="card-text lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %>: <%- car.price.toLocaleString() %> LAK</p>
                                         <p class="card-text lao-text"><%- lang === 'la' ? 'ຈຸງຮ້ອງ' : 'Province' %>: <%- car.province %></p>
+                                        <p class="card-text lao-text"><%- lang === 'la' ? 'ວັນທີ່ໂພສ' : 'Posted Date' %>: <%- new Date(car.postedDate).toLocaleDateString() %></p>
+                                        <p class="card-text lao-text"><%- lang === 'la' ? 'ສະຖານະ' : 'Status' %>: <%- car.status === 'available' ? (lang === 'la' ? 'ມີສິນຄ້າ' : 'Available') : (lang === 'la' ? 'ຂາຍແລ້ວ' : 'Sold') %></p>
                                     </div>
                                     <div class="col-md-3">
                                         <a href="/admin/edit-car/<%- car._id %>" class="btn btn-warning btn-sm lao-text"><%- lang === 'la' ? 'ແກ້ໄຂ' : 'Edit' %></a>

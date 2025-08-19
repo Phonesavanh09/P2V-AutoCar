@@ -85,6 +85,13 @@
                         <label class="form-label lao-text"><%- lang === 'la' ? 'ເລືອກຮູບປົກ' : 'Select Cover Image' %></label>
                         <input type="number" name="coverImageIndex" class="form-control" min="0" max="9" placeholder="<%- lang === 'la' ? 'ດັດຊະນີຮູບ (0-9)' : 'Image Index (0-9)' %>">
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ສະຖານະ' : 'Status' %></label>
+                        <select name="status" class="form-control" required>
+                            <option value="available"><%- lang === 'la' ? 'ມີສິນຄ້າ' : 'Available' %></option>
+                            <option value="sold"><%- lang === 'la' ? 'ຂາຍແລ້ວ' : 'Sold' %></option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary lao-text"><%- lang === 'la' ? 'ບັນທຶກ' : 'Save' %></button>
                     <a href="/admin/dashboard" class="btn btn-secondary lao-text"><%- lang === 'la' ? 'ກັບຄືn' : 'Back' %></a>
                 </form>

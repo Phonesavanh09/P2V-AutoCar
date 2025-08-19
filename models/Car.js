@@ -8,8 +8,10 @@ const carSchema = new mongoose.Schema({
     transmission: { type: String, required: true },
     images: [{ type: String }],
     description: { type: String },
-    province: { type: String, required: true }, // เพิ่มจังหวัด
-    coverImage: { type: String } // เพิ่มภาพหน้าปก
+    province: { type: String, required: true },
+    coverImage: { type: String },
+    postedDate: { type: Date, default: Date.now }, // เพิ่มวันที่โพสต์
+    status: { type: String, default: 'available' } // เพิ่มสถานะ (available, sold)
 });
 
 module.exports = mongoose.model('Car', carSchema);

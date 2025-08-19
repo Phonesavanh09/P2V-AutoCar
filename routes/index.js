@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
 
-        let carsQuery = Car.find();
+        let carsQuery = Car.find().sort({ createdAt: -1 }); // เรียงตามวันที่ล่าสุด (ใหม่สุดขึ้นก่อน)
         if (province) {
             carsQuery = carsQuery.where('province').equals(province);
             console.log(`Filtering cars for province: ${province}`);
