@@ -126,7 +126,7 @@
             </select>
             <label class="lao-text ms-3"><%- lang === 'la' ? 'ຈັດລຳດັບຕາມລາຄາ' : 'Sort by Price' %>:</label>
             <select id="priceSort" class="form-control w-25 d-inline-block" onchange="sortCars()">
-                <option value="default" <%- typeof sort !== 'undefined' && sort === 'default' ? 'selected' : '' %>><%- lang === 'la' ? 'ເລີຍຕາມວັນທີ່' : 'By Date' %></option>
+                <option value="default" <%- typeof sort !== 'undefined' && sort === 'default' ? 'selected' : '' %>><%- lang === 'la' ? 'ທົ່ວໄປ' : 'All' %></option>
                 <option value="price_asc" <%- typeof sort !== 'undefined' && sort === 'price_asc' ? 'selected' : '' %>><%- lang === 'la' ? 'ຈາກຖືກໄປແພງ' : 'Low to High' %></option>
                 <option value="price_desc" <%- typeof sort !== 'undefined' && sort === 'price_desc' ? 'selected' : '' %>><%- lang === 'la' ? 'ຈາກແພງໄປຖືກ' : 'High to Low' %></option>
             </select>
