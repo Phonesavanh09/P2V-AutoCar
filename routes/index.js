@@ -29,20 +29,27 @@ const upload = multer({
 
 router.get('/', async (req, res) => {
     try {
-        const { province } = req.query;
+        const { province, sort } = req.query;
         const page = parseInt(req.query.page) || 1; // หน้าเริ่มต้นคือ 1
         const limit = 12; // จำนวนรถต่อหน้า
 
         const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
 
-        let carsQuery = Car.find().sort({ createdAt: -1 }); // เรียงตามวันที่ล่าสุด (ใหม่สุดขึ้นก่อน)
+        let carsQuery = Car.find();
         if (province) {
             carsQuery = carsQuery.where('province').equals(province);
             console.log(`Filtering cars for province: ${province}`);
         }
-        const cars = await carsQuery;
-        const paginatedCars = cars.slice(startIndex, endIndex);
+        // เรียงลำดับก่อนตัดข้อมูล
+        if (sort === 'price_asc') {
+            carsQuery = carsQuery.sort({ price: 1 }); // เรียงราคาจากน้อยไปมาก
+        } else if (sort === 'price_desc') {
+            carsQuery = carsQuery.sort({ price: -1 }); // เรียงราคาจากมากไปน้อย
+        } else {
+            carsQuery = carsQuery.sort({ postedDate: -1 }); // ใหม่สุดขึ้นก่อน ถ้าไม่มี sort
+        }
+        const cars = await carsQuery; // ดึงข้อมูลทั้งหมดก่อนตัด
+        const paginatedCars = cars.slice(startIndex, startIndex + limit);
 
         const totalPages = Math.ceil(cars.length / limit);
 
@@ -54,7 +61,8 @@ router.get('/', async (req, res) => {
             provinces: getProvinces(), 
             selectedProvince: province,
             currentPage: page,
-            totalPages
+            totalPages,
+            sort: sort || 'default' // รับค่า sort จาก query และกำหนด default ถ้าไม่มี
         });
     } catch (err) {
         console.error('Error fetching cars:', err);
@@ -65,7 +73,8 @@ router.get('/', async (req, res) => {
             provinces: getProvinces(), 
             selectedProvince: null,
             currentPage: 1,
-            totalPages: 1
+            totalPages: 1,
+            sort: 'default' // กำหนดค่าเริ่มต้นในกรณี error
         });
     }
 });
@@ -145,7 +154,7 @@ router.post('/contact', (req, res) => {
 function getProvinces() {
     return [
         'ນະຄອນຫຼວງ', 'ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
-        'ຫົວພັນ', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
+        'ຫົວພັn', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
         'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
         'ຄຳມ່ວນ', 'ອັດຕະປື'
     ];

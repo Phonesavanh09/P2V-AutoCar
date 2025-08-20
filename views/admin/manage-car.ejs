@@ -53,6 +53,12 @@
                             <option value="<%- province %>"><%- province %></option>
                         <% }) %>
                     </select>
+                    <label class="lao-text ms-3"><%- lang === 'la' ? 'ຈັດລຳດັບຕາມລາຄາ' : 'Sort by Price' %>:</label>
+                    <select id="priceSort" class="form-control w-25 d-inline-block" onchange="sortCars()">
+                        <option value="default" <%- sort === 'default' ? 'selected' : '' %>><%- lang === 'la' ? 'ເລີຍຕາມວັນທີ່' : 'By Date' %></option>
+                        <option value="price_asc" <%- sort === 'price_asc' ? 'selected' : '' %>><%- lang === 'la' ? 'ຈາກຖືກໄປແພງ' : 'Low to High' %></option>
+                        <option value="price_desc" <%- sort === 'price_desc' ? 'selected' : '' %>><%- lang === 'la' ? 'ຈາກແພງໄປຖືກ' : 'High to Low' %></option>
+                    </select>
                 </div>
                 <% if (cars.length > 0) { %>
                     <div id="carList">
@@ -94,16 +100,14 @@
     <script>
         function filterCars() {
             let province = document.getElementById("provinceFilter").value;
-            let carList = document.getElementById("carList");
-            let cards = carList.getElementsByClassName("card");
-            for (let i = 0; i < cards.length; i++) {
-                let provinceText = cards[i].getElementsByTagName("p")[2].textContent.match(/[A-Za-z\u0E00-\u0E7F]+/)[0];
-                if (province === "" || provinceText === province) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
+            let sort = document.getElementById("priceSort").value;
+            window.location.href = `/admin/manage-car?province=${province}&sort=${sort}`;
+        }
+
+        function sortCars() {
+            let province = document.getElementById("provinceFilter").value;
+            let sort = document.getElementById("priceSort").value;
+            window.location.href = `/admin/manage-car?province=${province}&sort=${sort}`;
         }
     </script>
 </body>

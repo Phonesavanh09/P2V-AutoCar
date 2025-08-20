@@ -58,8 +58,8 @@ router.get('/dashboard', async (req, res) => {
 
 router.get('/add-car', (req, res) => {
     try {
-        const provinces = getProvinces(); // เรียกฟังก์ชัน getProvinces
-        console.log('Provinces loaded:', provinces); // เพิ่มการดีบั๊ก
+        const provinces = getProvinces();
+        console.log('Provinces loaded:', provinces);
         res.render('admin/add-car', { lang: req.query.lang || 'la', error: null, provinces });
     } catch (err) {
         console.error('Error loading add-car page:', err);
@@ -86,7 +86,7 @@ router.post('/add-car', (req, res) => {
                 description,
                 province,
                 coverImage,
-                status: status || 'available' // เพิ่มสถานะเริ่มต้น
+                status: status || 'available'
             });
             await car.save();
             res.redirect('/admin/dashboard?success=Car added successfully');
@@ -99,11 +99,18 @@ router.post('/add-car', (req, res) => {
 
 router.get('/manage-car', async (req, res) => {
     try {
-        const cars = await Car.find().sort({ postedDate: -1 }); // เรียงตามวันที่โพสต์ล่าสุด
-        res.render('admin/manage-car', { cars, lang: req.query.lang || 'la', error: null, success: req.query.success, provinces: getProvinces() });
+        const { sort } = req.query; // เพิ่มตัวเลือกเรียง
+        let carsQuery = Car.find().sort({ postedDate: -1 }); // เรียงตามวันที่ล่าสุด (ใหม่สุดขึ้นก่อน)
+        if (sort === 'price_asc') {
+            carsQuery = carsQuery.sort({ price: 1 }); // เรียงราคาจากน้อยไปมาก
+        } else if (sort === 'price_desc') {
+            carsQuery = carsQuery.sort({ price: -1 }); // เรียงราคาจากมากไปน้อย
+        }
+        const cars = await carsQuery;
+        res.render('admin/manage-car', { cars, lang: req.query.lang || 'la', error: null, success: req.query.success, provinces: getProvinces(), sort: sort || 'default' });
     } catch (err) {
         console.error('Error fetching cars:', err);
-        res.render('admin/manage-car', { cars: [], lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการดึงข้อมูลรถ', provinces: getProvinces() });
+        res.render('admin/manage-car', { cars: [], lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการดึงข้อมูลรถ', provinces: getProvinces(), sort: 'default' });
     }
 });
 
@@ -130,7 +137,7 @@ router.post('/edit-car/:id', upload, async (req, res) => {
             transmission,
             description,
             province,
-            status: status || 'available' // อัปเดตสถานะ
+            status: status || 'available'
         };
         if (images) {
             updateData.images = images;
@@ -222,7 +229,7 @@ router.get('/', (req, res) => {
 function getProvinces() {
     return [
         'ນະຄອນຫຼວງ','ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
-        'ຫົວພັນ', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
+        'ຫົວພັn', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
         'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
         'ຄຳມ່ວນ', 'ອັດຕະປື'
     ];

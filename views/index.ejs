@@ -84,7 +84,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/"><span class="lao-text"><%- lang === 'la' ? 'ໜ້າຫຼັກ' : 'Home' %></span></a>
+                    <a class="nav-link" href="/"><span class="lao-text"><%- lang === 'la' ? 'ໜ້າຫຼັງ' : 'Home' %></span></a>
                     <a class="nav-link" href="/sell-car"><span class="lao-text"><%- lang === 'la' ? 'ສະເໜີຂາຍລົດ' : 'Sell Your Car' %></span></a>
                     <a class="nav-link" href="/reviews"><span class="lao-text"><%- lang === 'la' ? 'ຣີວິວ' : 'Reviews' %></span></a>
                     <a class="nav-link" href="/contact"><span class="lao-text"><%- lang === 'la' ? 'ຕິດຕໍ່' : 'Contact' %></span></a>
@@ -98,7 +98,7 @@
         <h1 class="lao-text"><%- lang === 'la' ? 'ຊື້-ຂາຍລົດມືສອງທົ່ວປະເທດລາວ' : 'Discover High-Quality Used Cars' %></h1>
         <p class="lead lao-text"><%- lang === 'la' ? 'ລົດທຸກຄັນຜ່ານການກວດສອບຢ່າງລະອຽດ' : 'Every car is thoroughly inspected' %></p>
         <div class="mt-3">
-      
+            <a href="https://www.tiktok.com/@p2v.laos.auto.car?_t=ZS-8y9wQrcdzw8&_r=1" target="_blank" class="btn btn-primary lao-text"><%- lang === 'la' ? 'ຕິດຕາມພວກເຮົາໃນ TikTok' : 'Follow us on TikTok' %></a>
         </div>
     </div>
 
@@ -110,7 +110,7 @@
             </div>
         <% } %>
         <div class="search-bar">
-            <input type="text" id="searchInput" class="form-control" placeholder="<%- lang === 'la' ? 'ຄົ້ນຫາຕາມຍີ່ຫໍ້ຫຼືລຸ້ນ' : 'Search by brand or model' %>" onkeyup="searchCars()">
+            <input type="text" id="searchInput" class="form-control" placeholder="<%- lang === 'la' ? 'ຄົ້ນຫາຕາມຍີ່ຫໍ້ຫຼືລຸ້n' : 'Search by brand or model' %>" onkeyup="searchCars()">
         </div>
         <div class="filter-section">
             <label class="lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %>:</label>
@@ -123,6 +123,12 @@
                 <% provinces.forEach(province => { %>
                     <option value="<%- province %>" <%- selectedProvince === province ? 'selected' : '' %>><%- province %></option>
                 <% }) %>
+            </select>
+            <label class="lao-text ms-3"><%- lang === 'la' ? 'ຈັດລຳດັບຕາມລາຄາ' : 'Sort by Price' %>:</label>
+            <select id="priceSort" class="form-control w-25 d-inline-block" onchange="sortCars()">
+                <option value="default" <%- typeof sort !== 'undefined' && sort === 'default' ? 'selected' : '' %>><%- lang === 'la' ? 'ເລີຍຕາມວັນທີ່' : 'By Date' %></option>
+                <option value="price_asc" <%- typeof sort !== 'undefined' && sort === 'price_asc' ? 'selected' : '' %>><%- lang === 'la' ? 'ຈາກຖືກໄປແພງ' : 'Low to High' %></option>
+                <option value="price_desc" <%- typeof sort !== 'undefined' && sort === 'price_desc' ? 'selected' : '' %>><%- lang === 'la' ? 'ຈາກແພງໄປຖືກ' : 'High to Low' %></option>
             </select>
         </div>
         <% if (cars.length > 0) { %>
@@ -151,19 +157,19 @@
                 <ul class="pagination justify-content-center">
                     <% if (currentPage > 1) { %>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<%= currentPage - 1 %>&province=<%= selectedProvince || '' %>&lang=<%- lang %>" aria-label="Previous">
+                            <a class="page-link" href="/?page=<%= currentPage - 1 %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>&lang=<%- lang %>" aria-label="Previous">
                                 <span aria-hidden="true">&laquo; <%- lang === 'la' ? 'ກ່ອນໜ້າ' : 'Previous' %></span>
                             </a>
                         </li>
                     <% } %>
                     <% for(let i = 1; i <= totalPages; i++) { %>
                         <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                            <a class="page-link" href="/?page=<%= i %>&province=<%= selectedProvince || '' %>&lang=<%- lang %>"><%= i %></a>
+                            <a class="page-link" href="/?page=<%= i %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>&lang=<%- lang %>"><%= i %></a>
                         </li>
                     <% } %>
                     <% if (currentPage < totalPages) { %>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<%= currentPage + 1 %>&province=<%= selectedProvince || '' %>&lang=<%- lang %>" aria-label="Next">
+                            <a class="page-link" href="/?page=<%= currentPage + 1 %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>&lang=<%- lang %>" aria-label="Next">
                                 <span aria-hidden="true"><%- lang === 'la' ? 'ຕໍ່ໄປ' : 'Next' %> &raquo;</span>
                             </a>
                         </li>
@@ -232,7 +238,14 @@
 
         function filterByProvince() {
             const province = document.getElementById('provinceFilter').value;
-            window.location.href = `/?province=${encodeURIComponent(province)}&page=1&lang=<%- lang %>`; // รีเซ็ตหน้าเป็น 1
+            const sort = document.getElementById('priceSort').value;
+            window.location.href = `/?province=${encodeURIComponent(province)}&page=1&sort=${sort}&lang=<%- lang %>`;
+        }
+
+        function sortCars() {
+            const province = document.getElementById('provinceFilter').value;
+            const sort = document.getElementById('priceSort').value;
+            window.location.href = `/?province=${encodeURIComponent(province)}&page=1&sort=${sort}&lang=<%- lang %>`;
         }
     </script>
 </body>
