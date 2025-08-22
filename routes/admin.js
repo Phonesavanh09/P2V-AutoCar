@@ -58,8 +58,8 @@ router.get('/dashboard', async (req, res) => {
 
 router.get('/add-car', (req, res) => {
     try {
-        const provinces = getProvinces();
-        console.log('Provinces loaded:', provinces);
+        const provinces = getProvinces(); // เรียกฟังก์ชัน getProvinces
+        console.log('Provinces loaded:', provinces); // เพิ่มการดีบั๊ก
         res.render('admin/add-car', { lang: req.query.lang || 'la', error: null, provinces });
     } catch (err) {
         console.error('Error loading add-car page:', err);
@@ -73,9 +73,9 @@ router.post('/add-car', (req, res) => {
             return res.render('admin/add-car', { lang: req.query.lang || 'la', error: err.message, provinces: getProvinces() });
         }
         try {
-            const { brand, model, year, price, transmission, description, province, coverImageIndex, status } = req.body;
+            const { brand, model, year, price, transmission, description, province, coverImageIndex } = req.body;
             const images = req.files.map(file => file.path);
-            const coverImage = images[parseInt(coverImageIndex)] || images[0];
+            const coverImage = images[coverImageIndex] || images[0];
             const car = new Car({
                 brand,
                 model,
@@ -85,8 +85,7 @@ router.post('/add-car', (req, res) => {
                 images,
                 description,
                 province,
-                coverImage,
-                status: status || 'available'
+                coverImage
             });
             await car.save();
             res.redirect('/admin/dashboard?success=Car added successfully');
@@ -99,18 +98,11 @@ router.post('/add-car', (req, res) => {
 
 router.get('/manage-car', async (req, res) => {
     try {
-        const { sort } = req.query; // เพิ่มตัวเลือกเรียง
-        let carsQuery = Car.find().sort({ postedDate: -1 }); // เรียงตามวันที่ล่าสุด (ใหม่สุดขึ้นก่อน)
-        if (sort === 'price_asc') {
-            carsQuery = carsQuery.sort({ price: 1 }); // เรียงราคาจากน้อยไปมาก
-        } else if (sort === 'price_desc') {
-            carsQuery = carsQuery.sort({ price: -1 }); // เรียงราคาจากมากไปน้อย
-        }
-        const cars = await carsQuery;
-        res.render('admin/manage-car', { cars, lang: req.query.lang || 'la', error: null, success: req.query.success, provinces: getProvinces(), sort: sort || 'default' });
+        const cars = await Car.find();
+        res.render('admin/manage-car', { cars, lang: req.query.lang || 'la', error: null, success: req.query.success, provinces: getProvinces() });
     } catch (err) {
         console.error('Error fetching cars:', err);
-        res.render('admin/manage-car', { cars: [], lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการดึงข้อมูลรถ', provinces: getProvinces(), sort: 'default' });
+        res.render('admin/manage-car', { cars: [], lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการดึงข้อมูลรถ', provinces: getProvinces() });
     }
 });
 
@@ -127,7 +119,7 @@ router.get('/edit-car/:id', async (req, res) => {
 
 router.post('/edit-car/:id', upload, async (req, res) => {
     try {
-        const { brand, model, year, price, transmission, description, province, coverImageIndex, status } = req.body;
+        const { brand, model, year, price, transmission, description, province, coverImageIndex } = req.body;
         const images = req.files.length > 0 ? req.files.map(file => file.path) : undefined;
         const updateData = {
             brand,
@@ -136,17 +128,23 @@ router.post('/edit-car/:id', upload, async (req, res) => {
             price: parseInt(price),
             transmission,
             description,
-            province,
-            status: status || 'available'
+            province
         };
         if (images) {
             updateData.images = images;
-            updateData.coverImage = images[parseInt(coverImageIndex)] || images[0];
+            updateData.coverImage = images[coverImageIndex] || images[0];
         } else if (coverImageIndex && req.body.existingImages) {
             const existingImages = JSON.parse(req.body.existingImages);
-            updateData.coverImage = existingImages[parseInt(coverImageIndex)] || existingImages[0];
+            updateData.coverImage = existingImages[coverImageIndex] || existingImages[0];
         }
-        await Car.findByIdAndUpdate(req.params.id, updateData);
+        console.log('Updating car with ID:', req.params.id); // เพิ่ม log เพื่อดีบั๊ก
+        console.log('Update data:', updateData); // เพิ่ม log เพื่อดูข้อมูลที่อัปเดต
+        const updatedCar = await Car.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        console.log('Updated car:', updatedCar); // เพิ่ม log เพื่อดูผลลัพธ์หลังอัปเดต
+        if (!updatedCar) {
+            console.error('Car not found for update');
+            return res.redirect('/admin/manage-car?error=Car not found');
+        }
         res.redirect('/admin/manage-car?success=Car updated successfully');
     } catch (err) {
         console.error('Error updating car:', err);
@@ -229,7 +227,7 @@ router.get('/', (req, res) => {
 function getProvinces() {
     return [
         'ນະຄອນຫຼວງ','ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
-        'ຫົວພັn', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
+        'ຫົວພັນ', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
         'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
         'ຄຳມ່ວນ', 'ອັດຕະປື'
     ];
