@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="<%- lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- lang === 'la' ? 'ຈັດການຄຳຂໍຂາຍລົດ' : 'Manage Sell Requests' %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/admin/dashboard"><%- lang === 'la' ? 'ແຜງຄວບຄຸມ' : 'Admin Dashboard' %></a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link lao-text" href="/admin/manage-car"><%- lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></a>
+                <a class="nav-link lao-text" href="/admin/manage-sell-requests"><%- lang === 'la' ? 'ຈັດການຄຳຂໍຂາຍ' : 'Manage Sell Requests' %></a>
+                <a class="nav-link lao-text" href="/"><%- lang === 'la' ? 'ໜ້າຫຼັກ' : 'Home' %></a>
+                <a class="nav-link lao-text" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
+                <a class="nav-link text-danger lao-text" href="/admin/logout" onclick="return confirm(`<%- lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?' : 'Are you sure you want to logout?' %>`);"><%- lang === 'la' ? 'ອອກຈາກລະບົບ' : 'Logout' %></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="lao-text"><%- lang === 'la' ? 'ຈັດການຄຳຂໍຂາຍລົດ' : 'Manage Sell Requests' %></h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><%- lang === 'la' ? 'ຍີ່ຫໍ້' : 'Brand' %></th>
+                    <th><%- lang === 'la' ? 'ຮຸ່ນ' : 'Model' %></th>
+                    <th><%- lang === 'la' ? 'ປີ' : 'Year' %></th>
+                    <th><%- lang === 'la' ? 'ລາຄາ' : 'Price' %></th>
+                    <th><%- lang === 'la' ? 'ຜູ້ຂາຍ' : 'Seller' %></th>
+                    <th><%- lang === 'la' ? 'ສະຖານະ' : 'Status' %></th>
+                    <th><%- lang === 'la' ? 'ການກະທຳ' : 'Actions' %></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% sellRequests.forEach(request => { %>
+                    <tr>
+                        <td><%- request.brand %></td>
+                        <td><%- request.model %></td>
+                        <td><%- request.year %></td>
+                        <td><%- request.price.toLocaleString() %> LAK</td>
+                        <td><%- request.sellerName %> (<%- request.phone %>)</td>
+                        <td><%- request.status === 'pending' ? (lang === 'la' ? 'ລໍຖ້າ' : 'Pending') : request.status === 'approved' ? (lang === 'la' ? 'ອະນຸມັດ' : 'Approved') : (lang === 'la' ? 'ປະຕິເສດ' : 'Rejected') %></td>
+                        <td>
+                            <% if (request.status === 'pending') { %>
+                                <form action="/admin/approve-sell-request/<%- request._id %>" method="post" style="display: inline;">
+                                    <button type="submit" class="btn btn-success btn-sm lao-text"><%- lang === 'la' ? 'ອະນຸມັດ' : 'Approve' %></button>
+                                </form>
+                                <form action="/admin/reject-sell-request/<%- request._id %>" method="post" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm lao-text"><%- lang === 'la' ? 'ປະຕິເສດ' : 'Reject' %></button>
+                                </form>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

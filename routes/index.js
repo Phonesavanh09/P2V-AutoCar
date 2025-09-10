@@ -2,79 +2,70 @@ const express = require('express');
 const router = express.Router();
 const Car = require('../models/Car');
 const SellRequest = require('../models/SellRequest');
-const Review = require('../models/Review');
 const multer = require('multer');
-const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-const storage = multer.diskStorage({
-    destination: './public/uploads/',
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
-    fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png/;
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = filetypes.test(file.mimetype);
-        if (extname && mimetype) {
-            cb(null, true);
-        } else {
-            cb(new Error('เฉพาะไฟล์ JPEG และ PNG เท่านั้น!'));
-        }
-    }
-}).array('images', 10);
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: { folder: 'car_images', allowed_formats: ['jpg', 'jpeg', 'png'] }
+});
+const upload = multer({ storage }).array('images', 10);
+
+function getProvinces() {
+    return [
+        'ນະຄອນຫຼວງ', 'ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
+        'ຫົວພັນ', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
+        'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
+        'ຄຳມ່ວນ', 'ອັດຕະປື'
+    ];
+}
 
 router.get('/', async (req, res) => {
     try {
-        const { province, sort } = req.query;
-        const page = parseInt(req.query.page) || 1; // หน้าเริ่มต้นคือ 1
-        const limit = 12; // จำนวนรถต่อหน้า
+        const page = parseInt(req.query.page) || 1;
+        const limit = 9;
+        const skip = (page - 1) * limit;
+        const selectedProvince = req.query.province || '';
+        const sort = req.query.sort || 'default';
+        let query = { status: 'available' };
 
-        const startIndex = (page - 1) * limit;
+        if (selectedProvince) query.province = selectedProvince;
 
-        let carsQuery = Car.find();
-        if (province) {
-            carsQuery = carsQuery.where('province').equals(province);
-            console.log(`Filtering cars for province: ${province}`);
-        }
-        // เรียงลำดับก่อนตัดข้อมูล
-        if (sort === 'price_asc') {
-            carsQuery = carsQuery.sort({ price: 1 }); // เรียงราคาจากน้อยไปมาก
-        } else if (sort === 'price_desc') {
-            carsQuery = carsQuery.sort({ price: -1 }); // เรียงราคาจากมากไปน้อย
-        } else {
-            carsQuery = carsQuery.sort({ postedDate: -1 }); // ใหม่สุดขึ้นก่อน ถ้าไม่มี sort
-        }
-        const cars = await carsQuery; // ดึงข้อมูลทั้งหมดก่อนตัด
-        const paginatedCars = cars.slice(startIndex, startIndex + limit);
+        let sortOption = {};
+        if (sort === 'price_asc') sortOption.price = 1;
+        else if (sort === 'price_desc') sortOption.price = -1;
+        else sortOption.createdAt = -1;
 
-        const totalPages = Math.ceil(cars.length / limit);
+        const totalCars = await Car.countDocuments(query);
+        const cars = await Car.find(query).sort(sortOption).skip(skip).limit(limit);
+        const totalPages = Math.ceil(totalCars / limit);
 
-        const reviews = await Review.find().sort({ createdAt: -1 }).limit(5);
-        res.render('index', { 
-            cars: paginatedCars, 
-            reviews, 
-            lang: req.query.lang || 'la', 
-            provinces: getProvinces(), 
-            selectedProvince: province,
+        res.render('index', {
+            cars,
+            provinces: getProvinces(),
+            selectedProvince,
+            sort,
             currentPage: page,
             totalPages,
-            sort: sort || 'default' // รับค่า sort จาก query และกำหนด default ถ้าไม่มี
+            lang: req.query.lang || 'la'
         });
     } catch (err) {
         console.error('Error fetching cars:', err);
-        res.render('index', { 
-            cars: [], 
-            reviews: [], 
-            lang: req.query.lang || 'la', 
-            provinces: getProvinces(), 
-            selectedProvince: null,
+        res.render('index', {
+            cars: [],
+            provinces: getProvinces(),
+            selectedProvince: '',
+            sort: 'default',
             currentPage: 1,
             totalPages: 1,
-            sort: 'default' // กำหนดค่าเริ่มต้นในกรณี error
+            lang: req.query.lang || 'la'
         });
     }
 });
@@ -85,79 +76,55 @@ router.get('/car/:id', async (req, res) => {
         if (!car) return res.redirect('/');
         res.render('car-detail', { car, lang: req.query.lang || 'la' });
     } catch (err) {
-        console.error('Error fetching car detail:', err);
+        console.error('Error fetching car:', err);
         res.redirect('/');
     }
 });
 
 router.get('/sell-car', (req, res) => {
-    res.render('sell-car', { lang: req.query.lang || 'la', error: null, provinces: getProvinces() });
+    res.render('sell-car', { lang: req.query.lang || 'la', error: null, success: null, provinces: getProvinces() });
 });
 
-router.post('/sell-car', (req, res) => {
-    upload(req, res, async (err) => {
-        if (err) {
-            return res.render('sell-car', { lang: req.query.lang || 'la', error: err.message, provinces: getProvinces() });
-        }
-        try {
-            const { brand, model, year, price, transmission, contact, province } = req.body;
-            const images = req.files.map(file => `/uploads/${file.filename}`);
-            const sellRequest = new SellRequest({
-                brand,
-                model,
-                year: parseInt(year),
-                price: parseInt(price),
-                transmission,
-                contact,
-                images,
-                province
-            });
-            await sellRequest.save();
-            res.redirect('/?success=Request submitted successfully');
-        } catch (err) {
-            console.error('Error saving sell request:', err);
-            res.render('sell-car', { lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการส่งคำขอ', provinces: getProvinces() });
-        }
-    });
-});
-
-router.get('/reviews', async (req, res) => {
+router.post('/sell-car', upload, async (req, res) => {
     try {
-        const reviews = await Review.find().sort({ createdAt: -1 });
-        res.render('reviews', { lang: req.query.lang || 'la', reviews });
+        const { sellerName, phone, brand, model, year, price, transmission, mileage, description, province, coverImageIndex, noFlood, noMajorAccident, noFire } = req.body;
+        const images = req.files.map(file => file.path);
+        const coverImage = images[coverImageIndex] || images[0];
+        const sellRequest = new SellRequest({
+            sellerName,
+            phone,
+            brand,
+            model,
+            year: parseInt(year),
+            price: parseInt(price),
+            transmission,
+            mileage: parseInt(mileage),
+            images,
+            description,
+            province,
+            coverImage,
+            inspected: {
+                noFlood: noFlood === 'on',
+                noMajorAccident: noMajorAccident === 'on',
+                noFire: noFire === 'on'
+            }
+        });
+        await sellRequest.save();
+        res.render('sell-car', {
+            lang: req.query.lang || 'la',
+            error: null,
+            success: lang === 'la' ? 'ສົ່ງຄຳຂໍຂາຍສຳເລັດ, ກຳລັງລໍຖ້າການອະນຸມັດ' : 'Sell request submitted, awaiting approval',
+            provinces: getProvinces()
+        });
     } catch (err) {
-        console.error('Error fetching reviews:', err);
-        res.render('reviews', { lang: req.query.lang || 'la', reviews: [] });
+        console.error('Error submitting sell request:', err);
+        res.render('sell-car', {
+            lang: req.query.lang || 'la',
+            error: lang === 'la' ? 'ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຄຳຂໍ' : 'Error submitting sell request',
+            success: null,
+            provinces: getProvinces()
+        });
     }
 });
-
-router.post('/reviews', async (req, res) => {
-    try {
-        const { author, text } = req.body;
-        const review = new Review({ author, text });
-        await review.save();
-        res.redirect('/reviews?success=Review submitted successfully');
-    } catch (err) {
-        console.error('Error saving review:', err);
-        res.render('reviews', { lang: req.query.lang || 'la', reviews: [], error: 'เกิดข้อผิดพลาดในการส่งรีวิว' });
-    }
-});
-
-router.get('/contact', (req, res) => {
-    res.render('contact', { lang: req.query.lang || 'la', error: null });
-});
-
-router.post('/contact', (req, res) => {
-    res.redirect('/contact?success=Message sent successfully');
-});
-
-function getProvinces() {
-    return [
-        'ນະຄອນຫຼວງ', 'ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
-        'ຫົວພັn', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
-        'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
-        'ຄຳມ່ວນ', 'ອັດຕະປື'
-    ];
-}
 
 module.exports = router;

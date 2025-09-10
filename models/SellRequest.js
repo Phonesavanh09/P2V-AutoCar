@@ -1,14 +1,25 @@
 const mongoose = require('mongoose');
 
 const sellRequestSchema = new mongoose.Schema({
-    brand: { type: String, required: true },
-    model: { type: String, required: true },
-    year: { type: Number, required: true },
-    price: { type: Number, required: true },
-    transmission: { type: String, required: true },
-    contact: { type: String, required: true },
-    images: [{ type: String }],
-    province: { type: String, required: true } // เพิ่มจังหวัด
+    sellerName: String,
+    phone: String,
+    brand: String,
+    model: String,
+    year: Number,
+    price: Number,
+    transmission: String,
+    mileage: Number,
+    images: [String],
+    description: String,
+    province: String,
+    coverImage: String,
+    inspected: {
+        noFlood: Boolean,
+        noMajorAccident: Boolean,
+        noFire: Boolean
+    },
+    status: { type: String, default: 'pending' }, // pending, approved, rejected
+    createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('SellRequest', sellRequestSchema);
