@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Car = require('../models/Car');
 const SellRequest = require('../models/SellRequest');
+const Review = require('../models/Review');
 const multer = require('multer');
+const path = require('path');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
@@ -14,101 +16,101 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: { folder: 'car_images', allowed_formats: ['jpg', 'jpeg', 'png'] }
+    params: {
+        folder: 'car_images',
+        allowed_formats: ['jpg', 'jpeg', 'png'],
+    },
 });
-const upload = multer({ storage }).array('images', 10);
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const filetypes = /jpeg|jpg|png/;
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+        if (extname && mimetype) {
+            cb(null, true);
+        } else {
+            cb(new Error('เฉพาะไฟล์ JPEG และ PNG เท่านั้น!'));
+        }
+    }
+}).array('images', 10);
 
-function getProvinces() {
-    return [
-        'ນະຄອນຫຼວງ', 'ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
-        'ຫົວພັນ', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
-        'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
-        'ຄຳມ່ວນ', 'ອັດຕະປື'
-    ];
-}
-
-router.get('/login', (req, res) => {
-    res.render('admin/login', { error: null, lang: req.query.lang || 'la' });
+router.use((req, res, next) => {
+    const allowedRoutes = ['/login', '/logout'];
+    if (!req.session.isAdmin && !allowedRoutes.includes(req.path)) {
+        return res.redirect('/admin/login');
+    }
+    next();
 });
 
-router.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    if (username === 'admin' && password === 'admin123') { // ควรใช้การเข้ารหัสในอนาคต
-        req.session.admin = true;
-        res.redirect('/admin/dashboard');
-    } else {
-        res.render('admin/login', {
-            error: req.query.lang === 'la' ? 'ຊື່ຜູ້ໃຊ້ຫຼືລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ' : 'Invalid username or password',
-            lang: req.query.lang || 'la'
-        });
+router.get('/dashboard', async (req, res) => {
+    try {
+        const cars = await Car.find();
+        const sellRequests = await SellRequest.find();
+        const reviews = await Review.find();
+        res.render('admin/dashboard', { cars, sellRequests, reviews, lang: req.query.lang || 'la' });
+    } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+        res.render('admin/dashboard', { cars: [], sellRequests: [], reviews: [], lang: req.query.lang || 'la' });
     }
 });
 
-router.get('/dashboard', (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
-    res.render('admin/dashboard', { lang: req.query.lang || 'la' });
+router.get('/add-car', (req, res) => {
+    try {
+        const provinces = getProvinces(); // เรียกฟังก์ชัน getProvinces
+        console.log('Provinces loaded:', provinces); // เพิ่มการดีบั๊ก
+        res.render('admin/add-car', { lang: req.query.lang || 'la', error: null, provinces });
+    } catch (err) {
+        console.error('Error loading add-car page:', err);
+        res.render('admin/add-car', { lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการโหลดหน้า', provinces: [] });
+    }
+});
+
+router.post('/add-car', (req, res) => {
+    upload(req, res, async (err) => {
+        if (err) {
+            return res.render('admin/add-car', { lang: req.query.lang || 'la', error: err.message, provinces: getProvinces() });
+        }
+        try {
+            const { brand, model, year, price, transmission, description, province, coverImageIndex } = req.body;
+            const images = req.files.map(file => file.path);
+            const coverImage = images[coverImageIndex] || images[0];
+            const car = new Car({
+                brand,
+                model,
+                year: parseInt(year),
+                price: parseInt(price),
+                transmission,
+                images,
+                description,
+                province,
+                coverImage
+            });
+            await car.save();
+            res.redirect('/admin/dashboard?success=Car added successfully');
+        } catch (error) {
+            console.error('Error saving car:', error);
+            res.render('admin/add-car', { lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล', provinces: getProvinces() });
+        }
+    });
 });
 
 router.get('/manage-car', async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
     try {
         const cars = await Car.find();
-        res.render('admin/manage-car', { cars, lang: req.query.lang || 'la' });
+        res.render('admin/manage-car', { cars, lang: req.query.lang || 'la', error: null, success: req.query.success, provinces: getProvinces() });
     } catch (err) {
         console.error('Error fetching cars:', err);
-        res.render('admin/manage-car', { cars: [], lang: req.query.lang || 'la' });
-    }
-});
-
-router.get('/manage-sell-requests', async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
-    try {
-        const sellRequests = await SellRequest.find();
-        res.render('admin/manage-sell-requests', { sellRequests, lang: req.query.lang || 'la' });
-    } catch (err) {
-        console.error('Error fetching sell requests:', err);
-        res.render('admin/manage-sell-requests', { sellRequests: [], lang: req.query.lang || 'la' });
-    }
-});
-
-router.post('/add-car', upload, async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
-    try {
-        const { brand, model, year, price, transmission, mileage, description, province, coverImageIndex, noFlood, noMajorAccident, noFire, isPremium } = req.body;
-        const images = req.files.map(file => file.path);
-        const coverImage = images[coverImageIndex] || images[0];
-        const car = new Car({
-            brand,
-            model,
-            year: parseInt(year),
-            price: parseInt(price),
-            transmission,
-            mileage: parseInt(mileage),
-            images,
-            description,
-            province,
-            coverImage,
-            inspected: {
-                noFlood: noFlood === 'on',
-                noMajorAccident: noMajorAccident === 'on',
-                noFire: noFire === 'on'
-            },
-            isPremium: isPremium === 'on'
-        });
-        await car.save();
-        res.redirect('/admin/manage-car');
-    } catch (err) {
-        console.error('Error adding car:', err);
-        res.redirect('/admin/manage-car');
+        res.render('admin/manage-car', { cars: [], lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการดึงข้อมูลรถ', provinces: getProvinces() });
     }
 });
 
 router.get('/edit-car/:id', async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
     try {
         const car = await Car.findById(req.params.id);
         if (!car) return res.redirect('/admin/manage-car');
-        res.render('admin/edit-car', { car, provinces: getProvinces(), lang: req.query.lang || 'la', error: null });
+        res.render('admin/edit-car', { car, lang: req.query.lang || 'la', error: null, provinces: getProvinces() });
     } catch (err) {
         console.error('Error fetching car:', err);
         res.redirect('/admin/manage-car');
@@ -116,98 +118,119 @@ router.get('/edit-car/:id', async (req, res) => {
 });
 
 router.post('/edit-car/:id', upload, async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
     try {
-        const { brand, model, year, price, transmission, mileage, description, province, coverImageIndex, noFlood, noMajorAccident, noFire, isPremium, existingImages } = req.body;
-        const images = req.files.length > 0 ? req.files.map(file => file.path) : JSON.parse(existingImages || '[]');
-        const coverImage = images[coverImageIndex] || images[0];
+        const { brand, model, year, price, transmission, description, province, coverImageIndex } = req.body;
+        const images = req.files.length > 0 ? req.files.map(file => file.path) : undefined;
         const updateData = {
             brand,
             model,
             year: parseInt(year),
             price: parseInt(price),
             transmission,
-            mileage: parseInt(mileage),
-            images,
             description,
-            province,
-            coverImage,
-            inspected: {
-                noFlood: noFlood === 'on',
-                noMajorAccident: noMajorAccident === 'on',
-                noFire: noFire === 'on'
-            },
-            isPremium: isPremium === 'on'
+            province
         };
-        await Car.findByIdAndUpdate(req.params.id, updateData);
-        res.redirect('/admin/manage-car');
+        if (images) {
+            updateData.images = images;
+            updateData.coverImage = images[coverImageIndex] || images[0];
+        } else if (coverImageIndex && req.body.existingImages) {
+            const existingImages = JSON.parse(req.body.existingImages);
+            updateData.coverImage = existingImages[coverImageIndex] || existingImages[0];
+        }
+        console.log('Updating car with ID:', req.params.id); // เพิ่ม log เพื่อดีบั๊ก
+        console.log('Update data:', updateData); // เพิ่ม log เพื่อดูข้อมูลที่อัปเดต
+        const updatedCar = await Car.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        console.log('Updated car:', updatedCar); // เพิ่ม log เพื่อดูผลลัพธ์หลังอัปเดต
+        if (!updatedCar) {
+            console.error('Car not found for update');
+            return res.redirect('/admin/manage-car?error=Car not found');
+        }
+        res.redirect('/admin/manage-car?success=Car updated successfully');
     } catch (err) {
         console.error('Error updating car:', err);
-        const car = await Car.findById(req.params.id);
-        res.render('admin/edit-car', {
-            car,
-            provinces: getProvinces(),
-            lang: req.query.lang || 'la',
-            error: req.query.lang === 'la' ? 'ເກີດຂໍ້ຜິດພາດໃນການອັບເດດ' : 'Error updating car'
-        });
+        res.render('admin/edit-car', { car: req.body, lang: req.query.lang || 'la', error: 'เกิดข้อผิดพลาดในการอัปเดตรถ', provinces: getProvinces() });
     }
 });
 
-router.post('/delete-car/:id', async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
+router.get('/delete-car/:id', async (req, res) => {
     try {
         await Car.findByIdAndDelete(req.params.id);
-        res.redirect('/admin/manage-car');
+        res.redirect('/admin/manage-car?success=Car deleted successfully');
     } catch (err) {
         console.error('Error deleting car:', err);
-        res.redirect('/admin/manage-car');
+        res.redirect('/admin/manage-car?error=Failed to delete car');
     }
 });
 
-router.post('/approve-sell-request/:id', async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
+router.get('/sell-request/:id', async (req, res) => {
     try {
         const sellRequest = await SellRequest.findById(req.params.id);
-        if (!sellRequest) return res.redirect('/admin/manage-sell-requests');
-        const car = new Car({
-            sellerName: sellRequest.sellerName,
-            sellerPhone: sellRequest.phone,
-            brand: sellRequest.brand,
-            model: sellRequest.model,
-            year: sellRequest.year,
-            price: sellRequest.price,
-            transmission: sellRequest.transmission,
-            mileage: sellRequest.mileage,
-            images: sellRequest.images,
-            description: sellRequest.description,
-            province: sellRequest.province,
-            coverImage: sellRequest.coverImage,
-            inspected: sellRequest.inspected,
-            status: 'available'
-        });
-        await car.save();
-        await SellRequest.findByIdAndUpdate(req.params.id, { status: 'approved' });
-        res.redirect('/admin/manage-sell-requests');
+        if (!sellRequest) return res.redirect('/admin/dashboard');
+        res.render('admin/sell-request-detail', { sellRequest, lang: req.query.lang || 'la' });
     } catch (err) {
-        console.error('Error approving sell request:', err);
-        res.redirect('/admin/manage-sell-requests');
+        console.error('Error fetching sell request:', err);
+        res.redirect('/admin/dashboard');
     }
 });
 
-router.post('/reject-sell-request/:id', async (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
+router.get('/delete-sell-request/:id', async (req, res) => {
     try {
-        await SellRequest.findByIdAndUpdate(req.params.id, { status: 'rejected' });
-        res.redirect('/admin/manage-sell-requests');
+        await SellRequest.findByIdAndDelete(req.params.id);
+        res.redirect('/admin/dashboard?success=Sell request deleted successfully');
     } catch (err) {
-        console.error('Error rejecting sell request:', err);
-        res.redirect('/admin/manage-sell-requests');
+        console.error('Error deleting sell request:', err);
+        res.redirect('/admin/dashboard?error=Failed to delete sell request');
     }
 });
+
+router.get('/delete-review/:id', async (req, res) => {
+    try {
+        await Review.findByIdAndDelete(req.params.id);
+        res.redirect('/admin/dashboard?success=Review deleted successfully');
+    } catch (err) {
+        console.error('Error deleting review:', err);
+        res.redirect('/admin/dashboard?error=Failed to delete review');
+    }
+});
+
+router.get('/login', (req, res) => {
+    res.render('admin/login', { error: req.query.error === 'true', lang: req.query.lang || 'la' });
+});
+
+router.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === 'admin' && password === 'your_secure_password') {
+        req.session.isAdmin = true;
+        res.redirect('/admin/dashboard');
+    } else {
+        res.redirect('/admin/login?error=true');
+    }
+});
+
+router.get('/', (req, res) => {
+    if (req.session.isAdmin) {
+        res.redirect('/admin/dashboard');
+    } else {
+        res.redirect('/admin/login');
+    }
+}); 
 
 router.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/admin/login');
 });
+
+router.get('/', (req, res) => {
+    res.redirect('/admin/dashboard');
+});
+
+function getProvinces() {
+    return [
+        'ນະຄອນຫຼວງ','ວຽງຈັນ', 'ຫຼວງພະບາງ', 'ສະຫວັນນະເຂດ', 'ຈໍາປາສັກ', 'ຊຽງຂວາງ',
+        'ຫົວພັນ', 'ຜົ້ງສາລີ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງນໍ້າທາ',
+        'ໄຊສົມບູນ', 'ສາລະວັນ', 'ໄຊຍະບູລີ', 'ບໍລິຄຳໄຊ', 'ເຊກອງ',
+        'ຄຳມ່ວນ', 'ອັດຕະປື'
+    ];
+}
 
 module.exports = router;

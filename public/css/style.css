@@ -1,90 +1,222 @@
-body {
-    font-family: 'Prompt', sans-serif;
-    background-color: #E6F0FA; /* ฟ้าอ่อน */
+/* รีเซ็ตสไตล์พื้นฐาน */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* สไตล์ทั่วไป */
+body {
+    font-family: 'Prompt', sans-serif;
+    background-color: #f4f7f9;
+}
 .lao-text {
     font-family: 'Phetsarath', sans-serif;
 }
-
-.bg-light-blue {
-    background-color: #B3DFFA; /* ฟ้าอ่อนสำหรับ navbar และ footer */
+.car-card img, .img-fluid {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
 }
-
-.navbar-light .navbar-nav .nav-link {
-    color: #4DABF7; /* สีลิงก์ฟ้า */
+.table {
+    background-color: #fff;
 }
-
-.navbar-light .navbar-nav .nav-link:hover {
-    color: #2B8AC6; /* สีเมื่อ hover */
-}
-
-.hero-section {
-    position: relative;
-    text-align: center;
-    padding: 80px 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/background-car.jpg');
-    background-size: cover;
-    color: white;
-    border-bottom: 2px solid #4DABF7; /* ขอบฟ้า */
-}
-
-.car-card {
+.card {
     border: 1px solid #ddd;
     border-radius: 10px;
-    transition: transform 0.2s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    transition: all 0.3s ease;
 }
 
-.car-card:hover {
-    transform: scale(1.03);
+/* Navbar */
+.navbar {
+    background-color: #1a237e !important; /* สีน้ำเงินเข้ม */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: #fff !important;
+    margin-left: 15px;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #ffd700 !important; /* สีเหลืองทองเมื่อ hover */
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.hero-section .btn {
+    font-size: 1.1rem;
+    padding: 10px 30px;
+}
+
+/* Search Bar */
+.search-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.search-form input, .search-form select {
+    margin-bottom: 15px;
+}
+
+/* Car Card */
+.car-card {
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .car-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 }
 
+.car-card .card-body {
+    padding: 20px;
+}
+
+.car-card .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1a237e;
+}
+
+.car-card .card-text {
+    color: #555;
+}
+
+.car-card .btn {
+    background-color: #d32f2f; /* สีแดง */
+    border: none;
+    padding: 10px 20px;
+}
 .btn-primary {
-    background-color: #4DABF7; /* ฟ้าสด */
-    border-color: #4DABF7;
+    background-color: #1a2e44;
+    border-color: #1a2e44;
 }
 
 .btn-primary:hover {
-    background-color: #2B8AC6;
-    border-color: #2B8AC6;
+    background-color: #12263a;
+    border-color: #12263a;
 }
 
-.btn-outline-primary {
-    color: #4DABF7;
-    border-color: #4DABF7;
+.navbar-brand img {
+    vertical-align: middle;
 }
-
-.btn-outline-primary:hover {
-    background-color: #4DABF7;
-    color: white;
+.car-image {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 5px;
 }
-
-.quality-badges .badge {
-    margin-right: 5px;
-    font-size: 0.8rem;
-}
-
-.filter-section {
+/* Admin Pages */
+.admin-form {
+    background-color: #fff;
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 30px auto;
 }
 
+/* Footer */
 .footer {
+    background-color: #1a237e;
+    color: #fff;
     padding: 20px 0;
+    text-align: center;
     margin-top: 40px;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .car-card {
+        margin-bottom: 20px;
+    }
+}
+/* Carousel */
 .carousel-item img {
-    height: 400px;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 5%;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    filter: invert(1);
+}
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* ป้องกัน margin ล้น */
+}
+.car-image {
+    width: 100%; /* ใช้เต็มความกว้างของ container */
+    object-fit: contain; /* รักษาสัดส่วนภาพ */
+}
+@media (max-width: 768px) {
+    .car-image {
+        max-height: 200px; /* จำกัดความสูงบนมือถือ */
+    }
+}
+.gallery {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+    scroll-snap-type: x mandatory;
+}
+
+.gallery img {
+    flex-shrink: 0;
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
+    scroll-snap-align: start;
     object-fit: cover;
 }

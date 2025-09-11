@@ -1,26 +1,17 @@
 const mongoose = require('mongoose');
 
 const carSchema = new mongoose.Schema({
-    brand: String,
-    model: String,
-    year: Number,
-    price: Number,
-    transmission: String,
-    mileage: Number,
-    images: [String],
-    description: String,
-    province: String,
-    coverImage: String,
-    status: { type: String, default: 'available' },
-    inspected: {
-        noFlood: { type: Boolean, default: true },
-        noMajorAccident: { type: Boolean, default: true },
-        noFire: { type: Boolean, default: true }
-    },
-    isPremium: { type: Boolean, default: false },
-    sellerName: String,
-    sellerPhone: String,
-    createdAt: { type: Date, default: Date.now }
+    brand: { type: String, required: true },
+    model: { type: String, required: true },
+    year: { type: Number, required: true },
+    price: { type: Number, required: true },
+    transmission: { type: String, required: true },
+    images: [{ type: String }],
+    description: { type: String },
+    province: { type: String, required: true },
+    coverImage: { type: String },
+    postedDate: { type: Date, default: Date.now }, // เพิ่มวันที่โพสต์
+    status: { type: String, default: 'available' } // เพิ่มสถานะ (available, sold)
 });
 
 module.exports = mongoose.model('Car', carSchema);

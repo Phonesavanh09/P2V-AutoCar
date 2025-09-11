@@ -7,17 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .lao-text { font-family: 'Phetsarath', sans-serif; }
+        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/admin/dashboard"><%- lang === 'la' ? 'ແຜງຄວບຄຸມ' : 'Admin Dashboard' %></a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link lao-text" href="/admin/manage-car"><%- lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></a>
-                <a class="nav-link lao-text" href="/admin/manage-sell-requests"><%- lang === 'la' ? 'ຈັດການຄຳຂໍຂາຍ' : 'Manage Sell Requests' %></a>
-                <a class="nav-link lao-text" href="/"><%- lang === 'la' ? 'ໜ້າຫຼັກ' : 'Home' %></a>
-                <a class="nav-link lao-text" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
-                <a class="nav-link text-danger lao-text" href="/admin/logout" onclick="return confirm(`<%- lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?' : 'Are you sure you want to logout?' %>`);"><%- lang === 'la' ? 'ອອກຈາກລະບົບ' : 'Logout' %></a>
+                <a class="nav-link" href="/admin/manage-car"><%- lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></a>
+                <a class="nav-link" href="/"><%- lang === 'la' ? 'ໜ້າຫຼັກ' : 'Home' %></a>
+                <a class="nav-link" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>" class="lao-text"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
+                <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm(`<%- lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?' : 'Are you sure you want to logout?' %>`);"><%- lang === 'la' ? 'ອອກຈາກລະບົບ' : 'Logout' %></a>
             </div>
         </div>
     </nav>
@@ -25,4 +28,90 @@
     <div class="container mt-4">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h2 class="lao-text"><%- lang ===
+                <h2 class="lao-text"><%- lang === 'la' ? 'ແກ້ໄຂລົດ' : 'Edit Car' %></h2>
+            </div>
+            <div class="card-body">
+                <% if (error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%- error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                <form action="/admin/edit-car/<%- car._id %>" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="_id" value="<%- car._id %>">
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຍີ່ຫໍ້' : 'Brand' %></label>
+                        <input type="text" name="brand" class="form-control" value="<%- car.brand %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຮຸ່ນ' : 'Model' %></label>
+                        <input type="text" name="model" class="form-control" value="<%- car.model %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ປີ' : 'Year' %></label>
+                        <input type="number" name="year" class="form-control" value="<%- car.year %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %></label>
+                        <input type="number" name="price" class="form-control" value="<%- car.price %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ເກຍ' : 'Transmission' %></label>
+                        <select name="transmission" class="form-control" required>
+                            <option value="Automatic" <%- car.transmission === 'Automatic' ? 'selected' : '' %>><%- lang === 'la' ? 'ອັດຕະໂນມັດ' : 'Automatic' %></option>
+                            <option value="Manual" <%- car.transmission === 'Manual' ? 'selected' : '' %>><%- lang === 'la' ? 'ມື' : 'Manual' %></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ລາຍລະອຽດ' : 'Description' %></label>
+                        <textarea name="description" class="form-control" rows="4"><%- car.description || '' %></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຈຸງຮ້ອງ' : 'Province' %></label>
+                        <select name="province" class="form-control" required>
+                            <% provinces.forEach(province => { %>
+                                <option value="<%- province %>" <%- car.province === province ? 'selected' : '' %>><%- province %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຮູບພາບປັດຈຸບັນ' : 'Current Images' %></label>
+                        <% if (car.images && car.images.length > 0) { %>
+                            <div class="row">
+                                <% car.images.forEach((image, index) => { %>
+                                    <div class="col-md-3 mb-2">
+                                        <img src="<%- image %>" class="img-fluid" alt="Car Image">
+                                        <p><%- lang === 'la' ? 'ດັດຊະນີ' : 'Index' %>: <%- index %></p>
+                                    </div>
+                                <% }) %>
+                            </div>
+                            <input type="hidden" name="existingImages" value="<%- JSON.stringify(car.images) %>">
+                        <% } else { %>
+                            <p><%- lang === 'la' ? 'ບໍ່ມີຮູບພາບ' : 'No images available' %></p>
+                        <% } %>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ອັບໂຫຼດຮູບພາບໃໝ່ (ສູງສຸດ 10 ຮູບ)' : 'Upload New Images (up to 10)' %></label>
+                        <input type="file" name="images" class="form-control" multiple>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ເລືອກຮູບປົກ' : 'Select Cover Image' %></label>
+                        <input type="number" name="coverImageIndex" class="form-control" value="<%- car.coverImageIndex || 0 %>" min="0" max="9" placeholder="<%- lang === 'la' ? 'ດັດຊະນີຮູບ (0-9)' : 'Image Index (0-9)' %>">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label lao-text"><%- lang === 'la' ? 'ສະຖານະ' : 'Status' %></label>
+                        <select name="status" class="form-control" required>
+                            <option value="available" <%- car.status === 'available' ? 'selected' : '' %>><%- lang === 'la' ? 'ມີສິນຄ້າ' : 'Available' %></option>
+                            <option value="sold" <%- car.status === 'sold' ? 'selected' : '' %>><%- lang === 'la' ? 'ຂາຍແລ້ວ' : 'Sold' %></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary lao-text"><%- lang === 'la' ? 'ບັນທຶກ' : 'Save' %></button>
+                    <a href="/admin/manage-car" class="btn btn-secondary lao-text"><%- lang === 'la' ? 'ກັບຄືນ' : 'Back' %></a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
