@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="<%- lang %>">
+<html lang="lo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%- lang === 'la' ? 'ສະເໜີຂາຍລົດ' : 'Sell Your Car' %></title>
-    <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <title>ສະເໜີຂາຍລົດ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .lao-text { font-family: 'Phetsarath', sans-serif; }
-        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img src="/images/logo1.png" alt="Logo" style="height: 80px; margin-right: 15px;">
-                <%- lang === 'la' ? 'P2V Laos Auto Car' : 'Used Car Sales' %>
+                <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                ລົດມືສອງຄຸນນະພາບ
             </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/"><span class="lao-text"><%- lang === 'la' ? 'ໜ້າຫຼັກ' : 'Home' %></span></a>
-                <a class="nav-link active" href="/sell-car"><span class="lao-text"><%- lang === 'la' ? 'ສະເໜີຂາຍລົດ' : 'Sell Your Car' %></span></a>
-                <a class="nav-link" href="/reviews"><span class="lao-text"><%- lang === 'la' ? 'ຣີວິວ' : 'Reviews' %></span></a>
-                <a class="nav-link" href="/contact"><span class="lao-text"><%- lang === 'la' ? 'ຕິດຕໍ່' : 'Contact' %></span></a>
-                <a class="nav-link" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>" class="lao-text"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
+                    <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ</a>
+                    <a class="nav-link" href="/contact">ຕິດຕໍ່</a>
+                    <a class="nav-link" href="/admin/login">ແອດມິນ</a>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h2 class="lao-text"><%- lang === 'la' ? 'ສະເໜີຂາຍລົດ' : 'Sell Your Car' %></h2>
+        <div class="card bg-dark text-light">
+            <div class="card-header bg-gold text-dark">
+                <h2>ສະເໜີຂາຍລົດ</h2>
             </div>
             <div class="card-body">
                 <% if (error) { %>
@@ -41,42 +41,60 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <% } %>
-                 <% if (typeof success !== 'undefined' && success) { %>
+                <% if (success) { %>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <%- req.query.success %>
+                        <%- success %>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <% } %>
                 <form action="/sell-car" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຍີ່ຫໍ້' : 'Brand' %></label>
-                        <input type="text" name="brand" class="form-control" required>
+                        <label class="form-label">ຊື່ຜູ້ຂາຍ</label>
+                        <input type="text" name="sellerName" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ລຸ້ນ' : 'Model' %></label>
-                        <input type="text" name="model" class="form-control" required>
+                        <label class="form-label">ເບີໂທ</label>
+                        <input type="text" name="phone" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ປີ' : 'Year' %></label>
-                        <input type="number" name="year" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %></label>
-                        <input type="number" name="price" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ເກຍ' : 'Transmission' %></label>
-                        <select name="transmission" class="form-control" required>
-                            <option value="Automatic"><%- lang === 'la' ? 'ອັດຕະໂນມັດ' : 'Automatic' %></option>
-                            <option value="Manual"><%- lang === 'la' ? 'ກະປຸກ' : 'Manual' %></option>
+                        <label class="form-label">ຍີ່ຫໍ້</label>
+                        <select name="brand" class="form-control" required>
+                            <option value="">ເລືອກຍີ່ຫໍ້</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Mazda">Mazda</option>
+                            <option value="Mitsubishi">Mitsubishi</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຕິດຕໍ່' : 'Contact' %></label>
-                        <input type="text" name="contact" class="form-control" placeholder="<%- lang === 'la' ? 'ເບີໂທຫຼືອີເມວ' : 'Phone or Email' %>" required>
+                        <label class="form-label">ລຸ້ນ</label>
+                        <input type="text" name="model" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ແຂວງ' : 'Province' %></label>
+                        <label class="form-label">ປີ</label>
+                        <input type="number" name="year" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ລາຄາ</label>
+                        <input type="number" name="price" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ເກຍ</label>
+                        <select name="transmission" class="form-control" required>
+                            <option value="Automatic">ອັດຕະໂນມັດ</option>
+                            <option value="Manual">ຄູ່ມື</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ໄມລ໌</label>
+                        <input type="number" name="mileage" class="form-control" placeholder="ກິໂລແມັດ">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ລາຍລະອຽດ</label>
+                        <textarea name="description" class="form-control" rows="4" placeholder="ລາຍລະອຽດລົດ"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ແຂວງ</label>
                         <select name="province" class="form-control" required>
                             <% provinces.forEach(province => { %>
                                 <option value="<%- province %>"><%- province %></option>
@@ -84,15 +102,51 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label lao-text"><%- lang === 'la' ? 'ຮູບພາບ (ສູງສຸດ 10 ຮູບ)' : 'Images (up to 10)' %></label>
+                        <label class="form-label">ຮູບພາບ (ສູງສຸດ 10 ຮູບ)</label>
                         <input type="file" name="images" class="form-control" multiple>
                     </div>
-                    <button type="submit" class="btn btn-primary lao-text"><%- lang === 'la' ? 'ສົ່ງຄຳສະເໜີ' : 'Submit Request' %></button>
-                    <a href="/" class="btn btn-secondary ms-2 lao-text"><%- lang === 'la' ? 'ກັບຄືນ' : 'Back' %></a>
+                    <div class="mb-3">
+                        <label class="form-label">ເລືອກຮູບປົກ</label>
+                        <input type="number" name="coverImageIndex" class="form-control" min="0" max="9" placeholder="ດັດສະນີຮູບ (0-9)">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ສະຖານະການກວດສອບ</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="noFlood" id="noFlood" checked>
+                            <label class="form-check-label" for="noFlood">ບໍ່ເຄີຍຖືກນໍ້າຖ້ວມ</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="noMajorAccident" id="noMajorAccident" checked>
+                            <label class="form-check-label" for="noMajorAccident">ບໍ່ເຄີຍປະສົບອຸປະຕິເຫດໜັກ</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="noFire" id="noFire" checked>
+                            <label class="form-check-label" for="noFire">ບໍ່ເຄີຍໄຟໄໝ້</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gold">ສົ່ງຄຳຂໍຂາຍ</button>
+                    <a href="/" class="btn btn-outline-gold">ກັບຄືນ</a>
                 </form>
             </div>
         </div>
     </div>
+
+    <footer class="footer text-center bg-dark text-gold">
+        <div class="container">
+            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
+            <p>ໂທ: +856 20 1234 5678</p>
+            <p>ອີເມວ: contact@yourcarwebsite.com</p>
+            <p>ຕິດຕາມພວກເຮົາ:
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
+                <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
+            </p>
+            <p>ດາວໂຫຼດແອັບ:
+                <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
+                <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
+            </p>
+            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

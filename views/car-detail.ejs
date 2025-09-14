@@ -1,77 +1,111 @@
 <!DOCTYPE html>
-<html lang="<%- lang %>">
+<html lang="lo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%- lang === 'la' ? 'ລາຍລະອຽດລົດ' : 'Car Detail' %></title>
-    <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <title>ລາຍລະອຽດລົດ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .lao-text { font-family: 'Phetsarath', sans-serif; }
-        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .car-image { width: 100%; height: 300px; object-fit: contain; border-top-left-radius: 10px; border-top-right-radius: 10px; }
-        .gallery img { max-width: 150px; height: auto; margin: 5px; cursor: pointer; }
-    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img src="/images/logo.png" alt="Logo" style="height: 50px; margin-right: 10px;">
-                <%- lang === 'la' ? 'ຂາຍລົດມືສອງ' : 'Used Car Sales' %>
+                <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                ລົດມືສອງຄຸນນະພາບ
             </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/"><span class="lao-text"><%- lang === 'la' ? 'ໜ້າຫຼັກ' : 'Home' %></span></a>
-                <a class="nav-link" href="/sell-car"><span class="lao-text"><%- lang === 'la' ? 'ສະເໜີຂາຍລົດ' : 'Sell Your Car' %></span></a>
-                <a class="nav-link" href="/reviews"><span class="lao-text"><%- lang === 'la' ? 'ຣີວິວ' : 'Reviews' %></span></a>
-                <a class="nav-link" href="/contact"><span class="lao-text"><%- lang === 'la' ? 'ຕິດຕໍ່' : 'Contact' %></span></a>
-                <a class="nav-link" href="?lang=<%- lang === 'la' ? 'en' : 'la' %>" class="lao-text"><%- lang === 'la' ? 'English' : 'ລາວ' %></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
+                    <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ</a>
+                    <a class="nav-link" href="/contact">ຕິດຕໍ່</a>
+                    <a class="nav-link" href="/admin/login">ແອດມິນ</a>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h2 class="lao-text"><%- lang === 'la' ? 'ລາຍລະອຽດລົດ' : 'Car Detail' %></h2>
+        <div class="card bg-dark text-light">
+            <div class="card-header bg-gold text-dark">
+                <h2><%- car.brand %> <%- car.model %> <%- car.year %></h2>
             </div>
             <div class="card-body">
-                <% if (car) { %>
-                    <div class="gallery mb-3">
+                <div class="row">
+                    <div class="col-md-6">
                         <% if (car.images && car.images.length > 0) { %>
-                            <% car.images.forEach(image => { %>
-                                <img src="<%- image %>" alt="Car Image" onclick="document.getElementById('mainImage').src=this.src">
-                            <% }) %>
+                            <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <% car.images.forEach((image, index) => { %>
+                                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                            <img src="<%- image %>" class="d-block w-100" alt="Car Image">
+                                        </div>
+                                    <% }) %>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">ກ່ອນໜ້າ</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">ຕໍ່ໄປ</span>
+                                </button>
+                            </div>
                         <% } else { %>
-                            <img src="/images/placeholder.jpg" alt="Placeholder" id="mainImage">
+                            <img src="/images/placeholder.jpg" class="img-fluid" alt="Placeholder">
                         <% } %>
                     </div>
-                    <img src="<%- car.coverImage || (car.images && car.images.length > 0 ? car.images[0] : '/images/placeholder.jpg') %>" alt="Main Car Image" class="car-image" id="mainImage">
-                    <h4 class="lao-text mt-3"><%- lang === 'la' ? 'ຍີ່ຫໍ້' : 'Brand' %>: <%= car.brand %></h4>
-                    <h4 class="lao-text"><%- lang === 'la' ? 'ລຸ້ນ' : 'Model' %>: <%= car.model %></h4>
-                    <p class="lao-text"><%- lang === 'la' ? 'ປີ' : 'Year' %>: <%= car.year %></p>
-                    <p class="lao-text"><%- lang === 'la' ? 'ລາຄາ' : 'Price' %>: <%= car.price.toLocaleString() %> LAK</p>
-                    <p class="lao-text">
-                        <%- lang === 'la' ? 'ເກຍ' : 'Transmission' %>:
-                        <% if (lang === 'la') { %>
-                            <%= car.transmission === 'Automatic' ? 'ອໍໂຕ້' : (car.transmission === 'Manual' ? 'ກະປຸກ' : car.transmission) %>
-                        <% } else { %>
-                            <%= car.transmission %>
+                    <div class="col-md-6">
+                        <h3>ລາຍລະອຽດລົດ</h3>
+                        <p><strong>ລາຄາ:</strong> <%- car.price.toLocaleString() %> ກີບ</p>
+                        <p><strong>ແຂວງ:</strong> <%- car.province %></p>
+                        <p><strong>ເກຍ:</strong> <%- car.transmission === 'Automatic' ? 'ອັດຕະໂນມັດ' : 'ຄູ່ມື' %></p>
+                        <% if (car.mileage) { %>
+                            <p><strong>ໄມລ໌:</strong> <%- car.mileage.toLocaleString() %> ກິໂລແມັດ</p>
                         <% } %>
-                    </p>
-                    <p class="lao-text"><%- lang === 'la' ? 'ແຂວງ' : 'Province' %>: <%= car.province %></p>
-                    <p class="lao-text"><%- lang === 'la' ? 'ລາຍລະອຽດ' : 'Description' %>: <%= car.description || 'ไม่มีรายละเอียด' %></p>
-                    <h5 class="lao-text mt-4"><%- lang === 'la' ? 'ຕິດຕໍ່ພວກເຮົາ' : 'Contact Us' %></h5>
-                    <p class="lao-text"><%- lang === 'la' ? 'ເບີໂທ: +856 20 9993 2997' : 'Phone: +856 20 9993 2997' %></p>
-                    <p class="lao-text"><%- lang === 'la' ? 'ອີເມວ: p2v.autocar@gmail.com' : 'Email: p2v.autocar@gmail.com' %></p>
-                    <a href="/" class="btn btn-primary mt-3 lao-text"><%- lang === 'la' ? 'ກັບຄືນ' : 'Back' %></a>
-                <% } else { %>
-                    <p class="lao-text alert alert-warning"><%- lang === 'la' ? 'ບໍ່ພົບລົດ' : 'Car not found' %></p>
-                <% } %>
+                        <p><strong>ລາຍລະອຽດ:</strong> <%- car.description || 'ບໍ່ມີລາຍລະອຽດ' %></p>
+                        <p><strong>ຜູ້ຂາຍ:</strong> <%- car.sellerName %> (<%- car.sellerPhone %>)</p>
+                        <div class="quality-badges">
+                            <% if (car.inspected && car.inspected.noFlood) { %>
+                                <span class="badge bg-success">ບໍ່ເຄີຍຖືກນໍ້າຖ້ວມ</span>
+                            <% } %>
+                            <% if (car.inspected && car.inspected.noMajorAccident) { %>
+                                <span class="badge bg-success">ບໍ່ເຄີຍປະສົບອຸປະຕິເຫດໜັກ</span>
+                            <% } %>
+                            <% if (car.inspected && car.inspected.noFire) { %>
+                                <span class="badge bg-success">ບໍ່ເຄີຍໄຟໄໝ້</span>
+                            <% } %>
+                            <% if (car.isPremium) { %>
+                                <span class="badge bg-gold text-dark">ພຣີມຽມ</span>
+                            <% } %>
+                        </div>
+                        <a href="tel:<%- car.sellerPhone %>" class="btn btn-gold mt-3">ໂທຫາຜູ້ຂາຍ</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <footer class="footer text-center bg-dark text-gold">
+        <div class="container">
+            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
+            <p>ໂທ: +856 20 1234 5678</p>
+            <p>ອີເມວ: contact@yourcarwebsite.com</p>
+            <p>ຕິດຕາມພວກເຮົາ:
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
+                <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
+            </p>
+            <p>ດາວໂຫຼດແອັບ:
+                <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
+                <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
+            </p>
+            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
