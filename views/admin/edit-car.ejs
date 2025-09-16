@@ -43,6 +43,18 @@
                         <input type="text" name="model" class="form-control" value="<%- car.model %>" required>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">ປະເພດລົດ</label>
+                        <select name="carType" class="form-control" required>
+                            <option value="Sedan" <%- car.carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ (Sedan)</option>
+                            <option value="Hatchback" <%- car.carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ (Hatchback)</option>
+                            <option value="Pickup" <%- car.carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ (Pickup)</option>
+                            <option value="Crossover" <%- car.carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ (Crossover)</option>
+                            <option value="SUV" <%- car.carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
+                            <option value="PPV" <%- car.carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
+                            <option value="MPV" <%- car.carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">ປີ</label>
                         <input type="number" name="year" class="form-control" value="<%- car.year %>" required>
                     </div>

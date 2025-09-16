@@ -1,9 +1,13 @@
+/* ตั้งค่าพื้นฐาน */
 body {
     font-family: 'Noto Sans Lao', sans-serif;
     background-color: #1C2526; /* ดำ */
     color: #F2C94C; /* ทองอ่อน */
+    margin: 0;
+    padding: 0;
 }
 
+/* สีและพื้นหลัง */
 .bg-dark {
     background-color: #1C2526 !important; /* ดำ */
 }
@@ -16,59 +20,25 @@ body {
     color: #F2C94C !important; /* ทองอ่อน */
 }
 
-.navbar-dark .navbar-nav .nav-link {
-    color: #F2C94C; /* ทองอ่อน */
-}
-
-.navbar-dark .navbar-nav .nav-link:hover {
-    color: #D4A017; /* ทองเข้ม */
-}
-
-.hero-section {
-    position: relative;
-    text-align: center;
-    padding: 80px 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/background-car.jpg');
-    background-size: cover;
-    color: #F2C94C; /* ทองอ่อน */
-    border-bottom: 2px solid #D4A017; /* ขอบทอง */
-}
-
-.car-card {
-    border: 1px solid #3C4F50; /* เทาเข้ม */
-    border-radius: 10px;
-    transition: transform 0.2s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    background-color: #2A3435; /* ดำจาง */
-}
-
-.car-card:hover {
-    transform: scale(1.03);
-}
-
-.car-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+.text-dark {
+    color: #1C2526 !important; /* ดำ */
 }
 
 .btn-gold {
     background-color: #D4A017; /* ทอง */
-    border-color: #D4A017;
     color: #1C2526; /* ดำ */
+    border: none;
+    transition: background-color 0.3s;
 }
 
 .btn-gold:hover {
     background-color: #F2C94C; /* ทองอ่อน */
-    border-color: #F2C94C;
     color: #1C2526;
 }
 
 .btn-outline-gold {
+    border-color: #D4A017; /* ทอง */
     color: #D4A017;
-    border-color: #D4A017;
 }
 
 .btn-outline-gold:hover {
@@ -76,22 +46,300 @@ body {
     color: #1C2526;
 }
 
+/* Navbar */
+.navbar-dark {
+    background-color: #1C2526 !important;
+    border-bottom: 2px solid #D4A017;
+}
+
+.navbar-dark .navbar-brand {
+    color: #F2C94C;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #F2C94C;
+    font-size: 1.1rem;
+    margin: 0 10px;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #D4A017;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/background-car.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #F2C94C;
+    border-bottom: 2px solid #D4A017;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hero-section p.lead {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+}
+
+.hero-section .btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+
+/* ส่วนความนิยมและประเภทรถ */
+.popularity-section, .car-types-section, .popular-brands-section {
+    background-color: #2A3435; /* ดำจาง */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.popularity-section h2, .car-types-section h2, .popular-brands-section h2 {
+    font-size: 2rem;
+    color: #D4A017;
+    margin-bottom: 20px;
+}
+
+.car-types-section .row > div, .popular-brands-section .row > div {
+    margin-bottom: 20px;
+}
+
+.car-types-section h4, .popular-brands-section h4 {
+    color: #F2C94C;
+    font-size: 1.5rem;
+}
+
+/* การ์ดรถ */
+.car-card {
+    border: 1px solid #3C4F50; /* เทาเข้ม */
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background-color: #2A3435; /* ดำจาง */
+}
+
+.car-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.car-card img {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.car-card .card-body {
+    padding: 15px;
+}
+
+.car-card .card-title {
+    font-size: 1.25rem;
+    color: #F2C94C;
+    margin-bottom: 10px;
+}
+
+.car-card .card-text {
+    font-size: 1rem;
+    color: #F2C94C;
+    margin-bottom: 5px;
+}
+
 .quality-badges .badge {
     margin-right: 5px;
-    font-size: 0.8rem;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
 }
 
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-gold {
+    background-color: #D4A017 !important;
+    color: #1C2526 !important;
+}
+
+/* ตัวกรอง */
 .filter-section {
+    background-color: #2A3435;
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+.filter-section label {
+    color: #F2C94C;
+    font-size: 1rem;
+}
+
+.filter-section .form-control {
+    background-color: #3C4F50;
+    color: #F2C94C;
+    border: 1px solid #D4A017;
+}
+
+.filter-section .form-control:focus {
+    background-color: #3C4F50;
+    color: #F2C94C;
+    border-color: #F2C94C;
+    box-shadow: none;
+}
+
+/* Pagination */
+.pagination .page-link {
+    background-color: #3C4F50;
+    color: #F2C94C;
+    border: 1px solid #D4A017;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #D4A017;
+    color: #1C2526;
+    border-color: #D4A017;
+}
+
+.pagination .page-link:hover {
+    background-color: #F2C94C;
+    color: #1C2526;
+}
+
+/* ฟอร์ม */
+.form-control, .form-select {
+    background-color: #3C4F50;
+    color: #F2C94C;
+    border: 1px solid #D4A017;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #3C4F50;
+    color: #F2C94C;
+    border-color: #F2C94C;
+    box-shadow: none;
+}
+
+.form-check-label {
+    color: #F2C94C;
+}
+
+/* Footer */
 .footer {
     padding: 20px 0;
     margin-top: 40px;
+    border-top: 2px solid #D4A017;
 }
 
-.carousel-item img {
+.footer p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.footer a {
+    color: #F2C94C;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #D4A017;
+}
+
+/* Carousel ในหน้ารายละเอียดรถ */
+.carousel-inner img {
     height: 400px;
     object-fit: cover;
+    border-radius: 10px;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: #D4A017;
+}
+
+/* ตารางในหน้าแอดมิน */
+.table {
+    background-color: #2A3435;
+    color: #F2C94C;
+}
+
+.table th {
+    background-color: #3C4F50;
+    color: #D4A017;
+}
+
+.table td {
+    border: 1px solid #3C4F50;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #2A3435;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 50px 15px;
+    }
+
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-section p.lead {
+        font-size: 1rem;
+    }
+
+    .car-card img {
+        height: 150px;
+    }
+
+    .carousel-inner img {
+        height: 250px;
+    }
+
+    .popularity-section, .car-types-section, .popular-brands-section {
+        padding: 20px;
+    }
+
+    .popularity-section h2, .car-types-section h2, .popular-brands-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .car-types-section h4, .popular-brands-section h4 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand img {
+        height: 60px;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1rem;
+        margin: 5px 0;
+    }
+
+    .filter-section .row > div {
+        margin-bottom: 15px;
+    }
+
+    .filter-section .form-control, .filter-section .form-select {
+        font-size: 0.9rem;
+    }
 }

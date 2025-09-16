@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="<%- lang %>">
+<html lang="lo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%- lang === 'th' ? 'ซื้อ-ขายรถมือสอง' : 'Used Car Sales' %></title>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="description" content="ຊື້-ຂາຍລົດມືສອງຄຸນນະພາບທົ່ວປະເທດລາວ">
+    <title>ຊື້-ຂາຍລົດມືສອງ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -13,45 +14,121 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
-                <%- lang === 'th' ? 'รถมือสองคุณภาพ' : 'Quality Used Cars' %>
+                ລົດມືສອງຄຸນນະພາບ
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/"><%- lang === 'th' ? 'หน้าหลัก' : 'Home' %></a>
-                    <a class="nav-link" href="/sell-car"><%- lang === 'th' ? 'เสนอขายรถ' : 'Sell Your Car' %></a>
-                    <a class="nav-link" href="/contact"><%- lang === 'th' ? 'ติดต่อ' : 'Contact' %></a>
-                    <a class="nav-link" href="?lang=<%- lang === 'th' ? 'en' : 'th' %>"><%- lang === 'th' ? 'English' : 'ไทย' %></a>
-                    <a class="nav-link" href="/admin/login"><%- lang === 'th' ? 'แอดมิน' : 'Admin' %></a>
+                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
+                    <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ</a>
+                    <a class="nav-link" href="/contact">ຕິດຕໍ່</a>
+                    <a class="nav-link" href="/admin/login">ແອດມິນ</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="hero-section text-center">
-        <h1><%- lang === 'th' ? 'ซื้อ-ขายรถมือสองทั่วประเทศไทย' : 'Buy & Sell Used Cars Nationwide' %></h1>
-        <p class="lead"><%- lang === 'th' ? 'รถทุกคันผ่านการตรวจสอบคุณภาพ' : 'Every car is quality checked' %></p>
+        <h1>ຊື້-ຂາຍລົດມືສອງທົ່ວປະເທດລາວ</h1>
+        <p class="lead">ລົດທຸກຄັນຜ່ານການກວດສອບຄຸນນະພາບ</p>
         <div class="mt-3">
-            <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="btn btn-gold"><%- lang === 'th' ? 'ติดตามเราบน TikTok' : 'Follow us on TikTok' %></a>
-            <a href="https://play.google.com/store" target="_blank" class="btn btn-outline-gold"><%- lang === 'th' ? 'ดาวน์โหลดแอป' : 'Download App' %></a>
+            <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="btn btn-gold">ຕິດຕາມພວກເຮົາຢູ່ TikTok</a>
+            <a href="https://play.google.com/store" target="_blank" class="btn btn-outline-gold">ດາວໂຫຼດແອັບ</a>
         </div>
     </div>
 
     <div class="container mt-4">
+        <!-- Popularity Section -->
+        <div class="popularity-section bg-dark text-light p-4 rounded">
+            <h2>ຄວາມນິຍົມຂອງຕະຫຼາດລົດມືສອງໃນລາວ</h2>
+            <p>ໃນສະພາບປະຈຸບັນ, ສະພາບເສດຖະກິດມີການຜັນແປຢ່າງຫຼວງຫຼາຍ, ພ້ອມດ້ວຍແນວໂນ້ມການປ່ຽນແປງຂອງສັງຄົມໂລກທີ່ສົ່ງຜົນກະທົບຕໍ່ປະຊາຊົນຢ່າງຈະແຈ້ງ. ແຕ່ໃນຂະນະດຽວກັນ, ຕະຫຼາດລົດມືສອງກັບໄດ້ຮັບຄວາມນິຍົມເພີ່ມຂຶ້ນຢ່າງຫຼວງຫຼາຍ. ປະຊາຊົນໃນສັງຄົມເລີ່ມຫັນມາຊື້ລົດມືສອງລາຄາຖືກ, ບໍ່ວ່າຈະເປັນນັກສຶກສາ, ຜູ້ທີ່ພຽງຮຽນຈົບໃໝ່, ພະນັກງານຫ້ອງການ, ແລະອື່ນໆ. ການຊື້ລົດມືສອງສະພາບດີມີຂໍ້ດີຫຼາຍປະການ, ທຳອິດຄືສາມາດເປັນເຈົ້າຂອງລົດໄດ້ໃນລາຄາທີ່ຖືກກວ່າ ແລະງ່າຍກວ່າລົດໃໝ່, ພ້ອມມີທາງເລືອກຫຼາຍຮຸ່ນ, ສີ, ແລະຍີ່ຫໍ້ຍອດນິຍົມ.</p>
+            <p>ການຊື້-ຂາຍລົດມືສອງເໝາະສົມກັບຜູ້ທີ່ມີງົບປະມານຈຳກັດ, ຜູ້ທີ່ຕ້ອງການຊື້ລົດຄັນທີສອງ, ຫຼືຜູ້ທີ່ມັກສະສົມລົດເກົ່າສະພາບດີ. ນອກຈາກນີ້, ຜູ້ຂັບຂີ່ລົດຂົນສົ່ງ ຫຼືຜູ້ຂັບລົດຮັບຈ້າງກໍ່ເລືອກໃຊ້ລົດເກົງມືສອງເພື່ອປະຫຍັດງົບປະມານ ແລະຄຸ້ມຄ່າ. ຄວາມນິຍົມອີກຢ່າງຂອງຕະຫຼາດລົດມືສອງຄືການຂາຍລົດມືສອງໂດຍເຈົ້າຂອງຂາຍເອງ, ຫຼັງຈາກໃຊ້ລົດມາໄລຍະໜຶ່ງຫາ ສອງປີ ແລະຕ້ອງການຂາຍຕໍ່ເພື່ອຊື້ລົດໃໝ່, ຫຼືມີລົດຫຼາຍຄັນແລ້ວຕ້ອງການຂາຍອອກ.</p>
+        </div>
+
+        <!-- Car Types Section -->
+        <div class="car-types-section bg-dark text-light p-4 rounded mt-4">
+            <h2>ປະເພດລົດມືສອງ</h2>
+            <p>ກ່ອນຕັດສິນໃຈຊື້ລົດມືສອງ, ຄວນເຂົ້າໃຈປະເພດລົດຕ່າງໆ ເພື່ອໃຫ້ເລືອກຊື້ໄດ້ເໝາະສົມກັບຮູບແບບການໃຊ້ຊີວິດ ແລະຮອງຮັບສະມາຊິກໃນຄອບຄົວໄດ້ພຽງພໍ. ການໃຊ້ລົດໃຫ້ຖືກປະເພດຍັງຊ່ວຍຍືດອາຍຸການໃຊ້ງານຂອງລົດ. ພວກເຮົາຈະແນະນຳປະເພດລົດທີ່ນິຍົມໃນລາວ:</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>1. ລົດເກົງ (Sedan)</h4>
+                    <p>ລົດເກົງ 4 ປະຕູທີ່ກະທັດຮັດ, ມີພື້ນທີ່ເກັບສິນຄ້າ, ແລະພາຍໃນຫ້ອງໂດຍສານກວ້າງຂວາງ. ເໝາະສົມກັບຄອບຄົວນ້ອຍ ຫຼືຜູ້ທີ່ເຮັດວຽກໃນເມືອງ ແລະນອກເມືອງ.</p>
+                    <p><strong>ຕົວຢ່າງ:</strong> Honda City, Honda Civic, Toyota Camry, Mazda 3, BMW 3 Series</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>2. ລົດແຮທຊ໌ແບັກ (Hatchback)</h4>
+                    <p>ລົດ 5 ປະຕູທີ່ກະທັດຮັດ, ເໝາະກັບການໃຊ້ງານປະຈຳວັນ, ມີພື້ນທີ່ເກັບສິນຄ້າໃຫຍ່, ສຳລັບຜູ້ທີ່ມີສິນຄ້າເຢາະ.</p>
+                    <p><strong>ຕົວຢ່າງ:</strong> Honda HR-V, Suzuki Swift, Honda Jazz, Mazda 2</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>3. ລົດກະບະ (Pickup)</h4>
+                    <p>ລົດຂະໜາດໃຫຍ່, ທົນທານ, ປະຫຍັດນ້ຳມັນ, ເໝາະກັບການບັນທຸກສິນຄ້າ, ຂັບໄປສວນ ຫຼືຂຶ້ນເຂົາ.</p>
+                    <p><strong>ຕົວຢ່າງ:</strong> Isuzu D-Max, Toyota Hilux Revo, Nissan Navara, Mitsubishi Triton</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>4. ລົດຄຣອສໂອເວີ (Crossover)</h4>
+                    <p>ລົດທີ່ປະສົມລັກສະນະລະຫວ່າງເກົງ ແລະ SUV, ຍົກສູງ, ຄ່ອງແຄ່ວ, ເໝາະກັບຜູ້ເລີ່ມຕົ້ນ ຫຼືວັຍເຮັດວຽກ.</p>
+                    <p><strong>ຕົວຢ່າງ:</strong> Mazda CX-3, Honda HR-V, Toyota Corolla Cross</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>5. ລົດອະເນກປະສົງ (SUV)</h4>
+                    <p>ລົດ 5 ທີ່ນັ່ງ, ທົນທານ, ຍົກສູງ, ຂັບຂີ່ໄລຍະໄກ ຫຼືແບບອອຟໂຣດໄດ້, ເໝາະກັບສາຍລຸຍ.</p>
+                    <p><strong>ຕົວຢ່າງ:</strong> Honda CR-V, GWM Haval H6, Volvo XC60</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>6. ລົດ PPV</h4>
+                    <p>ລົດ 7 ທີ່ນັ່ງທີ່ດັດແປງຈາກກະບະ, ທົນທານ, ເໝາະກັບຄອບຄົວໃຫຍ່ ແລະສາຍລຸຍ.</p>
+                    <p><strong>ຕົວຢ່າງ:</strong> Nissan Terra, Mitsubishi Pajero, Toyota Fortuner</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>7. ລົດ MPV</h4>
+                    <p>ລົດຄອບຄົວ 6-10 ທີ່ນັ່ງ, ມີພື້ນທີ່ກວ້າງຂວາງ, ເໝາະກັບຄອບຄົວໃຫຍ່ ຫຼືມີຜູ້ສູງອາຍຸ.</p>
+                    <p><strong>ຕົວຢ່າງ:</strong> Mitsubishi Xpander, Kia Carnival, Toyota Alphard, Hyundai Staria</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popular Brands Section -->
+        <div class="popular-brands-section bg-dark text-light p-4 rounded mt-4">
+            <h2>ຍີ່ຫໍ້ລົດຍອດນິຍົມ</h2>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>Toyota</h4>
+                    <p>ຍີ່ຫໍ້ຍອດນິຍົມຈາກຍີ່ປຸ່ນ, ທົນທານ, ປະຫຍັດນ້ຳມັນ, ອາໄຫຼ່ຫາງ່າຍ, ມີສູນບໍລິການທົ່ວປະເທດ.</p>
+                    <p><strong>ຮຸ່ນຍອດນິຍົມ:</strong> Toyota Vios, Toyota Altis, Toyota Fortuner, Toyota Camry</p>
+                </div>
+                <div class="col-md-3">
+                    <h4>Honda</h4>
+                    <p>ປະຫຍັດນ້ຳມັນ, ດີໄຊນ໌ທັນສະໄໝ, ເໝາະກັບທຸກເພດທຸກໄວ, ລາຄາປະຫຍັດ.</p>
+                    <p><strong>ຮຸ່ນຍອດນິຍົມ:</strong> Honda Civic, Honda Jazz, Honda City, Honda CR-V</p>
+                </div>
+                <div class="col-md-3">
+                    <h4>Mazda</h4>
+                    <p>ດີໄຊນ໌ພຣີມຽມ, ສະປອດ, ຂັບຂີ່ມ່ວນຊື່ນ, ເໝາະກັບຄົນຮຸ່ນໃໝ່.</p>
+                    <p><strong>ຮຸ່ນຍອດນິຍົມ:</strong> Mazda 2, Mazda 3, Mazda CX-5</p>
+                </div>
+                <div class="col-md-3">
+                    <h4>Mitsubishi</h4>
+                    <p>ທົນທານ, ເຄື່ອງຈັກດີເຊວປະຫຍັດນ້ຳມັນ, ເໝາະກັບການໃຊ້ງານສົມບຸກສົມບັນ.</p>
+                    <p><strong>ຮຸ່ນຍອດນິຍົມ:</strong> Mitsubishi Triton, Mitsubishi Pajero Sport, Mitsubishi Attrage</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Search and Filter Section -->
-        <div class="filter-section bg-dark text-light p-4 rounded">
+        <div class="filter-section bg-dark text-light p-4 rounded mt-4">
             <div class="row">
                 <div class="col-md-6">
-                    <input type="text" id="searchInput" class="form-control" placeholder="<%- lang === 'th' ? 'ค้นหายี่ห้อหรือรุ่น' : 'Search by brand or model' %>" onkeyup="searchCars()">
+                    <input type="text" id="searchInput" class="form-control" placeholder="ຄົ້ນຫາຍີ່ຫໍ້ ຫຼືລຸ້ນ" onkeyup="searchCars()">
                 </div>
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-3">
-                            <label><%- lang === 'th' ? 'ยี่ห้อ' : 'Brand' %></label>
+                            <label>ຍີ່ຫໍ້</label>
                             <select id="brandFilter" class="form-control" onchange="filterCars()">
-                                <option value=""><%- lang === 'th' ? 'ทั้งหมด' : 'All' %></option>
+                                <option value="">ທັງໝົດ</option>
                                 <option value="Toyota">Toyota</option>
                                 <option value="Honda">Honda</option>
                                 <option value="Mazda">Mazda</option>
@@ -59,17 +136,17 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label><%- lang === 'th' ? 'ราคาสูงสุด' : 'Max Price' %></label>
-                            <input type="number" id="priceFilter" class="form-control" placeholder="<%- lang === 'th' ? 'ราคาสูงสุด' : 'Max Price' %>" onkeyup="filterCars()">
+                            <label>ລາຄາສູງສຸດ</label>
+                            <input type="number" id="priceFilter" class="form-control" placeholder="ລາຄາສູງສຸດ" onkeyup="filterCars()">
                         </div>
                         <div class="col-md-3">
-                            <label><%- lang === 'th' ? 'ปี' : 'Year' %></label>
-                            <input type="number" id="yearFilter" class="form-control" placeholder="<%- lang === 'th' ? 'ปี' : 'Year' %>" onkeyup="filterCars()">
+                            <label>ປີ</label>
+                            <input type="number" id="yearFilter" class="form-control" placeholder="ປີ" onkeyup="filterCars()">
                         </div>
                         <div class="col-md-3">
-                            <label><%- lang === 'th' ? 'จังหวัด' : 'Province' %></label>
+                            <label>ແຂວງ</label>
                             <select id="provinceFilter" class="form-control" onchange="filterByProvince()">
-                                <option value=""><%- lang === 'th' ? 'ทั้งหมด' : 'All' %></option>
+                                <option value="">ທັງໝົດ</option>
                                 <% provinces.forEach(province => { %>
                                     <option value="<%- province %>" <%- selectedProvince === province ? 'selected' : '' %>><%- province %></option>
                                 <% }) %>
@@ -80,11 +157,11 @@
             </div>
             <div class="row mt-3">
                 <div class="col-md-12">
-                    <label><%- lang === 'th' ? 'จัดเรียงตาม' : 'Sort by' %></label>
+                    <label>ຈັດລຽງຕາມ</label>
                     <select id="priceSort" class="form-control w-25 d-inline-block" onchange="sortCars()">
-                        <option value="default" <%- typeof sort !== 'undefined' && sort === 'default' ? 'selected' : '' %>><%- lang === 'th' ? 'วันที่' : 'Date' %></option>
-                        <option value="price_asc" <%- typeof sort !== 'undefined' && sort === 'price_asc' ? 'selected' : '' %>><%- lang === 'th' ? 'ราคาต่ำไปสูง' : 'Price: Low to High' %></option>
-                        <option value="price_desc" <%- typeof sort !== 'undefined' && sort === 'price_desc' ? 'selected' : '' %>><%- lang === 'th' ? 'ราคาสูงไปต่ำ' : 'Price: High to Low' %></option>
+                        <option value="default" <%- typeof sort !== 'undefined' && sort === 'default' ? 'selected' : '' %>>ວັນທີ</option>
+                        <option value="price_asc" <%- typeof sort !== 'undefined' && sort === 'price_asc' ? 'selected' : '' %>>ລາຄາຕ່ຳໄປສູງ</option>
+                        <option value="price_desc" <%- typeof sort !== 'undefined' && sort === 'price_desc' ? 'selected' : '' %>>ລາຄາສູງໄປຕ່ຳ</option>
                     </select>
                 </div>
             </div>
@@ -92,7 +169,7 @@
 
         <!-- Featured Cars Section -->
         <div class="featured-cars mt-4">
-            <h3><%- lang === 'th' ? 'รถแนะนำ' : 'Featured Cars' %></h3>
+            <h3>ລົດແນະນຳ</h3>
             <div class="row" id="carList">
                 <% cars.forEach(car => { %>
                     <div class="col-md-4 mb-4">
@@ -104,27 +181,27 @@
                             <% } %>
                             <div class="card-body">
                                 <h5 class="card-title"><%- car.brand %> <%- car.model %> <%- car.year %></h5>
-                                <p class="card-text"><%- lang === 'th' ? 'ราคา' : 'Price' %>: <%- car.price.toLocaleString() %> บาท</p>
-                                <p class="card-text"><%- lang === 'th' ? 'จังหวัด' : 'Province' %>: <%- car.province %></p>
-                                <p class="card-text"><%- lang === 'th' ? 'เกียร์' : 'Transmission' %>: <%- car.transmission %></p>
+                                <p class="card-text">ລາຄາ: <%- car.price.toLocaleString() %> ກີບ</p>
+                                <p class="card-text">ແຂວງ: <%- car.province %></p>
+                                <p class="card-text">ເກຍ: <%- car.transmission === 'Automatic' ? 'ອັດຕະໂນມັດ' : 'ຄູ່ມື' %></p>
                                 <% if (car.mileage) { %>
-                                    <p class="card-text"><%- lang === 'th' ? 'ไมล์' : 'Mileage' %>: <%- car.mileage.toLocaleString() %> กม.</p>
+                                    <p class="card-text">ໄມລ໌: <%- car.mileage.toLocaleString() %> ກິໂລແມັດ</p>
                                 <% } %>
                                 <div class="quality-badges">
                                     <% if (car.inspected && car.inspected.noFlood) { %>
-                                        <span class="badge bg-success"><%- lang === 'th' ? 'ไม่เคยจมน้ำ' : 'No Flood' %></span>
+                                        <span class="badge bg-success">ບໍ່ເຄີຍຖືກນໍ້າຖ້ວມ</span>
                                     <% } %>
                                     <% if (car.inspected && car.inspected.noMajorAccident) { %>
-                                        <span class="badge bg-success"><%- lang === 'th' ? 'ไม่เคยชนหนัก' : 'No Major Accident' %></span>
+                                        <span class="badge bg-success">ບໍ່ເຄີຍປະສົບອຸປະຕິເຫດໜັກ</span>
                                     <% } %>
                                     <% if (car.inspected && car.inspected.noFire) { %>
-                                        <span class="badge bg-success"><%- lang === 'th' ? 'ไม่เคยไฟไหม้' : 'No Fire' %></span>
+                                        <span class="badge bg-success">ບໍ່ເຄີຍໄຟໄໝ້</span>
                                     <% } %>
                                     <% if (car.isPremium) { %>
-                                        <span class="badge bg-gold text-dark"><%- lang === 'th' ? 'พรีเมียม' : 'Premium' %></span>
+                                        <span class="badge bg-gold text-dark">ພຣີມຽມ</span>
                                     <% } %>
                                 </div>
-                                <a href="/car/<%- car._id %>" class="btn btn-gold mt-2"><%- lang === 'th' ? 'ดูรายละเอียด' : 'View Details' %></a>
+                                <a href="/car/<%- car._id %>" class="btn btn-gold mt-2">ເບິ່ງລາຍລະອຽດ</a>
                             </div>
                         </div>
                     </div>
@@ -138,44 +215,44 @@
                 <ul class="pagination justify-content-center">
                     <% if (currentPage > 1) { %>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<%= currentPage - 1 %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>&lang=<%- lang %>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo; <%- lang === 'th' ? 'ก่อนหน้า' : 'Previous' %></span>
+                            <a class="page-link" href="/?page=<%= currentPage - 1 %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo; ກ່ອນໜ້າ</span>
                             </a>
                         </li>
                     <% } %>
                     <% for(let i = 1; i <= totalPages; i++) { %>
                         <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                            <a class="page-link" href="/?page=<%= i %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>&lang=<%- lang %>"><%= i %></a>
+                            <a class="page-link" href="/?page=<%= i %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>"><%= i %></a>
                         </li>
                     <% } %>
                     <% if (currentPage < totalPages) { %>
                         <li class="page-item">
-                            <a class="page-link" href="/?page=<%= currentPage + 1 %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>&lang=<%- lang %>" aria-label="Next">
-                                <span aria-hidden="true"><%- lang === 'th' ? 'ถัดไป' : 'Next' %> &raquo;</span>
+                            <a class="page-link" href="/?page=<%= currentPage + 1 %>&province=<%= selectedProvince || '' %>&sort=<%= typeof sort !== 'undefined' ? sort : 'default' %>" aria-label="Next">
+                                <span aria-hidden="true">ຕໍ່ໄປ &raquo;</span>
                             </a>
                         </li>
                     <% } %>
                 </ul>
             </nav>
         <% } else { %>
-            <p class="text-center alert alert-warning"><%- lang === 'th' ? 'ไม่มีรถที่พร้อมใช้งาน' : 'No cars available' %></p>
+            <p class="text-center alert alert-warning">ບໍ່ມີລົດທີ່ພ້ອມໃຊ້</p>
         <% } %>
     </div>
 
     <footer class="footer text-center bg-dark text-gold">
         <div class="container">
-            <p><%- lang === 'th' ? 'ที่อยู่: กรุงเทพมหานคร, ประเทศไทย' : 'Address: Bangkok, Thailand' %></p>
-            <p><%- lang === 'th' ? 'โทร: +66 2 123 4567' : 'Phone: +66 2 123 4567' %></p>
-            <p><%- lang === 'th' ? 'อีเมล: contact@yourcarwebsite.com' : 'Email: contact@yourcarwebsite.com' %></p>
-            <p><%- lang === 'th' ? 'ติดตามเรา:' : 'Follow us:' %>
+            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
+            <p>ໂທ: +856 20 1234 5678</p>
+            <p>ອີເມວ: contact@yourcarwebsite.com</p>
+            <p>ຕິດຕາມພວກເຮົາ:
                 <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
                 <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
             </p>
-            <p><%- lang === 'th' ? 'ดาวน์โหลดแอป:' : 'Download App:' %>
+            <p>ດາວໂຫຼດແອັບ:
                 <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
                 <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
             </p>
-            <p>© 2025 Used Car Sales. <%- lang === 'th' ? 'สงวนลิขสิทธิ์' : 'All rights reserved' %>.</p>
+            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
         </div>
     </footer>
 
@@ -217,13 +294,13 @@
         function filterByProvince() {
             const province = document.getElementById('provinceFilter').value;
             const sort = document.getElementById('priceSort').value;
-            window.location.href = `/?province=${encodeURIComponent(province)}&page=1&sort=${sort}&lang=<%- lang %>`;
+            window.location.href = `/?province=${encodeURIComponent(province)}&page=1&sort=${sort}`;
         }
 
         function sortCars() {
             const province = document.getElementById('provinceFilter').value;
             const sort = document.getElementById('priceSort').value;
-            window.location.href = `/?province=${encodeURIComponent(province)}&page=1&sort=${sort}&lang=<%- lang %>`;
+            window.location.href = `/?province=${encodeURIComponent(province)}&page=1&sort=${sort}`;
         }
     </script>
 </body>
