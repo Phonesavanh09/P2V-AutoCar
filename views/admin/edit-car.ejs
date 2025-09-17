@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ແກ້ໄຂລົດມືສອງ">
     <title>ແກ້ໄຂລົດ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -11,12 +12,21 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/admin/dashboard">ແຜງຄວບຄຸມ</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/admin/manage-car">ຈັດການລົດ</a>
-                <a class="nav-link" href="/admin/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ</a>
-                <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
-                <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?');">ອອກຈາກລະບົບ</a>
+            <a class="navbar-brand" href="/admin/dashboard">
+                <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                ແຜງຄວບຄຸມແອດມິນ
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/admin/manage-car">ຈັດການລົດ</a>
+                    <a class="nav-link" href="/admin/add-car">ເພີ່ມລົດໃໝ່</a>
+                    <a class="nav-link" href="/admin/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ</a>
+                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
+                    <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?');">ອອກຈາກລະບົບ</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -34,9 +44,17 @@
                     </div>
                 <% } %>
                 <form action="/admin/edit-car/<%- car._id %>" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="existingImages" value="<%- JSON.stringify(car.images) %>">
                     <div class="mb-3">
                         <label class="form-label">ຍີ່ຫໍ້</label>
-                        <input type="text" name="brand" class="form-control" value="<%- car.brand %>" required>
+                        <select name="brand" class="form-control" required>
+                            <option value="Toyota" <%- car.brand === 'Toyota' ? 'selected' : '' %>>Toyota</option>
+                            <option value="Honda" <%- car.brand === 'Honda' ? 'selected' : '' %>>Honda</option>
+                            <option value="Mazda" <%- car.brand === 'Mazda' ? 'selected' : '' %>>Mazda</option>
+                            <option value="Mitsubishi" <%- car.brand === 'Mitsubishi' ? 'selected' : '' %>>Mitsubishi</option>
+                            <option value="Isuzu" <%- car.brand === 'Isuzu' ? 'selected' : '' %>>Isuzu</option>
+                            <option value="Nissan" <%- car.brand === 'Nissan' ? 'selected' : '' %>>Nissan</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ລຸ້ນ</label>
@@ -56,11 +74,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ປີ</label>
-                        <input type="number" name="year" class="form-control" value="<%- car.year %>" required>
+                        <input type="number" name="year" class="form-control" value="<%- car.year %>" required min="1900" max="<%- new Date().getFullYear() %>">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ລາຄາ</label>
-                        <input type="number" name="price" class="form-control" value="<%- car.price %>" required>
+                        <input type="number" name="price" class="form-control" value="<%- car.price %>" required min="0">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ເກຍ</label>
@@ -71,15 +89,16 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ໄມລ໌</label>
-                        <input type="number" name="mileage" class="form-control" value="<%- car.mileage || '' %>" placeholder="ກິໂລແມັດ">
+                        <input type="number" name="mileage" class="form-control" value="<%- car.mileage || '' %>" placeholder="ກິໂລແມັດ" min="0">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ລາຍລະອຽດ</label>
-                        <textarea name="description" class="form-control" rows="4"><%- car.description || '' %></textarea>
+                        <textarea name="description" class="form-control" rows="4" placeholder="ລາຍລະອຽດລົດ"><%- car.description || '' %></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ແຂວງ</label>
                         <select name="province" class="form-control" required>
+                            <option value="">ເລືອກແຂວງ</option>
                             <% provinces.forEach(province => { %>
                                 <option value="<%- province %>" <%- car.province === province ? 'selected' : '' %>><%- province %></option>
                             <% }) %>
@@ -87,20 +106,21 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ຮູບພາບປັດຈຸບັນ</label>
-                        <div>
+                        <div class="row">
                             <% car.images.forEach((image, index) => { %>
-                                <img src="<%- image %>" alt="Car Image" style="width: 100px; margin-right: 10px;">
+                                <div class="col-md-3 mb-2">
+                                    <img src="<%- image %>" class="img-thumbnail" alt="Image <%- index %>">
+                                </div>
                             <% }) %>
                         </div>
-                        <input type="hidden" name="existingImages" value="<%- JSON.stringify(car.images) %>">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">ອັບໂຫຼດຮູບພາບໃໝ່ (ສູງສຸດ 10 ຮູບ)</label>
-                        <input type="file" name="images" class="form-control" multiple>
+                        <label class="form-label">ເພີ່ມຮູບພາບໃໝ່ (ສູງສຸດ 10 ຮູບ)</label>
+                        <input type="file" name="images" class="form-control" multiple accept="image/*">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ເລືອກຮູບປົກ</label>
-                        <input type="number" name="coverImageIndex" class="form-control" min="0" max="9" value="<%- car.coverImage ? car.images.indexOf(car.coverImage) : 0 %>">
+                        <input type="number" name="coverImageIndex" class="form-control" value="<%- car.images.indexOf(car.coverImage) >= 0 ? car.images.indexOf(car.coverImage) : 0 %>" min="0" max="9" placeholder="ດັດສະນີຮູບ (0-9)">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ສະຖານະການກວດສອບ</label>
@@ -123,12 +143,31 @@
                             <label class="form-check-label" for="isPremium">ພຣີມຽມ</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-gold">ບັນທຶກ</button>
-                    <a href="/admin/manage-car" class="btn btn-outline-gold">ກັບຄືນ</a>
+                    <div class="mb-3 d-flex gap-3">
+                        <button type="submit" class="btn btn-gold">ບັນທຶກ</button>
+                        <a href="/admin/manage-car" class="btn btn-outline-gold">ກັບຄືນ</a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <footer class="footer text-center bg-dark text-gold">
+        <div class="container">
+            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
+            <p>ໂທ: +856 20 1234 5678</p>
+            <p>ອີເມວ: contact@yourcarwebsite.com</p>
+            <p>ຕິດຕາມພວກເຮົາ:
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
+                <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
+            </p>
+            <p>ດາວໂຫຼດແອັບ:
+                <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
+                <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
+            </p>
+            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ສະເໜີຂາຍລົດມືສອງທີ່ຄຸນນະພາບ">
+    <meta name="description" content="ສະເໜີຂາຍລົດມືສອງຂອງທ່ານ">
     <title>ສະເໜີຂາຍລົດ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -23,7 +23,6 @@
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
                     <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ</a>
-                    <a class="nav-link" href="/contact">ຕິດຕໍ່</a>
                     <a class="nav-link" href="/admin/login">ແອດມິນ</a>
                 </div>
             </div>
@@ -48,14 +47,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <% } %>
-                <form action="/sell-car" method="post" enctype="multipart/form-data">
+                <form action="/sell-car" method="post" enctype="multipart/form-data" id="sellCarForm">
                     <div class="mb-3">
                         <label class="form-label">ຊື່ຜູ້ຂາຍ</label>
                         <input type="text" name="sellerName" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">ເບີໂທ</label>
-                        <input type="text" name="phone" class="form-control" required>
+                        <label class="form-label">ເບີໂທຕິດຕໍ່</label>
+                        <input type="tel" name="phone" class="form-control" required pattern="\+?[0-9]{8,12}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ຍີ່ຫໍ້</label>
@@ -88,11 +87,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ປີ</label>
-                        <input type="number" name="year" class="form-control" required>
+                        <input type="number" name="year" class="form-control" required min="1900" max="<%- new Date().getFullYear() %>">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ລາຄາ</label>
-                        <input type="number" name="price" class="form-control" required>
+                        <input type="number" name="price" class="form-control" required min="0">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ເກຍ</label>
@@ -103,7 +102,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ໄມລ໌</label>
-                        <input type="number" name="mileage" class="form-control" placeholder="ກິໂລແມັດ">
+                        <input type="number" name="mileage" class="form-control" placeholder="ກິໂລແມັດ" min="0">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ລາຍລະອຽດ</label>
@@ -112,6 +111,7 @@
                     <div class="mb-3">
                         <label class="form-label">ແຂວງ</label>
                         <select name="province" class="form-control" required>
+                            <option value="">ເລືອກແຂວງ</option>
                             <% provinces.forEach(province => { %>
                                 <option value="<%- province %>"><%- province %></option>
                             <% }) %>
@@ -119,29 +119,12 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ຮູບພາບ (ສູງສຸດ 10 ຮູບ)</label>
-                        <input type="file" name="images" class="form-control" multiple>
+                        <input type="file" name="images" class="form-control" multiple accept="image/*">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">ເລືອກຮູບປົກ</label>
-                        <input type="number" name="coverImageIndex" class="form-control" min="0" max="9" placeholder="ດັດສະນີຮູບ (0-9)">
+                    <div class="mb-3 d-flex gap-3">
+                        <button type="submit" class="btn btn-gold w-100 w-md-auto">ສົ່ງຄຳຂໍຂາຍ</button>
+                        <a href="/" class="btn btn-outline-gold w-100 w-md-auto">ກັບຄືນ</a>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">ສະຖານະການກວດສອບ</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="noFlood" id="noFlood" checked>
-                            <label class="form-check-label" for="noFlood">ບໍ່ເຄີຍຖືກນໍ້າຖ້ວມ</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="noMajorAccident" id="noMajorAccident" checked>
-                            <label class="form-check-label" for="noMajorAccident">ບໍ່ເຄີຍປະສົບອຸປະຕິເຫດໜັກ</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="noFire" id="noFire" checked>
-                            <label class="form-check-label" for="noFire">ບໍ່ເຄີຍໄຟໄໝ້</label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-gold">ສົ່ງຄຳຂໍຂາຍ</button>
-                    <a href="/" class="btn btn-outline-gold">ກັບຄືນ</a>
                 </form>
             </div>
         </div>
@@ -165,5 +148,15 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sellCarForm').addEventListener('submit', function(event) {
+            const phoneInput = document.querySelector('input[name="phone"]');
+            const phonePattern = /^\+?[0-9]{8,12}$/;
+            if (!phonePattern.test(phoneInput.value)) {
+                event.preventDefault();
+                alert('ກະລຸນາປ້ອນເບີໂທທີ່ຖືກຕ້ອງ (8-12 ໂຕເລກ)');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,116 +1,100 @@
 <!DOCTYPE html>
-<html lang="<%- typeof lang !== 'undefined' ? lang : 'en' %>">
+<html lang="lo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= typeof lang !== 'undefined' && lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></title>
-    <link href="https://fonts.googleapis.com/css2?family=Phetsarath&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <title>ຈັດການລົດ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .lao-text { font-family: 'Phetsarath', sans-serif; }
-        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .car-image { max-width: 100px; height: auto; }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/admin/dashboard"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ແຜງຄວບຄຸມ' : 'Admin Dashboard' %></a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link active" href="/admin/manage-car"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></a>
-                <a class="nav-link" href="/admin/add-car"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ເພີ່ມລົດ' : 'Add Car' %></a>
-                <a class="nav-link" href="/"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ໜ້າຫຼັງ' : 'Home' %></a>
-                <a class="nav-link lao-text" href="?lang=<%- typeof lang !== 'undefined' && lang === 'la' ? 'en' : 'la' %>"><%- typeof lang !== 'undefined' && lang === 'la' ? 'English' : 'ລາວ' %></a>
-                <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm(`<%- typeof lang !== 'undefined' && lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?' : 'Are you sure you want to logout?' %>`);"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ອອກຈາກລະບົບ' : 'Logout' %></a>
+            <a class="navbar-brand" href="/admin/dashboard">
+                <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                ແຜງຄວບຄຸມແອດມິນ
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/admin/manage-car">ຈັດການລົດ</a>
+                    <a class="nav-link" href="/admin/add-car">ເພີ່ມລົດໃໝ່</a>
+                    <a class="nav-link" href="/admin/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ</a>
+                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
+                    <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?');">ອອກຈາກລະບົບ</a>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h2 class="lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ຈັດການລົດ' : 'Manage Cars' %></h2>
+        <div class="card bg-dark text-light">
+            <div class="card-header bg-gold text-dark">
+                <h2>ຈັດການລົດ</h2>
             </div>
             <div class="card-body">
-                <% if (typeof error !== 'undefined' && error) { %>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <%- error %>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <% } %>
-                <% if (typeof success !== 'undefined' && success) { %>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <%- success %>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <% } %>
-                <div class="mb-3">
-                    <label class="lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ຕິດຕໍ່' : 'Filter by Province' %>:</label>
-                    <select id="provinceFilter" class="form-control w-25 d-inline-block" onchange="filterCars()">
-                        <option value="" <%- (typeof province !== 'undefined' && province === '') || typeof province === 'undefined' ? 'selected' : '' %>><%- typeof lang !== 'undefined' && lang === 'la' ? 'ທັງໝົດ' : 'All' %></option>
-                        <% if (typeof provinces !== 'undefined' && Array.isArray(provinces)) { %>
-                            <% provinces.forEach(province => { %>
-                                <option value="<%- province %>"><%- province %></option>
+                <a href="/admin/add-car" class="btn btn-gold mb-3 w-100 w-md-auto">ເພີ່ມລົດໃໝ່</a>
+                <table class="table table-striped bg-dark text-light">
+                    <thead>
+                        <tr>
+                            <th>ຍີ່ຫໍ້</th>
+                            <th>ລຸ້ນ</th>
+                            <th>ປະເພດ</th>
+                            <th>ປີ</th>
+                            <th>ລາຄາ</th>
+                            <th>ແຂວງ</th>
+                            <th>ການກະທຳ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (cars.length === 0) { %>
+                            <tr>
+                                <td colspan="7" class="text-center">ບໍ່ມີລົດໃນລະບົບ.</td>
+                            </tr>
+                        <% } else { %>
+                            <% cars.forEach(car => { %>
+                                <tr>
+                                    <td><%- car.brand %></td>
+                                    <td><%- car.model %></td>
+                                    <td><%- car.carType %></td>
+                                    <td><%- car.year %></td>
+                                    <td><%- car.price.toLocaleString() %> ກີບ</td>
+                                    <td><%- car.province %></td>
+                                    <td>
+                                        <a href="/admin/edit-car/<%- car._id %>" class="btn btn-gold btn-sm">ແກ້ໄຂ</a>
+                                        <form action="/admin/delete-car/<%- car._id %>" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະລົບລົດນີ້?');">ລົບ</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             <% }) %>
                         <% } %>
-                    </select>
-                    <label class="lao-text ms-3"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ຈັດລຳດັບຕາມລາຄາ' : 'Sort by Price' %>:</label>
-                    <select id="priceSort" class="form-control w-25 d-inline-block" onchange="sortCars()">
-                        <option value="default" <%- typeof sort !== 'undefined' && sort === 'default' ? 'selected' : '' %>><%- typeof lang !== 'undefined' && lang === 'la' ? 'ເລີຍຕາມວັນທີ່' : 'By Date' %></option>
-                        <option value="price_asc" <%- typeof sort !== 'undefined' && sort === 'price_asc' ? 'selected' : '' %>><%- typeof lang !== 'undefined' && lang === 'la' ? 'ຈາກຖືກໄປແພງ' : 'Low to High' %></option>
-                        <option value="price_desc" <%- typeof sort !== 'undefined' && sort === 'price_desc' ? 'selected' : '' %>><%- typeof lang !== 'undefined' && lang === 'la' ? 'ຈາກແພງໄປຖືກ' : 'High to Low' %></option>
-                    </select>
-                </div>
-                <% if (cars.length > 0) { %>
-                    <div id="carList">
-                        <% cars.forEach(car => { %>
-                            <div class="card mb-3">
-                                <div class="card-body row">
-                                    <div class="col-md-2">
-                                        <% if (car.coverImage || (car.images && car.images.length > 0)) { %>
-                                            <img src="<%- car.coverImage || car.images[0] %>" alt="Car Image" class="car-image">
-                                        <% } else { %>
-                                            <img src="/images/placeholder.jpg" alt="Placeholder" class="car-image">
-                                        <% } %>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <h5 class="card-title lao-text"><%- car.brand %> <%- car.model %></h5>
-                                        <p class="card-text lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ປີ' : 'Year' %>: <%- car.year %></p>
-                                        <p class="card-text lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ລາຄາ' : 'Price' %>: <%- car.price.toLocaleString() %> LAK</p>
-                                        <p class="card-text lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ຈຸງຮ້ອງ' : 'Province' %>: <%- car.province %></p>
-                                        <p class="card-text lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ວັນທີ່ໂພສ' : 'Posted Date' %>: <%- new Date(car.postedDate).toLocaleDateString() %></p>
-                                        <p class="card-text lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ສະຖານະ' : 'Status' %>: <%- car.status === 'available' ? (typeof lang !== 'undefined' && lang === 'la' ? 'ມີສິນຄ້າ' : 'Available') : (typeof lang !== 'undefined' && lang === 'la' ? 'ຂາຍແລ້ວ' : 'Sold') %></p>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <a href="/admin/edit-car/<%- car._id %>" class="btn btn-warning btn-sm lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ແກ້ໄຂ' : 'Edit' %></a>
-                                        <a href="/admin/delete-car/<%- car._id %>" class="btn btn-danger btn-sm ms-2 lao-text" onclick="return confirm(`<%- typeof lang !== 'undefined' && lang === 'la' ? 'ທ່ານແນ່ໃຈບໍ່ທີ່ຈະລົບ?' : 'Are you sure you want to delete?' %>`);"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ລົບ' : 'Delete' %></a>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }) %>
-                    </div>
-                <% } else { %>
-                    <p class="text-center alert alert-warning lao-text"><%- lang === 'la' ? 'ບໍ່ມີລົດ' : 'No cars' %></p>
-                <% } %>
-                <a href="/admin/dashboard" class="btn btn-secondary mt-3 lao-text"><%- typeof lang !== 'undefined' && lang === 'la' ? 'ກັບຄືນ' : 'Back' %></a>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function filterCars() {
-            let province = document.getElementById("provinceFilter").value;
-            let sort = document.getElementById("priceSort").value;
-            window.location.href = `/admin/manage-car?province=${province}&sort=${sort}`;
-        }
+    <footer class="footer text-center bg-dark text-gold">
+        <div class="container">
+            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
+            <p>ໂທ: +856 20 1234 5678</p>
+            <p>ອີເມວ: contact@yourcarwebsite.com</p>
+            <p>ຕິດຕາມພວກເຮົາ:
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
+                <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
+            </p>
+            <p>ດາວໂຫຼດແອັບ:
+                <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
+                <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
+            </p>
+            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+        </div>
+    </footer>
 
-        function sortCars() {
-            let province = document.getElementById("provinceFilter").value;
-            let sort = document.getElementById("priceSort").value;
-            window.location.href = `/admin/manage-car?province=${province}&sort=${sort}`;
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

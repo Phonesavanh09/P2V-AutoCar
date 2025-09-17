@@ -1,43 +1,60 @@
 /* ตั้งค่าพื้นฐาน */
 body {
     font-family: 'Noto Sans Lao', sans-serif;
-    background-color: #1C2526; /* ดำ */
-    color: #F2C94C; /* ทองอ่อน */
+    background-color: #1C2526;
+    color: #F2C94C;
     margin: 0;
     padding: 0;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #D4A017;
+}
+
+p, label, .form-control, .form-select, .nav-link {
+    font-weight: 400;
+    letter-spacing: 0.5px;
 }
 
 /* สีและพื้นหลัง */
 .bg-dark {
-    background-color: #1C2526 !important; /* ดำ */
+    background-color: #1C2526 !important;
 }
 
 .bg-gold {
-    background-color: #D4A017 !important; /* ทอง */
+    background-color: #D4A017 !important;
 }
 
 .text-gold {
-    color: #F2C94C !important; /* ทองอ่อน */
+    color: #F2C94C !important;
 }
 
 .text-dark {
-    color: #1C2526 !important; /* ดำ */
+    color: #1C2526 !important;
 }
 
 .btn-gold {
-    background-color: #D4A017; /* ทอง */
-    color: #1C2526; /* ดำ */
+    background-color: #D4A017;
+    color: #1C2526;
     border: none;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 200px;
+    border-radius: 5px;
     transition: background-color 0.3s;
 }
 
 .btn-gold:hover {
-    background-color: #F2C94C; /* ทองอ่อน */
+    background-color: #F2C94C;
     color: #1C2526;
 }
 
 .btn-outline-gold {
-    border-color: #D4A017; /* ทอง */
+    border-color: #D4A017;
     color: #D4A017;
 }
 
@@ -54,7 +71,6 @@ body {
 
 .navbar-dark .navbar-brand {
     color: #F2C94C;
-    font-weight: 600;
     font-size: 1.5rem;
 }
 
@@ -82,7 +98,6 @@ body {
 
 .hero-section h1 {
     font-size: 2.5rem;
-    font-weight: 600;
     margin-bottom: 20px;
 }
 
@@ -91,42 +106,33 @@ body {
     margin-bottom: 30px;
 }
 
-.hero-section .btn {
-    font-size: 1.1rem;
-    padding: 10px 20px;
-    margin: 0 10px;
-}
-
 /* ส่วนความนิยมและประเภทรถ */
-.popularity-section, .car-types-section, .popular-brands-section {
-    background-color: #2A3435; /* ดำจาง */
+.car-types-section {
+    background-color: #2A3435;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-top: 40px;
 }
 
-.popularity-section h2, .car-types-section h2, .popular-brands-section h2 {
+.car-types-section h2 {
     font-size: 2rem;
     color: #D4A017;
     margin-bottom: 20px;
 }
 
-.car-types-section .row > div, .popular-brands-section .row > div {
-    margin-bottom: 20px;
-}
-
-.car-types-section h4, .popular-brands-section h4 {
+.car-types-section h4 {
     color: #F2C94C;
     font-size: 1.5rem;
 }
 
 /* การ์ดรถ */
 .car-card {
-    border: 1px solid #3C4F50; /* เทาเข้ม */
+    border: 1px solid #3C4F50;
     border-radius: 10px;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    background-color: #2A3435; /* ดำจาง */
+    background-color: #2A3435;
 }
 
 .car-card:hover {
@@ -221,6 +227,7 @@ body {
     background-color: #3C4F50;
     color: #F2C94C;
     border: 1px solid #D4A017;
+    font-size: 1rem;
 }
 
 .form-control:focus, .form-select:focus {
@@ -241,12 +248,9 @@ body {
     border-top: 2px solid #D4A017;
 }
 
-.footer p {
+.footer p, .footer a {
     margin: 5px 0;
     font-size: 1rem;
-}
-
-.footer a {
     color: #F2C94C;
     text-decoration: none;
 }
@@ -255,7 +259,7 @@ body {
     color: #D4A017;
 }
 
-/* Carousel ในหน้ารายละเอียดรถ */
+/* Carousel */
 .carousel-inner img {
     height: 400px;
     object-fit: cover;
@@ -271,23 +275,13 @@ body {
     background-color: #D4A017;
 }
 
-/* ตารางในหน้าแอดมิน */
-.table {
+/* โฆษณา */
+.ad-section {
     background-color: #2A3435;
-    color: #F2C94C;
-}
-
-.table th {
-    background-color: #3C4F50;
-    color: #D4A017;
-}
-
-.table td {
-    border: 1px solid #3C4F50;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #2A3435;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 /* Responsive Design */
@@ -312,16 +306,14 @@ body {
         height: 250px;
     }
 
-    .popularity-section, .car-types-section, .popular-brands-section {
-        padding: 20px;
+    .btn-gold {
+        max-width: 100%;
+        padding: 10px;
+        font-size: 1rem;
     }
 
-    .popularity-section h2, .car-types-section h2, .popular-brands-section h2 {
-        font-size: 1.5rem;
-    }
-
-    .car-types-section h4, .popular-brands-section h4 {
-        font-size: 1.2rem;
+    .filter-section .row > div {
+        margin-bottom: 15px;
     }
 }
 
@@ -335,11 +327,7 @@ body {
         margin: 5px 0;
     }
 
-    .filter-section .row > div {
-        margin-bottom: 15px;
-    }
-
-    .filter-section .form-control, .filter-section .form-select {
+    .form-control, .form-select {
         font-size: 0.9rem;
     }
 }
