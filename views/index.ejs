@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ຊື້-ຂາຍລົດມືສອງຄຸນນະພາບສູງ">
+    <meta name="description" content="ຊື້-ຂາຍລົດມືສອງຄຸນນະພາບສູງໃນລາວ">
     <title>ລົດມືສອງຄຸນນະພາບ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
                 ລົດມືສອງຄຸນນະພາບ
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
+                    <a class="nav-link active" href="/">ໜ້າຫຼັກ</a>
                     <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ</a>
                     <a class="nav-link" href="/admin/login">ແອດມິນ</a>
                 </div>
@@ -29,153 +29,129 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <!-- Search Form -->
-        <form action="/" method="get" class="mb-4">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <input type="text" name="search" class="form-control" placeholder="ຄົ້ນຫາຍີ່ຫໍ້ຫຼືລຸ້ນ" value="<%- searchQuery || '' %>">
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1>ຊື້ລົດມືສອງຄຸນນະພາບສູງ</h1>
+            <p class="lead">ຄົ້ນຫາລົດທີ່ດີທີ່ສຸດໃນລາວ ກັບການກວດສອບຄຸນນະພາບ</p>
+            <form action="/" method="get" class="search-form">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <input type="text" name="search" class="form-control" placeholder="ຄົ້ນຫາຍີ່ຫໍ້ ຫຼືລຸ້ນ" value="<%- searchQuery || '' %>">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="carType" class="form-control">
+                            <option value="">ທຸກປະເພດ</option>
+                            <option value="Sedan" <%- carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ</option>
+                            <option value="Hatchback" <%- carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ</option>
+                            <option value="Pickup" <%- carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ</option>
+                            <option value="Crossover" <%- carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ</option>
+                            <option value="SUV" <%- carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
+                            <option value="PPV" <%- carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
+                            <option value="MPV" <%- carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="province" class="form-control">
+                            <option value="">ທຸກແຂວງ</option>
+                            <% provinces.forEach(province => { %>
+                                <option value="<%- province %>" <%- provinceQuery === province ? 'selected' : '' %>><%- province %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">ຄົ້ນຫາ</button>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <select name="carType" class="form-control">
-                        <option value="">ທຸກປະເພດ</option>
-                        <option value="Sedan" <%- carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ (Sedan)</option>
-                        <option value="Hatchback" <%- carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ (Hatchback)</option>
-                        <option value="Pickup" <%- carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ (Pickup)</option>
-                        <option value="Crossover" <%- carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ (Crossover)</option>
-                        <option value="SUV" <%- carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
-                        <option value="PPV" <%- carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
-                        <option value="MPV" <%- carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select name="province" class="form-control">
-                        <option value="">ທຸກແຂວງ</option>
-                        <% provinces.forEach(province => { %>
-                            <option value="<%- province %>" <%- provinceQuery === province ? 'selected' : '' %>><%- province %></option>
-                        <% }) %>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-gold w-100">ຄົ້ນຫາ</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+    </div>
 
-        <!-- Car Listings -->
+    <div class="container mt-4">
+        <h2 class="text-center">ລົດພຣີມຽມ</h2>
         <div class="row">
-            <% if (cars.length === 0) { %>
-                <div class="col-12 text-center">
-                    <p class="text-light">ບໍ່ພົບລົດທີ່ຕົງກັບເງື່ອນໄຂການຄົ້ນຫາ.</p>
-                    <a href="/" class="btn btn-gold">ເບິ່ງລົດທັງໝົດ</a>
-                </div>
-            <% } else { %>
-                <% cars.forEach(car => { %>
+            <% if (premiumCars && premiumCars.length > 0) { %>
+                <% premiumCars.forEach(car => { %>
                     <div class="col-md-4 mb-4">
-                        <div class="card bg-dark text-light">
-                            <img src="<%- car.coverImage || car.images[0] || '/images/placeholder.jpg' %>" class="card-img-top" alt="<%- car.brand %> <%- car.model %>">
+                        <div class="card h-100">
+                            <img src="<%- car.coverImage || '/images/placeholder.jpg' %>" class="card-img-top" alt="<%- car.brand %> <%- car.model %>">
                             <div class="card-body">
                                 <h5 class="card-title"><%- car.brand %> <%- car.model %></h5>
-                                <p class="card-text">ປີ: <%- car.year %></p>
                                 <p class="card-text">ລາຄາ: <%- car.price.toLocaleString() %> ກີບ</p>
+                                <p class="card-text">ປະເພດ: <%- car.carType %></p>
                                 <p class="card-text">ແຂວງ: <%- car.province %></p>
                                 <div class="quality-badges">
-                                    <% if (car.inspected.noFlood) { %><span class="badge bg-success">ບໍ່ເຄີຍນໍ້າຖ້ວມ</span><% } %>
-                                    <% if (car.inspected.noMajorAccident) { %><span class="badge bg-success">ບໍ່ເຄີຍອຸປະຕິເຫດໜັກ</span><% } %>
-                                    <% if (car.inspected.noFire) { %><span class="badge bg-success">ບໍ່ເຄີຍໄຟໄໝ້</span><% } %>
-                                    <% if (car.isPremium) { %><span class="badge bg-gold">ພຣີມຽມ</span><% } %>
+                                    <% if (car.inspected.noFlood) { %>
+                                        <span class="badge bg-success">ບໍ່ນໍ້າຖ້ວມ</span>
+                                    <% } %>
+                                    <% if (car.inspected.noMajorAccident) { %>
+                                        <span class="badge bg-success">ບໍ່ອຸປະຕິເຫດໜັກ</span>
+                                    <% } %>
+                                    <% if (car.inspected.noFire) { %>
+                                        <span class="badge bg-success">ບໍ່ໄຟໄໝ້</span>
+                                    <% } %>
                                 </div>
-                                <a href="/car/<%- car._id %>" class="btn btn-gold mt-3 w-100">ເບິ່ງລາຍລະອຽດ</a>
+                                <a href="/car/<%- car._id %>" class="btn btn-primary mt-2">ເບິ່ງລາຍລະອຽດ</a>
                             </div>
                         </div>
                     </div>
                 <% }) %>
+            <% } else { %>
+                <div class="col-12 text-center">
+                    <p>ບໍ່ມີລົດພຣີມຽມໃນຂະນະນີ້</p>
+                </div>
             <% } %>
         </div>
 
-        <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <% if (currentPage > 1) { %>
-                    <li class="page-item">
-                        <a class="page-link bg-dark text-gold" href="/?page=<%- currentPage - 1 %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>">ກ່ອນໜ້າ</a>
-                    </li>
-                <% } %>
-                <% for (let i = 1; i <= totalPages; i++) { %>
-                    <li class="page-item <%- currentPage === i ? 'active' : '' %>">
-                        <a class="page-link bg-dark text-gold" href="/?page=<%- i %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>"><%- i %></a>
-                    </li>
-                <% } %>
-                <% if (currentPage < totalPages) { %>
-                    <li class="page-item">
-                        <a class="page-link bg-dark text-gold" href="/?page=<%- currentPage + 1 %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>">ຕໍ່ໄປ</a>
-                    </li>
-                <% } %>
-            </ul>
-        </nav>
-
-        <!-- โฆษณา -->
-        <div class="ad-section mt-4">
-            <h3>ປະກັນພັຍລົດຍົນ</h3>
-            <p>ສົນໃຈປະກັນພັຍລົດທີ່ດີທີ່ສຸດສຳລັບທ່ານ? ຕິດຕໍ່ພວກເຮົາສຳລັບຂໍ້ສະເໜີພິເສດ!</p>
-            <a href="/contact" class="btn btn-gold">ສອບຖາມເພີ່ມເຕີມ</a>
+        <h2 class="text-center mt-5">ລົດທັງໝົດ</h2>
+        <div class="row">
+            <% if (cars && cars.length > 0) { %>
+                <% cars.forEach(car => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="<%- car.coverImage || '/images/placeholder.jpg' %>" class="card-img-top" alt="<%- car.brand %> <%- car.model %>">
+                            <div class="card-body">
+                                <h5 class="card-title"><%- car.brand %> <%- car.model %></h5>
+                                <p class="card-text">ລາຄາ: <%- car.price.toLocaleString() %> ກີບ</p>
+                                <p class="card-text">ປະເພດ: <%- car.carType %></p>
+                                <p class="card-text">ແຂວງ: <%- car.province %></p>
+                                <a href="/car/<%- car._id %>" class="btn btn-primary mt-2">ເບິ່ງລາຍລະອຽດ</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-12 text-center">
+                    <p>ບໍ່ພົບລົດທີ່ຕົງກັບການຄົ້ນຫາ</p>
+                </div>
+            <% } %>
         </div>
 
-        <!-- รายละเอียดประเภทรถยนต์ -->
-        <div class="car-types-section mt-4">
-            <h2>ປະເພດລົດມືສອງ</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <h4>ລົດເກົງ (Sedan)</h4>
-                    <p>ລົດ 4 ປະຕູ, ກະທັດຮັດ, ມີພື້ນທີ່ເກັບສິນຄ້າ, ຫ້ອງໂດຍສານກວ້າງຂວາງ. ເໝາະສົມກັບຄອບຄົວນ້ອຍ ແລະການນຳໃຊ້ໃນເມືອງ.</p>
-                    <p><strong>ຕົວຢ່າງ:</strong> Honda Civic, Toyota Camry, Mazda 3</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>ລົດແຮທຊ໌ແບັກ (Hatchback)</h4>
-                    <p>ລົດ 5 ປະຕູ, ກະທັດຮັດ, ພື້ນທີ່ເກັບສິນຄ້າຫຼາຍ. ເໝາະສົມກັບການນຳໃຊ້ປະຈຳວັນ.</p>
-                    <p><strong>ຕົວຢ່າງ:</strong> Honda Jazz, Suzuki Swift, Mazda 2</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>ລົດກະບະ (Pickup)</h4>
-                    <p>ຂະໜາດໃຫຍ່, ທົນທານ, ປະຫຍັດນ້ຳມັນ. ເໝາະສົມກັບການບັນທຸກສິນຄ້າ ແລະຂັບຂີ່ທາງຫຍຸ້ງຍາກ.</p>
-                    <p><strong>ຕົວຢ່າງ:</strong> Isuzu D-Max, Toyota Hilux, Nissan Navara</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>ລົດຄຣອສໂອເວີ (Crossover)</h4>
-                    <p>ປະສົມລັກສະນະລະຫວ່າງເກົງ ແລະ SUV, ຍົກສູງ, ຄ່ອງແຄ່ວ. ເໝາະສົມກັບຜູ້ເລີ່ມຕົ້ນ.</p>
-                    <p><strong>ຕົວຢ່າງ:</strong> Mazda CX-3, Honda HR-V, Toyota Corolla Cross</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>ລົດ SUV</h4>
-                    <p>ລົດ 5 ທີ່ນັ່ງ, ທົນທານ, ຂັບແບບອອຟໂຣດໄດ້. ເໝາະສົມກັບຄອບຄົວ ແລະການຂັບທາງໄກ.</p>
-                    <p><strong>ຕົວຢ່າງ:</strong> Honda CR-V, GWM Haval H6, Volvo XC60</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>ລົດ PPV</h4>
-                    <p>ດັດແປງຈາກລົດກະບະ, 7 ທີ່ນັ່ງ, ທົນທານ. ເໝາະສົມກັບຄອບຄົວໃຫຍ່.</p>
-                    <p><strong>ຕົວຢ່າງ:</strong> Nissan Terra, Mitsubishi Pajero, Toyota Fortuner</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>ລົດ MPV</h4>
-                    <p>ລົດຄອບຄົວ 6-10 ທີ່ນັ່ງ, ພື້ນທີ່ກວ້າງຂວາງ. ເໝາະສົມກັບຄອບຄົວໃຫຍ່.</p>
-                    <p><strong>ຕົວຢ່າງ:</strong> Mitsubishi Xpander, Kia Carnival, Toyota Alphard</p>
-                </div>
-            </div>
-        </div>
+        <% if (totalPages > 1) { %>
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item <%- currentPage === 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%- currentPage - 1 %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>">ກ່ອນໜ້າ</a>
+                    </li>
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li class="page-item <%- currentPage === i ? 'active' : '' %>">
+                            <a class="page-link" href="?page=<%- i %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>"><%- i %></a>
+                        </li>
+                    <% } %>
+                    <li class="page-item <%- currentPage === totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%- currentPage + 1 %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>">ຖັດໄປ</a>
+                    </li>
+                </ul>
+            </nav>
+        <% } %>
     </div>
 
-    <footer class="footer text-center bg-dark text-gold">
+    <footer class="footer text-center bg-dark text-light mt-5">
         <div class="container">
             <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
             <p>ໂທ: +856 20 1234 5678</p>
             <p>ອີເມວ: contact@yourcarwebsite.com</p>
             <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
-                <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
-            </p>
-            <p>ດາວໂຫຼດແອັບ:
-                <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
-                <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
             </p>
             <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
         </div>

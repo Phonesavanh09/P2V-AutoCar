@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ແຜງຄວບຄຸມຜູ້ດູແລລະບົບຊື້-ຂາຍລົດມືສອງ">
+    <meta name="description" content="ແຜງຄວບຄຸມແອດມິນ - ລົດມືສອງ">
     <title>ແຜງຄວບຄຸມແອດມິນ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="/admin/dashboard">
-                <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
                 ແຜງຄວບຄຸມແອດມິນ
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,148 +21,87 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
+                    <a class="nav-link active" href="/admin/dashboard">ແຜງຄວບຄຸມ</a>
                     <a class="nav-link" href="/admin/manage-car">ຈັດການລົດ</a>
-                    <a class="nav-link" href="/admin/add-car">ເພີ່ມລົດໃໝ່</a>
+                    <a class="nav-link" href="/admin/add-car">ເພີ່ມລົດ</a>
                     <a class="nav-link" href="/admin/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ</a>
-                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
-                    <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?');">ອອກຈາກລະບົບ</a>
+                    <a class="nav-link" href="/admin/logout">ອອກຈາກລະບົບ</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="card bg-dark text-light">
-            <div class="card-header bg-gold text-dark">
-                <h2>ແຜງຄວບຄຸມຜູ້ດູແລລະບົບ</h2>
+        <h1 class="text-center">ແຜງຄວບຄຸມແອດມິນ</h1>
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-light">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">ຈຳນວນລົດທັງໝົດ</h5>
+                        <p class="display-6"><%- totalCars || 0 %></p>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h3>ພາບລວມຂອງລະບົບ</h3>
-                <div class="row mt-4">
-                    <div class="col-md-4 mb-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h4>ຈຳນວນລົດທັງໝົດ</h4>
-                                <p class="display-6"><%- totalCars || 0 %></p>
-                                <a href="/admin/manage-car" class="btn btn-gold btn-sm">ເບິ່ງລົດທັງໝົດ</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h4>ຄຳຂໍຂາຍທີ່ລໍຖ້າ</h4>
-                                <p class="display-6"><%- pendingRequests || 0 %></p>
-                                <a href="/admin/manage-sell-requests" class="btn btn-gold btn-sm">ຈັດການຄຳຂໍ</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h4>ລົດພຣີມຽມ</h4>
-                                <p class="display-6"><%- premiumCars || 0 %></p>
-                                <a href="/admin/manage-car" class="btn btn-gold btn-sm">ເບິ່ງລົດພຣີມຽມ</a>
-                            </div>
-                        </div>
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-light">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">ຄຳຂໍຂາຍທີ່ລໍຖ້າ</h5>
+                        <p class="display-6"><%- pendingRequests || 0 %></p>
                     </div>
                 </div>
-
-                <h3 class="mt-5">ການດຳເນີນການດ່ວນ</h3>
-                <div class="row mt-3">
-                    <div class="col-md-4 mb-3">
-                        <a href="/admin/manage-car" class="btn btn-gold w-100">ຈັດການລົດທັງໝົດ</a>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <a href="/admin/add-car" class="btn btn-gold w-100">ເພີ່ມລົດໃໝ່</a>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <a href="/admin/manage-sell-requests" class="btn btn-gold w-100">ຈັດການຄຳຂໍຂາຍ</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-light">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">ລົດພຣີມຽມ</h5>
+                        <p class="display-6"><%- premiumCars || 0 %></p>
                     </div>
                 </div>
-
-                <h3 class="mt-5">ສະຖິຕິລົດຕາມປະເພດ</h3>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h5>ລົດເກົງ (Sedan)</h5>
-                                <p><%- sedanCount || 0 %> ຄັນ</p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card bg-dark text-light">
+                    <div class="card-header bg-primary text-white">
+                        <h3>ສະຖິຕິປະເພດລົດ</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <p><strong>Sedan:</strong> <%- sedanCount || 0 %></p>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <p><strong>Hatchback:</strong> <%- hatchbackCount || 0 %></p>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <p><strong>Pickup:</strong> <%- pickupCount || 0 %></p>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <p><strong>Crossover:</strong> <%- crossoverCount || 0 %></p>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <p><strong>SUV:</strong> <%- suvCount || 0 %></p>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <p><strong>PPV:</strong> <%- ppvCount || 0 %></p>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <p><strong>MPV:</strong> <%- mpvCount || 0 %></p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h5>ລົດແຮທຊ໌ແບັກ (Hatchback)</h5>
-                                <p><%- hatchbackCount || 0 %> ຄັນ</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h5>ລົດກະບະ (Pickup)</h5>
-                                <p><%- pickupCount || 0 %> ຄັນ</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h5>ລົດຄຣອສໂອເວີ (Crossover)</h5>
-                                <p><%- crossoverCount || 0 %> ຄັນ</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h5>ລົດ SUV</h5>
-                                <p><%- suvCount || 0 %> ຄັນ</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h5>ລົດ PPV</h5>
-                                <p><%- ppvCount || 0 %> ຄັນ</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-light border border-gold">
-                            <div class="card-body text-center">
-                                <h5>ລົດ MPV</h5>
-                                <p><%- mpvCount || 0 %> ຄັນ</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- โฆษณา -->
-                <div class="ad-section mt-4">
-                    <h3>ປະກັນພັຍລົດຍົນ</h3>
-                    <p>ສົນໃຈປະກັນພັຍລົດທີ່ດີທີ່ສຸດສຳລັບທ່ານ? ຕິດຕໍ່ພວກເຮົາສຳລັບຂໍ້ສະເໜີພິເສດ!</p>
-                    <a href="/contact" class="btn btn-gold">ສອບຖາມເພີ່ມເຕີມ</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="footer text-center bg-dark text-gold">
+    <footer class="footer text-center bg-dark text-light mt-5">
         <div class="container">
             <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
             <p>ໂທ: +856 20 1234 5678</p>
             <p>ອີເມວ: contact@yourcarwebsite.com</p>
             <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
-                <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
-            </p>
-            <p>ດາວໂຫຼດແອັບ:
-                <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
-                <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
             </p>
             <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
         </div>

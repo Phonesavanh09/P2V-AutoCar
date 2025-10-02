@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ຈັດການລົດມືສອງ - ແອດມິນ">
     <title>ຈັດການລົດ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="/admin/dashboard">
-                <img src="/images/logo.png" alt="Logo" style="height: 80px; margin-right: 15px;">
+                <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
                 ແຜງຄວບຄຸມແອດມິນ
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,76 +21,70 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/admin/manage-car">ຈັດການລົດ</a>
-                    <a class="nav-link" href="/admin/add-car">ເພີ່ມລົດໃໝ່</a>
+                    <a class="nav-link" href="/admin/dashboard">ແຜງຄວບຄຸມ</a>
+                    <a class="nav-link active" href="/admin/manage-car">ຈັດການລົດ</a>
+                    <a class="nav-link" href="/admin/add-car">ເພີ່ມລົດ</a>
                     <a class="nav-link" href="/admin/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ</a>
-                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
-                    <a class="nav-link text-danger" href="/admin/logout" onclick="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະອອກຈາກລະບົບ?');">ອອກຈາກລະບົບ</a>
+                    <a class="nav-link" href="/admin/logout">ອອກຈາກລະບົບ</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="card bg-dark text-light">
-            <div class="card-header bg-gold text-dark">
-                <h2>ຈັດການລົດ</h2>
-            </div>
-            <div class="card-body">
-                <a href="/admin/add-car" class="btn btn-gold mb-3 w-100 w-md-auto">ເພີ່ມລົດໃໝ່</a>
-                <table class="table table-striped bg-dark text-light">
-                    <thead>
-                        <tr>
-                            <th>ຍີ່ຫໍ້</th>
-                            <th>ລຸ້ນ</th>
-                            <th>ປະເພດ</th>
-                            <th>ປີ</th>
-                            <th>ລາຄາ</th>
-                            <th>ແຂວງ</th>
-                            <th>ການກະທຳ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if (cars.length === 0) { %>
+        <h1 class="text-center">ຈັດການລົດ</h1>
+        <div class="row mt-4">
+            <% if (cars && cars.length === 0) { %>
+                <div class="col-12 text-center">
+                    <p>ບໍ່ມີລົດໃນລະບົບ.</p>
+                    <a href="/admin/add-car" class="btn btn-primary">ເພີ່ມລົດໃໝ່</a>
+                </div>
+            <% } else { %>
+                <div class="col-12">
+                    <table class="table table-dark table-hover">
+                        <thead>
                             <tr>
-                                <td colspan="7" class="text-center">ບໍ່ມີລົດໃນລະບົບ.</td>
+                                <th>ຍີ່ຫໍ້</th>
+                                <th>ລຸ້ນ</th>
+                                <th>ປະເພດ</th>
+                                <th>ລາຄາ</th>
+                                <th>ແຂວງ</th>
+                                <th>ພຣີມຽມ</th>
+                                <th>ການກະທຳ</th>
                             </tr>
-                        <% } else { %>
+                        </thead>
+                        <tbody>
                             <% cars.forEach(car => { %>
                                 <tr>
                                     <td><%- car.brand %></td>
                                     <td><%- car.model %></td>
                                     <td><%- car.carType %></td>
-                                    <td><%- car.year %></td>
                                     <td><%- car.price.toLocaleString() %> ກີບ</td>
                                     <td><%- car.province %></td>
+                                    <td><%- car.isPremium ? 'ແມ່ນ' : 'ບໍ່ແມ່ນ' %></td>
                                     <td>
-                                        <a href="/admin/edit-car/<%- car._id %>" class="btn btn-gold btn-sm">ແກ້ໄຂ</a>
-                                        <form action="/admin/delete-car/<%- car._id %>" method="post" style="display: inline;">
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະລົບລົດນີ້?');">ລົບ</button>
+                                        <a href="/car/<%- car._id %>" class="btn btn-outline-primary btn-sm">ເບິ່ງ</a>
+                                        <a href="/admin/edit-car/<%- car._id %>" class="btn btn-outline-primary btn-sm">ແກ້ໄຂ</a>
+                                        <form action="/admin/delete-car/<%- car._id %>?_method=DELETE" method="post" class="d-inline" onsubmit="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະລົບລົດນີ້?');">
+                                            <button type="submit" class="btn btn-danger btn-sm">ລົບ</button>
                                         </form>
                                     </td>
                                 </tr>
                             <% }) %>
-                        <% } %>
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
         </div>
     </div>
 
-    <footer class="footer text-center bg-dark text-gold">
+    <footer class="footer text-center bg-dark text-light mt-5">
         <div class="container">
             <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
             <p>ໂທ: +856 20 1234 5678</p>
             <p>ອີເມວ: contact@yourcarwebsite.com</p>
             <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-gold mx-2">Facebook</a> |
-                <a href="https://www.tiktok.com/@your.tiktok" target="_blank" class="text-gold mx-2">TikTok</a>
-            </p>
-            <p>ດາວໂຫຼດແອັບ:
-                <a href="https://play.google.com/store" target="_blank" class="text-gold mx-2">Google Play</a> |
-                <a href="https://www.apple.com/app-store/" target="_blank" class="text-gold mx-2">App Store</a>
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
             </p>
             <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
         </div>
