@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ແຜງຄວບຄຸມແອດມິນ - ລົດມືສອງ">
+    <meta name="description" content="ແຜງຄວບຄຸມແອດມິນ - ລົດມືສອງຄຸນນະພາບ">
     <title>ແຜງຄວບຄຸມແອດມິນ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -33,62 +33,93 @@
 
     <div class="container mt-4">
         <h1 class="text-center">ແຜງຄວບຄຸມແອດມິນ</h1>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%- error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
         <div class="row mt-4">
-            <div class="col-md-4 mb-3">
-                <div class="card bg-dark text-light">
-                    <div class="card-body text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
                         <h5 class="card-title">ຈຳນວນລົດທັງໝົດ</h5>
-                        <p class="display-6"><%- totalCars || 0 %></p>
+                        <p class="card-text"><%- typeof totalCars !== 'undefined' ? totalCars : 0 %></p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card bg-dark text-light">
-                    <div class="card-body text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
                         <h5 class="card-title">ຄຳຂໍຂາຍທີ່ລໍຖ້າ</h5>
-                        <p class="display-6"><%- pendingRequests || 0 %></p>
+                        <p class="card-text"><%- typeof pendingRequests !== 'undefined' ? pendingRequests : 0 %></p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card bg-dark text-light">
-                    <div class="card-body text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
                         <h5 class="card-title">ລົດພຣີມຽມ</h5>
-                        <p class="display-6"><%- premiumCars || 0 %></p>
+                        <p class="card-text"><%- typeof premiumCars !== 'undefined' ? premiumCars : 0 %></p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card bg-dark text-light">
-                    <div class="card-header bg-primary text-white">
-                        <h3>ສະຖິຕິປະເພດລົດ</h3>
-                    </div>
+        <h2 class="text-center mt-5">ສະຖິຕິປະເພດລົດ</h2>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <p><strong>Sedan:</strong> <%- sedanCount || 0 %></p>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <p><strong>Hatchback:</strong> <%- hatchbackCount || 0 %></p>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <p><strong>Pickup:</strong> <%- pickupCount || 0 %></p>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <p><strong>Crossover:</strong> <%- crossoverCount || 0 %></p>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <p><strong>SUV:</strong> <%- suvCount || 0 %></p>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <p><strong>PPV:</strong> <%- ppvCount || 0 %></p>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <p><strong>MPV:</strong> <%- mpvCount || 0 %></p>
-                            </div>
-                        </div>
+                        <h5 class="card-title">ລົດເກົງ</h5>
+                        <p class="card-text"><%- typeof sedanCount !== 'undefined' ? sedanCount : 0 %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">ລົດແຮທຊ໌ແບັກ</h5>
+                        <p class="card-text"><%- typeof hatchbackCount !== 'undefined' ? hatchbackCount : 0 %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">ລົດກະບະ</h5>
+                        <p class="card-text"><%- typeof pickupCount !== 'undefined' ? pickupCount : 0 %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">ລົດຄຣອສໂອເວີ</h5>
+                        <p class="card-text"><%- typeof crossoverCount !== 'undefined' ? crossoverCount : 0 %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">ລົດ SUV</h5>
+                        <p class="card-text"><%- typeof suvCount !== 'undefined' ? suvCount : 0 %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">ລົດ PPV</h5>
+                        <p class="card-text"><%- typeof ppvCount !== 'undefined' ? ppvCount : 0 %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">ລົດ MPV</h5>
+                        <p class="card-text"><%- typeof mpvCount !== 'undefined' ? mpvCount : 0 %></p>
                     </div>
                 </div>
             </div>

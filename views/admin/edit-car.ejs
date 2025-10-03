@@ -39,128 +39,137 @@
                         <h2>ແກ້ໄຂລົດ</h2>
                     </div>
                     <div class="card-body">
-                        <% if (error) { %>
+                        <% if (typeof error !== 'undefined' && error) { %>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <%- error %>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <% } %>
-                        <% if (success) { %>
+                        <% if (typeof success !== 'undefined' && success) { %>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <%- success %>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <% } %>
-                        <form action="/admin/edit-car/<%- car._id %>?_method=PUT" method="post" enctype="multipart/form-data" id="editCarForm">
-                            <div class="mb-3">
-                                <label class="form-label">ຍີ່ຫໍ້</label>
-                                <select name="brand" class="form-control" required>
-                                    <option value="Toyota" <%- car.brand === 'Toyota' ? 'selected' : '' %>>Toyota</option>
-                                    <option value="Honda" <%- car.brand === 'Honda' ? 'selected' : '' %>>Honda</option>
-                                    <option value="Mazda" <%- car.brand === 'Mazda' ? 'selected' : '' %>>Mazda</option>
-                                    <option value="Mitsubishi" <%- car.brand === 'Mitsubishi' ? 'selected' : '' %>>Mitsubishi</option>
-                                    <option value="Isuzu" <%- car.brand === 'Isuzu' ? 'selected' : '' %>>Isuzu</option>
-                                    <option value="Nissan" <%- car.brand === 'Nissan' ? 'selected' : '' %>>Nissan</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ລຸ້ນ</label>
-                                <input type="text" name="model" class="form-control" value="<%- car.model %>" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ປະເພດລົດ</label>
-                                <select name="carType" class="form-control" required>
-                                    <option value="Sedan" <%- car.carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ</option>
-                                    <option value="Hatchback" <%- car.carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ</option>
-                                    <option value="Pickup" <%- car.carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ</option>
-                                    <option value="Crossover" <%- car.carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ</option>
-                                    <option value="SUV" <%- car.carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
-                                    <option value="PPV" <%- car.carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
-                                    <option value="MPV" <%- car.carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ປີ</label>
-                                <input type="number" name="year" class="form-control" value="<%- car.year %>" required min="1900" max="<%- new Date().getFullYear() %>">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ລາຄາ (ກີບ)</label>
-                                <input type="number" name="price" class="form-control" value="<%- car.price %>" required min="0">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ເກຍ</label>
-                                <select name="transmission" class="form-control" required>
-                                    <option value="Automatic" <%- car.transmission === 'Automatic' ? 'selected' : '' %>>ອັດຕະໂນມັດ</option>
-                                    <option value="Manual" <%- car.transmission === 'Manual' ? 'selected' : '' %>>ຄູ່ມື</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ໄມລ໌ (ກິໂລແມັດ)</label>
-                                <input type="number" name="mileage" class="form-control" value="<%- car.mileage || '' %>" placeholder="ກິໂລແມັດ" min="0">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ລາຍລະອຽດ</label>
-                                <textarea name="description" class="form-control" rows="4" placeholder="ລາຍລະອຽດລົດ"><%- car.description || '' %></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ແຂວງ</label>
-                                <select name="province" class="form-control" required>
-                                    <option value="">ເລືອກແຂວງ</option>
-                                    <% provinces.forEach(province => { %>
-                                        <option value="<%- province %>" <%- car.province === province ? 'selected' : '' %>><%- province %></option>
-                                    <% }) %>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ຮູບພາບປັດຈຸບັນ</label>
-                                <div class="row">
-                                    <% if (car.images && car.images.length > 0) { %>
-                                        <% car.images.forEach((image, index) => { %>
-                                            <div class="col-md-3 mb-2">
-                                                <img src="<%- image %>" class="img-thumbnail" alt="Car Image">
-                                                <input type="checkbox" name="deleteImages[]" value="<%- index %>" class="form-check-input">
-                                                <label class="form-check-label">ລົບ</label>
-                                            </div>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <p>ບໍ່ມີຮູບພາບ</p>
-                                    <% } %>
+                        <% if (typeof car !== 'undefined' && car) { %>
+                            <form action="/admin/edit-car/<%- car._id %>?_method=PUT" method="post" enctype="multipart/form-data" id="editCarForm">
+                                <div class="mb-3">
+                                    <label class="form-label">ຍີ່ຫໍ້</label>
+                                    <select name="brand" class="form-control" required>
+                                        <option value="Toyota" <%- car.brand === 'Toyota' ? 'selected' : '' %>>Toyota</option>
+                                        <option value="Honda" <%- car.brand === 'Honda' ? 'selected' : '' %>>Honda</option>
+                                        <option value="Mazda" <%- car.brand === 'Mazda' ? 'selected' : '' %>>Mazda</option>
+                                        <option value="Mitsubishi" <%- car.brand === 'Mitsubishi' ? 'selected' : '' %>>Mitsubishi</option>
+                                        <option value="Isuzu" <%- car.brand === 'Isuzu' ? 'selected' : '' %>>Isuzu</option>
+                                        <option value="Nissan" <%- car.brand === 'Nissan' ? 'selected' : '' %>>Nissan</option>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ອັບໂຫຼດຮູບພາບໃໝ່ (ສູງສຸດ 10 ຮູບ)</label>
-                                <input type="file" name="images" class="form-control" multiple accept="image/*">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ຮູບປົກ (ເລືອກຮູບທີ)</label>
-                                <input type="number" name="coverImageIndex" class="form-control" value="<%- car.coverImageIndex || 0 %>" min="0">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ການກວດສອບຄຸນນະພາບ</label>
-                                <div class="form-check">
-                                    <input type="checkbox" name="noFlood" class="form-check-input" id="noFlood" <%- car.inspected.noFlood ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="noFlood">ບໍ່ເຄີຍນໍ້າຖ້ວມ</label>
+                                <div class="mb-3">
+                                    <label class="form-label">ລຸ້ນ</label>
+                                    <input type="text" name="model" class="form-control" value="<%- car.model || '' %>" required>
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" name="noMajorAccident" class="form-check-input" id="noMajorAccident" <%- car.inspected.noMajorAccident ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="noMajorAccident">ບໍ່ເຄີຍອຸປະຕິເຫດໜັກ</label>
+                                <div class="mb-3">
+                                    <label class="form-label">ປະເພດລົດ</label>
+                                    <select name="carType" class="form-control" required>
+                                        <option value="Sedan" <%- car.carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ</option>
+                                        <option value="Hatchback" <%- car.carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ</option>
+                                        <option value="Pickup" <%- car.carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ</option>
+                                        <option value="Crossover" <%- car.carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ</option>
+                                        <option value="SUV" <%- car.carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
+                                        <option value="PPV" <%- car.carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
+                                        <option value="MPV" <%- car.carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
+                                    </select>
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" name="noFire" class="form-check-input" id="noFire" <%- car.inspected.noFire ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="noFire">ບໍ່ເຄີຍໄຟໄໝ້</label>
+                                <div class="mb-3">
+                                    <label class="form-label">ປີ</label>
+                                    <input type="number" name="year" class="form-control" value="<%- car.year || '' %>" required min="1900" max="<%- new Date().getFullYear() %>">
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input type="checkbox" name="isPremium" class="form-check-input" id="isPremium" <%- car.isPremium ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="isPremium">ພຣີມຽມ</label>
+                                <div class="mb-3">
+                                    <label class="form-label">ລາຄາ (ກີບ)</label>
+                                    <input type="number" name="price" class="form-control" value="<%- car.price || '' %>" required min="0">
                                 </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ເກຍ</label>
+                                    <select name="transmission" class="form-control" required>
+                                        <option value="Automatic" <%- car.transmission === 'Automatic' ? 'selected' : '' %>>ອັດຕະໂນມັດ</option>
+                                        <option value="Manual" <%- car.transmission === 'Manual' ? 'selected' : '' %>>ຄູ່ມື</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ໄມລ໌ (ກິໂລແມັດ)</label>
+                                    <input type="number" name="mileage" class="form-control" value="<%- car.mileage || '' %>" placeholder="ກິໂລແມັດ" min="0">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ລາຍລະອຽດ</label>
+                                    <textarea name="description" class="form-control" rows="4" placeholder="ລາຍລະອຽດລົດ"><%- car.description || '' %></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ແຂວງ</label>
+                                    <select name="province" class="form-control" required>
+                                        <option value="">ເລືອກແຂວງ</option>
+                                        <% if (typeof provinces !== 'undefined' && provinces.length > 0) { %>
+                                            <% provinces.forEach(province => { %>
+                                                <option value="<%- province %>" <%- car.province === province ? 'selected' : '' %>><%- province %></option>
+                                            <% }) %>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ຮູບພາບປັດຈຸບັນ</label>
+                                    <div class="row">
+                                        <% if (typeof car.images !== 'undefined' && car.images.length > 0) { %>
+                                            <% car.images.forEach((image, index) => { %>
+                                                <div class="col-md-3 mb-2">
+                                                    <img src="<%- image %>" class="img-thumbnail" alt="Car Image">
+                                                    <input type="checkbox" name="deleteImages[]" value="<%- index %>" class="form-check-input">
+                                                    <label class="form-check-label">ລົບ</label>
+                                                </div>
+                                            <% }) %>
+                                        <% } else { %>
+                                            <p>ບໍ່ມີຮູບພາບ</p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ອັບໂຫຼດຮູບພາບໃໝ່ (ສູງສຸດ 10 ຮູບ)</label>
+                                    <input type="file" name="images" class="form-control" multiple accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ຮູບປົກ (ເລືອກຮູບທີ)</label>
+                                    <input type="number" name="coverImageIndex" class="form-control" value="<%- car.coverImageIndex || 0 %>" min="0">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ການກວດສອບຄຸນນະພາບ</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="noFlood" class="form-check-input" id="noFlood" <%- car.inspected && car.inspected.noFlood ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="noFlood">ບໍ່ເຄີຍນໍ້າຖ້ວມ</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="noMajorAccident" class="form-check-input" id="noMajorAccident" <%- car.inspected && car.inspected.noMajorAccident ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="noMajorAccident">ບໍ່ເຄີຍອຸປະຕິເຫດໜັກ</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="noFire" class="form-check-input" id="noFire" <%- car.inspected && car.inspected.noFire ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="noFire">ບໍ່ເຄີຍໄຟໄໝ້</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="isPremium" class="form-check-input" id="isPremium" <%- car.isPremium ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="isPremium">ພຣີມຽມ</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-3">
+                                    <button type="submit" class="btn btn-primary w-100 w-md-auto">ບັນທຶກການແກ້ໄຂ</button>
+                                    <a href="/admin/manage-car" class="btn btn-outline-primary w-100 w-md-auto">ກັບຄືນ</a>
+                                </div>
+                            </form>
+                        <% } else { %>
+                            <div class="text-center">
+                                <p>ບໍ່ພົບຂໍ້ມູນລົດ</p>
+                                <a href="/admin/manage-car" class="btn btn-primary">ກັບຄືນ</a>
                             </div>
-                            <div class="d-flex gap-3">
-                                <button type="submit" class="btn btn-primary w-100 w-md-auto">ບັນທຶກການແກ້ໄຂ</button>
-                                <a href="/admin/manage-car" class="btn btn-outline-primary w-100 w-md-auto">ກັບຄືນ</a>
-                            </div>
-                        </form>
+                        <% } %>
                     </div>
                 </div>
             </div>

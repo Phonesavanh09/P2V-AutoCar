@@ -36,26 +36,28 @@
             <form action="/" method="get" class="search-form">
                 <div class="row g-2">
                     <div class="col-md-4">
-                        <input type="text" name="search" class="form-control" placeholder="ຄົ້ນຫາຍີ່ຫໍ້ ຫຼືລຸ້ນ" value="<%- searchQuery || '' %>">
+                        <input type="text" name="search" class="form-control" placeholder="ຄົ້ນຫາຍີ່ຫໍ້ ຫຼືລຸ້ນ" value="<%- typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
                     </div>
                     <div class="col-md-3">
                         <select name="carType" class="form-control">
                             <option value="">ທຸກປະເພດ</option>
-                            <option value="Sedan" <%- carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ</option>
-                            <option value="Hatchback" <%- carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ</option>
-                            <option value="Pickup" <%- carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ</option>
-                            <option value="Crossover" <%- carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ</option>
-                            <option value="SUV" <%- carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
-                            <option value="PPV" <%- carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
-                            <option value="MPV" <%- carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
+                            <option value="Sedan" <%- typeof carType !== 'undefined' && carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ</option>
+                            <option value="Hatchback" <%- typeof carType !== 'undefined' && carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ</option>
+                            <option value="Pickup" <%- typeof carType !== 'undefined' && carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ</option>
+                            <option value="Crossover" <%- typeof carType !== 'undefined' && carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ</option>
+                            <option value="SUV" <%- typeof carType !== 'undefined' && carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
+                            <option value="PPV" <%- typeof carType !== 'undefined' && carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
+                            <option value="MPV" <%- typeof carType !== 'undefined' && carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <select name="province" class="form-control">
                             <option value="">ທຸກແຂວງ</option>
-                            <% provinces.forEach(province => { %>
-                                <option value="<%- province %>" <%- provinceQuery === province ? 'selected' : '' %>><%- province %></option>
-                            <% }) %>
+                            <% if (typeof provinces !== 'undefined' && provinces.length > 0) { %>
+                                <% provinces.forEach(province => { %>
+                                    <option value="<%- province %>" <%- typeof provinceQuery !== 'undefined' && provinceQuery === province ? 'selected' : '' %>><%- province %></option>
+                                <% }) %>
+                            <% } %>
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -69,24 +71,24 @@
     <div class="container mt-4">
         <h2 class="text-center">ລົດພຣີມຽມ</h2>
         <div class="row">
-            <% if (premiumCars && premiumCars.length > 0) { %>
+            <% if (typeof premiumCars !== 'undefined' && premiumCars.length > 0) { %>
                 <% premiumCars.forEach(car => { %>
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
                             <img src="<%- car.coverImage || '/images/placeholder.jpg' %>" class="card-img-top" alt="<%- car.brand %> <%- car.model %>">
                             <div class="card-body">
                                 <h5 class="card-title"><%- car.brand %> <%- car.model %></h5>
-                                <p class="card-text">ລາຄາ: <%- car.price.toLocaleString() %> ກີບ</p>
-                                <p class="card-text">ປະເພດ: <%- car.carType %></p>
-                                <p class="card-text">ແຂວງ: <%- car.province %></p>
+                                <p class="card-text">ລາຄາ: <%- car.price ? car.price.toLocaleString() : 'N/A' %> ກີບ</p>
+                                <p class="card-text">ປະເພດ: <%- car.carType || 'N/A' %></p>
+                                <p class="card-text">ແຂວງ: <%- car.province || 'N/A' %></p>
                                 <div class="quality-badges">
-                                    <% if (car.inspected.noFlood) { %>
+                                    <% if (car.inspected && car.inspected.noFlood) { %>
                                         <span class="badge bg-success">ບໍ່ນໍ້າຖ້ວມ</span>
                                     <% } %>
-                                    <% if (car.inspected.noMajorAccident) { %>
+                                    <% if (car.inspected && car.inspected.noMajorAccident) { %>
                                         <span class="badge bg-success">ບໍ່ອຸປະຕິເຫດໜັກ</span>
                                     <% } %>
-                                    <% if (car.inspected.noFire) { %>
+                                    <% if (car.inspected && car.inspected.noFire) { %>
                                         <span class="badge bg-success">ບໍ່ໄຟໄໝ້</span>
                                     <% } %>
                                 </div>
@@ -104,16 +106,16 @@
 
         <h2 class="text-center mt-5">ລົດທັງໝົດ</h2>
         <div class="row">
-            <% if (cars && cars.length > 0) { %>
+            <% if (typeof cars !== 'undefined' && cars.length > 0) { %>
                 <% cars.forEach(car => { %>
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
                             <img src="<%- car.coverImage || '/images/placeholder.jpg' %>" class="card-img-top" alt="<%- car.brand %> <%- car.model %>">
                             <div class="card-body">
                                 <h5 class="card-title"><%- car.brand %> <%- car.model %></h5>
-                                <p class="card-text">ລາຄາ: <%- car.price.toLocaleString() %> ກີບ</p>
-                                <p class="card-text">ປະເພດ: <%- car.carType %></p>
-                                <p class="card-text">ແຂວງ: <%- car.province %></p>
+                                <p class="card-text">ລາຄາ: <%- car.price ? car.price.toLocaleString() : 'N/A' %> ກີບ</p>
+                                <p class="card-text">ປະເພດ: <%- car.carType || 'N/A' %></p>
+                                <p class="card-text">ແຂວງ: <%- car.province || 'N/A' %></p>
                                 <a href="/car/<%- car._id %>" class="btn btn-primary mt-2">ເບິ່ງລາຍລະອຽດ</a>
                             </div>
                         </div>
@@ -126,19 +128,19 @@
             <% } %>
         </div>
 
-        <% if (totalPages > 1) { %>
+        <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
             <nav aria-label="Page navigation" class="mt-4">
                 <ul class="pagination justify-content-center">
                     <li class="page-item <%- currentPage === 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%- currentPage - 1 %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>">ກ່ອນໜ້າ</a>
+                        <a class="page-link" href="?page=<%- currentPage - 1 %>&search=<%- typeof searchQuery !== 'undefined' ? searchQuery : '' %>&carType=<%- typeof carType !== 'undefined' ? carType : '' %>&province=<%- typeof provinceQuery !== 'undefined' ? provinceQuery : '' %>">ກ່ອນໜ້າ</a>
                     </li>
                     <% for (let i = 1; i <= totalPages; i++) { %>
                         <li class="page-item <%- currentPage === i ? 'active' : '' %>">
-                            <a class="page-link" href="?page=<%- i %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>"><%- i %></a>
+                            <a class="page-link" href="?page=<%- i %>&search=<%- typeof searchQuery !== 'undefined' ? searchQuery : '' %>&carType=<%- typeof carType !== 'undefined' ? carType : '' %>&province=<%- typeof provinceQuery !== 'undefined' ? provinceQuery : '' %>"><%- i %></a>
                         </li>
                     <% } %>
                     <li class="page-item <%- currentPage === totalPages ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%- currentPage + 1 %>&search=<%- searchQuery || '' %>&carType=<%- carType || '' %>&province=<%- provinceQuery || '' %>">ຖັດໄປ</a>
+                        <a class="page-link" href="?page=<%- currentPage + 1 %>&search=<%- typeof searchQuery !== 'undefined' ? searchQuery : '' %>&carType=<%- typeof carType !== 'undefined' ? carType : '' %>&province=<%- typeof provinceQuery !== 'undefined' ? provinceQuery : '' %>">ຖັດໄປ</a>
                     </li>
                 </ul>
             </nav>

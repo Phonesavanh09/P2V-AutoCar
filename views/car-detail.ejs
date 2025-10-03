@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ລາຍລະອຽດລົດ <%- car.brand %> <%- car.model %> ມືສອງຄຸນນະພາບ">
-    <title><%- car.brand %> <%- car.model %> - ລົດມືສອງ</title>
+    <meta name="description" content="ລາຍລະອຽດລົດ <%- typeof car !== 'undefined' && car.brand ? car.brand : '' %> <%- typeof car !== 'undefined' && car.model ? car.model : '' %> ມືສອງຄຸນນະພາບ">
+    <title><%- typeof car !== 'undefined' && car.brand ? car.brand : '' %> <%- typeof car !== 'undefined' && car.model ? car.model : '' %> - ລົດມືສອງ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -30,65 +30,78 @@
     </nav>
 
     <div class="container mt-4">
-        <h1 class="text-center"><%- car.brand %> <%- car.model %></h1>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <% if (car.images && car.images.length > 0) { %>
-                            <% car.images.forEach((image, index) => { %>
-                                <div class="carousel-item <%- index === 0 ? 'active' : '' %>">
-                                    <img src="<%- image %>" class="d-block w-100" alt="<%- car.brand %> <%- car.model %>">
-                                </div>
-                            <% }) %>
-                        <% } else { %>
-                            <div class="carousel-item active">
-                                <img src="/images/placeholder.jpg" class="d-block w-100" alt="Placeholder">
-                            </div>
-                        <% } %>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%- error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">ລາຍລະອຽດລົດ</h5>
-                        <p><strong>ຍີ່ຫໍ້:</strong> <%- car.brand %></p>
-                        <p><strong>ລຸ້ນ:</strong> <%- car.model %></p>
-                        <p><strong>ປະເພດ:</strong> <%- car.carType %></p>
-                        <p><strong>ປີ:</strong> <%- car.year %></p>
-                        <p><strong>ລາຄາ:</strong> <%- car.price.toLocaleString() %> ກີບ</p>
-                        <p><strong>ເກຍ:</strong> <%- car.transmission %></p>
-                        <p><strong>ໄມລ໌:</strong> <%- car.mileage ? car.mileage.toLocaleString() + ' ກິໂລແມັດ' : 'ບໍ່ລະບຸ' %></p>
-                        <p><strong>ແຂວງ:</strong> <%- car.province %></p>
-                        <p><strong>ລາຍລະອຽດ:</strong> <%- car.description || 'ບໍ່ມີລາຍລະອຽດ' %></p>
-                        <div class="quality-badges">
-                            <% if (car.inspected.noFlood) { %>
-                                <span class="badge bg-success">ບໍ່ນໍ້າຖ້ວມ</span>
-                            <% } %>
-                            <% if (car.inspected.noMajorAccident) { %>
-                                <span class="badge bg-success">ບໍ່ອຸປະຕິເຫດໜັກ</span>
-                            <% } %>
-                            <% if (car.inspected.noFire) { %>
-                                <span class="badge bg-success">ບໍ່ໄຟໄໝ້</span>
-                            <% } %>
-                            <% if (car.isPremium) { %>
-                                <span class="badge bg-warning">ພຣີມຽມ</span>
+        <% } %>
+        <% if (typeof car !== 'undefined' && car) { %>
+            <h1 class="text-center"><%- car.brand %> <%- car.model %></h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <% if (typeof car.images !== 'undefined' && car.images.length > 0) { %>
+                                <% car.images.forEach((image, index) => { %>
+                                    <div class="carousel-item <%- index === 0 ? 'active' : '' %>">
+                                        <img src="<%- image %>" class="d-block w-100" alt="<%- car.brand %> <%- car.model %>">
+                                    </div>
+                                <% }) %>
+                            <% } else { %>
+                                <div class="carousel-item active">
+                                    <img src="/images/placeholder.jpg" class="d-block w-100" alt="Placeholder">
+                                </div>
                             <% } %>
                         </div>
-                        <a href="tel:+8562012345678" class="btn btn-primary mt-3">ຕິດຕໍ່ຜູ້ຂາຍ</a>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">ລາຍລະອຽດລົດ</h5>
+                            <p><strong>ຍີ່ຫໍ້:</strong> <%- car.brand || 'N/A' %></p>
+                            <p><strong>ລຸ້ນ:</strong> <%- car.model || 'N/A' %></p>
+                            <p><strong>ປະເພດ:</strong> <%- car.carType || 'N/A' %></p>
+                            <p><strong>ປີ:</strong> <%- car.year || 'N/A' %></p>
+                            <p><strong>ລາຄາ:</strong> <%- car.price ? car.price.toLocaleString() : 'N/A' %> ກີບ</p>
+                            <p><strong>ເກຍ:</strong> <%- car.transmission || 'N/A' %></p>
+                            <p><strong>ໄມລ໌:</strong> <%- car.mileage ? car.mileage.toLocaleString() + ' ກິໂລແມັດ' : 'ບໍ່ລະບຸ' %></p>
+                            <p><strong>ແຂວງ:</strong> <%- car.province || 'N/A' %></p>
+                            <p><strong>ລາຍລະອຽດ:</strong> <%- car.description || 'ບໍ່ມີລາຍລະອຽດ' %></p>
+                            <div class="quality-badges">
+                                <% if (car.inspected && car.inspected.noFlood) { %>
+                                    <span class="badge bg-success">ບໍ່ນໍ້າຖ້ວມ</span>
+                                <% } %>
+                                <% if (car.inspected && car.inspected.noMajorAccident) { %>
+                                    <span class="badge bg-success">ບໍ່ອຸປະຕິເຫດໜັກ</span>
+                                <% } %>
+                                <% if (car.inspected && car.inspected.noFire) { %>
+                                    <span class="badge bg-success">ບໍ່ໄຟໄໝ້</span>
+                                <% } %>
+                                <% if (car.isPremium) { %>
+                                    <span class="badge bg-warning">ພຣີມຽມ</span>
+                                <% } %>
+                            </div>
+                            <a href="tel:+8562012345678" class="btn btn-primary mt-3">ຕິດຕໍ່ຜູ້ຂາຍ</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <% } else { %>
+            <div class="text-center">
+                <p>ບໍ່ພົບຂໍ້ມູນລົດ</p>
+                <a href="/" class="btn btn-primary">ກັບຄືນໜ້າຫຼັກ</a>
+            </div>
+        <% } %>
     </div>
 
     <footer class="footer text-center bg-dark text-light mt-5">

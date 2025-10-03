@@ -37,13 +37,13 @@
                         <h2>ສະເໜີຂາຍລົດ</h2>
                     </div>
                     <div class="card-body">
-                        <% if (error) { %>
+                        <% if (typeof error !== 'undefined' && error) { %>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <%- error %>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <% } %>
-                        <% if (success) { %>
+                        <% if (typeof success !== 'undefined' && success) { %>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <%- success %>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -98,6 +98,7 @@
                             <div class="mb-3">
                                 <label class="form-label">ເກຍ</label>
                                 <select name="transmission" class="form-control" required>
+                                    <option value="">ເລືອກເກຍ</option>
                                     <option value="Automatic">ອັດຕະໂນມັດ</option>
                                     <option value="Manual">ຄູ່ມື</option>
                                 </select>
@@ -114,13 +115,15 @@
                                 <label class="form-label">ແຂວງ</label>
                                 <select name="province" class="form-control" required>
                                     <option value="">ເລືອກແຂວງ</option>
-                                    <% provinces.forEach(province => { %>
-                                        <option value="<%- province %>"><%- province %></option>
-                                    <% }) %>
+                                    <% if (typeof provinces !== 'undefined' && provinces.length > 0) { %>
+                                        <% provinces.forEach(province => { %>
+                                            <option value="<%- province %>"><%- province %></option>
+                                        <% }) %>
+                                    <% } %>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">ຮູບພາບ (ສູງສຸດ 10 ຮູບ)</label>
+                                <label class="form-label">ອັບໂຫຼດຮູບພາບ (ສູງສຸດ 10 ຮູບ)</label>
                                 <input type="file" name="images" class="form-control" multiple accept="image/*">
                             </div>
                             <div class="d-flex gap-3">

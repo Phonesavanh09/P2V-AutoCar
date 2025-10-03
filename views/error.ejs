@@ -29,13 +29,11 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <h1 class="display-1">ຂໍ້ຜິດພາດ</h1>
-                <p class="lead"><%- message || 'ມີບາງຢ່າງຜິດພາດ. ກະລຸນາລອງໃໝ່!' %></p>
-                <a href="/" class="btn btn-primary">ກັບຄືນໜ້າຫຼັກ</a>
-            </div>
+    <div class="container mt-5 text-center">
+        <div class="alert alert-danger">
+            <h2>ຂໍ້ຜິດພາດ</h2>
+            <p><%- typeof message !== 'undefined' ? message : 'ມີບາງຢ່າງຜິດພາດ!' %></p>
+            <a href="/" class="btn btn-primary mt-3">ກັບຄືນໜ້າຫຼັກ</a>
         </div>
     </div>
 

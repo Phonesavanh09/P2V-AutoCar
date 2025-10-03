@@ -33,12 +33,14 @@
 
     <div class="container mt-4">
         <h1 class="text-center">ຈັດການຄຳຂໍຂາຍ</h1>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%- error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
         <div class="row mt-4">
-            <% if (requests && requests.length === 0) { %>
-                <div class="col-12 text-center">
-                    <p>ບໍ່ມີຄຳຂໍຂາຍໃນຂະນະນີ້.</p>
-                </div>
-            <% } else { %>
+            <% if (typeof requests !== 'undefined' && requests.length > 0) { %>
                 <div class="col-12">
                     <table class="table table-dark table-hover">
                         <thead>
@@ -56,13 +58,13 @@
                         <tbody>
                             <% requests.forEach(request => { %>
                                 <tr>
-                                    <td><%- request.sellerName %></td>
-                                    <td><%- request.phone %></td>
-                                    <td><%- request.brand %></td>
-                                    <td><%- request.model %></td>
-                                    <td><%- request.carType %></td>
-                                    <td><%- request.price.toLocaleString() %> ກີບ</td>
-                                    <td><%- request.status %></td>
+                                    <td><%- request.sellerName || 'N/A' %></td>
+                                    <td><%- request.phone || 'N/A' %></td>
+                                    <td><%- request.brand || 'N/A' %></td>
+                                    <td><%- request.model || 'N/A' %></td>
+                                    <td><%- request.carType || 'N/A' %></td>
+                                    <td><%- request.price ? request.price.toLocaleString() : 'N/A' %> ກີບ</td>
+                                    <td><%- request.status || 'ລໍຖ້າ' %></td>
                                     <td>
                                         <form action="/admin/approve-sell-request/<%- request._id %>?_method=PUT" method="post" class="d-inline">
                                             <button type="submit" class="btn btn-success btn-sm" <%- request.status === 'approved' ? 'disabled' : '' %>>ອະນຸມັດ</button>
@@ -75,6 +77,10 @@
                             <% }) %>
                         </tbody>
                     </table>
+                </div>
+            <% } else { %>
+                <div class="col-12 text-center">
+                    <p>ບໍ່ມີຄຳຂໍຂາຍໃນຂະນະນີ້</p>
                 </div>
             <% } %>
         </div>
