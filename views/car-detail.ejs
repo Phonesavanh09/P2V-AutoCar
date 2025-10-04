@@ -3,119 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ລາຍລະອຽດລົດ <%- typeof car !== 'undefined' && car.brand ? car.brand : '' %> <%- typeof car !== 'undefined' && car.model ? car.model : '' %> ມືສອງຄຸນນະພາບ">
-    <title><%- typeof car !== 'undefined' && car.brand ? car.brand : '' %> <%- typeof car !== 'undefined' && car.model ? car.model : '' %> - ລົດມືສອງ</title>
+    <title>ລາຍລະອຽດລົດ - <%- car.brand %> <%- car.model %></title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <header class="bg-dark text-gold">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-md-6">
+                    <h1>ລາຍລະອຽດລົດ (รายละเอียดรถ / 汽車詳情)</h1>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="/trade-in" class="btn btn-maroon">Trade-in your car (แลกเปลี่ยนรถของคุณ / 交換您的汽車)</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
-                ລົດມືສອງຄຸນນະພາບ
+                <img src="/images/logo.png" alt="Logo" style="height: 50px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
-                    <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ</a>
-                    <a class="nav-link" href="/admin/login">ແອດມິນ</a>
-                </div>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">ໜ້າຫຼັກ (หน้าแรก / 首頁)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ (เสนอขายรถ / 提供出售汽車)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">ຕິດຕໍ່ (ติดต่อ / 聯繫)</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <% if (typeof error !== 'undefined' && error) { %>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <%- error %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <% } %>
-        <% if (typeof car !== 'undefined' && car) { %>
-            <h1 class="text-center"><%- car.brand %> <%- car.model %></h1>
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <% if (typeof car.images !== 'undefined' && car.images.length > 0) { %>
-                                <% car.images.forEach((image, index) => { %>
-                                    <div class="carousel-item <%- index === 0 ? 'active' : '' %>">
-                                        <img src="<%- image %>" class="d-block w-100" alt="<%- car.brand %> <%- car.model %>">
-                                    </div>
-                                <% }) %>
-                            <% } else { %>
-                                <div class="carousel-item active">
-                                    <img src="/images/placeholder.jpg" class="d-block w-100" alt="Placeholder">
-                                </div>
-                            <% } %>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">ລາຍລະອຽດລົດ</h5>
-                            <p><strong>ຍີ່ຫໍ້:</strong> <%- car.brand || 'N/A' %></p>
-                            <p><strong>ລຸ້ນ:</strong> <%- car.model || 'N/A' %></p>
-                            <p><strong>ປະເພດ:</strong> <%- car.carType || 'N/A' %></p>
-                            <p><strong>ປີ:</strong> <%- car.year || 'N/A' %></p>
-                            <p><strong>ລາຄາ:</strong> <%- car.price ? car.price.toLocaleString() : 'N/A' %> ກີບ</p>
-                            <p><strong>ເກຍ:</strong> <%- car.transmission || 'N/A' %></p>
-                            <p><strong>ໄມລ໌:</strong> <%- car.mileage ? car.mileage.toLocaleString() + ' ກິໂລແມັດ' : 'ບໍ່ລະບຸ' %></p>
-                            <p><strong>ແຂວງ:</strong> <%- car.province || 'N/A' %></p>
-                            <p><strong>ລາຍລະອຽດ:</strong> <%- car.description || 'ບໍ່ມີລາຍລະອຽດ' %></p>
-                            <div class="quality-badges">
-                                <% if (car.inspected && car.inspected.noFlood) { %>
-                                    <span class="badge bg-success">ບໍ່ນໍ້າຖ້ວມ</span>
-                                <% } %>
-                                <% if (car.inspected && car.inspected.noMajorAccident) { %>
-                                    <span class="badge bg-success">ບໍ່ອຸປະຕິເຫດໜັກ</span>
-                                <% } %>
-                                <% if (car.inspected && car.inspected.noFire) { %>
-                                    <span class="badge bg-success">ບໍ່ໄຟໄໝ້</span>
-                                <% } %>
-                                <% if (car.isPremium) { %>
-                                    <span class="badge bg-warning">ພຣີມຽມ</span>
-                                <% } %>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="carousel slide" id="carCarousel" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <% car.images.forEach((image, index) => { %>
+                            <div class="carousel-item <%- index === 0 ? 'active' : '' %>">
+                                <img src="<%- image %>" class="d-block w-100" alt="<%- car.brand %> <%- car.model %>">
                             </div>
-                            <a href="tel:+8562012345678" class="btn btn-primary mt-3">ຕິດຕໍ່ຜູ້ຂາຍ</a>
+                        <% }) %>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2><%- car.brand %> <%- car.model %></h2>
+                <p>ລາຄາ: ฿<%- car.price.toLocaleString() %></p>
+                <p>ປີ: <%- car.year %></p>
+                <p>ສີ: <%- car.color %></p>
+                <p>ສະຖານທີ່: <%- car.location %></p>
+                <div class="badges">
+                    <span class="badge bg-red">ดีลเด็ด</span>
+                    <span class="badge bg-gold">WorryFree</span>
+                </div>
+                <a href="#" class="btn btn-gold mt-3">ຕິດຕໍ່ຜູ້ຂາຍ (ติดต่อผู้ขาย / 聯繫賣家)</a>
+            </div>
+        </div>
+        <div class="ad-section mt-4">
+            <h3>ປະກັນພັຍລົດຍົນ (ประกันรถยนต์ / 汽車保險)</h3>
+            <p>ສົນໃຈປະກັນພັຍລົດທີ່ດີທີ່ສຸດສຳລັບທ່ານ? ຕິດຕໍ່ພວກເຮົາສຳລັບຂໍ້ສະເໜີພິເສດ! (สนใจประกันรถที่ดีที่สุดสำหรับคุณ? ติดต่อเราสำหรับข้อเสนอพิเศษ! / 對最適合您的汽車保險感興趣嗎？聯繫我們獲取特別優惠！)</p>
+            <a href="/contact" class="btn btn-red">ສອບຖາມເພີ່ມເຕີມ (สอบถามเพิ่มเติม / 查詢更多)</a>
+        </div>
+        <div class="car-types-section mt-4">
+            <h2>ປະເພດລົດມືສອງ (ประเภทรถมือสอง / 二手車類型)</h2>
+            <p>ລົດເກົງ, ລົດແຮທຊ໌ແບັກ, ລົດກະບະ, ລົດຄຣອສໂອເວີ, ລົດ SUV, ລົດ PPV, ລົດ MPV (รถเก๋ง, รถแฮทช์แบ็ก, รถกระบะ, รถครอสโอเวอร์, รถ SUV, รถ PPV, รถ MPV / 轎車, 掀背車, 皮卡車, 跨界車, SUV, PPV, MPV)</p>
+        </div>
+        <div class="faq-section mt-4">
+            <h2>ຄຳຖາມທີ່ຖາມເລື້ອຍ (คำถามที่ถามบ่อย / 常見問題)</h2>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faqHeading1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+                            ລົດມືສອງທີ່ນ່າໃຊ້ໃນຕະຫຼາດລົດມືສອງທີ່ລາວ? (รถมือสองที่น่าใช้ในตลาดรถมือสองที่ไทย? / 二手車市場推薦的二手車？)
+                        </button>
+                    </h2>
+                    <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ລົດກະບະມືສອງທີ່ນ່າໃຊ້, ໄດ້ແກ່ Isuzu D-max, Toyota Hilux Revo, Mitsubishi Triton, Ford Ranger, Nissan Navara (รถกระบะมือสองที่น่าใช้ ได้แก่ Isuzu D-max, Toyota Hilux Revo, Mitsubishi Triton, Ford Ranger, Nissan Navara / 推薦二手皮卡車，如 Isuzu D-max, Toyota Hilux Revo, Mitsubishi Triton, Ford Ranger, Nissan Navara)
                         </div>
                     </div>
                 </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faqHeading2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                            ຕະຫຼາດລົດມືສອງທີ່ລາວເປັນແນວໃດ? (ตลาดรถมือสองที่เมืองไทยเป็นยังไง? / 二手車市場在泰國如何？)
+                        </button>
+                    </h2>
+                    <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ຕະຫຼາດລົດມືສອງໃນລາວເຟື້ອງຟູ ດ້ວຍການເພີ່ມຂຶ້ນຂອງໄຊต์ໂຄສະນາອອນໄລນ໌ແລະການປະມູນ (ตลาดรถมือสองในไทยเฟื่องฟู ด้วยการเพิ่มขึ้นของไซต์โฆษณาออนไลน์และการประมูล / 泰國二手車市場蓬勃發展, 隨著在線廣告網站和拍賣的增加)
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faqHeading3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                            ຫາຊື້-ຂາຍລົດມືສອງ ລົດບ້ານເພີ່ມເຕີມບ່ອນໃດດີ? (หาซื้อ-ขายรถมือสอง รถบ้านราคาถูก น่าเชื่อถือที่ไหนดี? / 哪裡買賣二手車可靠且價格實惠？)
+                        </button>
+                    </h2>
+                    <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ເລືອກຊື້-ຂາຍ ລົດຍົນອອນໄລນ໌ ຂາຍລົດອອກງ່າຍ ຊື້ໃໝ່ໄດ້ລົດດີ ເຂົ້າດູທີ່ ຕະຫຼາດລົດ CHOBROD.COM (เลือกซื้อ-ขาย รถยนต์ออนไลน์ ขายรถออกง่าย ซื้อใหม่ได้รถดี เข้าดูที่ ตลาดรถ CHOBROD.COM / 選擇在線買賣汽車, 賣車容易, 買新車好, 訪問 Chobrod.com 汽車市場)
+                        </div>
+                    </div>
+                </div>
+                <!-- เพิ่ม FAQ อื่นๆ ถ้ามีข้อมูลเพิ่ม -->
             </div>
-        <% } else { %>
-            <div class="text-center">
-                <p>ບໍ່ພົບຂໍ້ມູນລົດ</p>
-                <a href="/" class="btn btn-primary">ກັບຄືນໜ້າຫຼັກ</a>
-            </div>
-        <% } %>
+        </div>
     </div>
 
-    <footer class="footer text-center bg-dark text-light mt-5">
-        <div class="container">
-            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
-            <p>ໂທ: +856 20 1234 5678</p>
-            <p>ອີເມວ: contact@yourcarwebsite.com</p>
-            <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
-            </p>
-            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+    <footer class="footer bg-black text-gold mt-4">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>ຂໍ້ມູນເພີ່ມເຕີມ (ข้อมูลเพิ่มเติม / 更多信息)</h5>
+                    <p>ຕະຫຼາດລົດອອນໄລນ໌ Chobrod.com ເພີ່ມທາງເລືອກໃຫ້ທ່ານຫຼາຍຂຶ້ນ (ตลาดรถออนไลน์ Chobrod.com เพิ่มทางเลือกให้คุณมากขึ้น / Chobrod.com 在線汽車市場為您提供更多選擇)</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>ຕິດຕໍ່ (ติดต่อ / 聯繫)</h5>
+                    <p>ອີເມວ: contact@yourcarwebsite.com (อีเมล: contact@yourcarwebsite.com / 電子郵件: contact@yourcarwebsite.com)</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>ຕິດຕາມ (ติดตาม / 跟隨)</h5>
+                    <p>Facebook, TikTok (Facebook, TikTok / Facebook, TikTok)</p>
+                </div>
+            </div>
+            <p class="text-center mt-4">© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ (สงวนลิขสิทธิ์ / 版權所有)</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript for sorting
+        function sortCars(value) {
+            // Simulate sorting (in real, use AJAX to fetch sorted data)
+            console.log('Sorting by: ' + value);
+        }
+    </script>
 </body>
 </html>

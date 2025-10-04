@@ -3,98 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ຈັດການຄຳຂໍຂາຍລົດ - ແອດມິນ">
-    <title>ຈັດການຄຳຂໍຂາຍ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
+    <title>ຈັດການຄຳຂໍຂາຍ (จัดการคำขอขาย / 管理銷售請求)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath+OT:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <div class="container">
-            <a class="navbar-brand" href="/admin/dashboard">
-                <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
-                ແຜງຄວບຄຸມແອດມິນ
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/admin/dashboard">ແຜງຄວບຄຸມ</a>
-                    <a class="nav-link" href="/admin/manage-car">ຈັດການລົດ</a>
-                    <a class="nav-link" href="/admin/add-car">ເພີ່ມລົດ</a>
-                    <a class="nav-link active" href="/admin/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ</a>
-                    <a class="nav-link" href="/admin/logout">ອອກຈາກລະບົບ</a>
-                </div>
+            <a class="navbar-brand" href="/admin-secret/dashboard">ແອັດມິນ (แอดมิน / 管理員)</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin-secret/manage-car">ຈັດການລົດ (จัดการรถ / 管理汽車)</a>
+                <a class="nav-link" href="/admin-secret/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ (จัดการคำขอขาย / 管理銷售請求)</a>
+                <a class="nav-link" href="/admin-secret/logout">ອອກຈາກລະບົບ (ออกจากระบบ / 登出)</a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <h1 class="text-center">ຈັດການຄຳຂໍຂາຍ</h1>
-        <% if (typeof error !== 'undefined' && error) { %>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <%- error %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <% } %>
-        <div class="row mt-4">
-            <% if (typeof requests !== 'undefined' && requests.length > 0) { %>
-                <div class="col-12">
-                    <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th>ຊື່ຜູ້ຂາຍ</th>
-                                <th>ເບີໂທ</th>
-                                <th>ຍີ່ຫໍ້</th>
-                                <th>ລຸ້ນ</th>
-                                <th>ປະເພດ</th>
-                                <th>ລາຄາ</th>
-                                <th>ສະຖານະ</th>
-                                <th>ການກະທຳ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% requests.forEach(request => { %>
-                                <tr>
-                                    <td><%- request.sellerName || 'N/A' %></td>
-                                    <td><%- request.phone || 'N/A' %></td>
-                                    <td><%- request.brand || 'N/A' %></td>
-                                    <td><%- request.model || 'N/A' %></td>
-                                    <td><%- request.carType || 'N/A' %></td>
-                                    <td><%- request.price ? request.price.toLocaleString() : 'N/A' %> ກີບ</td>
-                                    <td><%- request.status || 'ລໍຖ້າ' %></td>
-                                    <td>
-                                        <form action="/admin/approve-sell-request/<%- request._id %>?_method=PUT" method="post" class="d-inline">
-                                            <button type="submit" class="btn btn-success btn-sm" <%- request.status === 'approved' ? 'disabled' : '' %>>ອະນຸມັດ</button>
-                                        </form>
-                                        <form action="/admin/reject-sell-request/<%- request._id %>?_method=PUT" method="post" class="d-inline" onsubmit="return confirm('ທ່ານແນ່ໃຈບໍ່ທີ່ຈະປະຕິເສດຄຳຂໍນີ້?');">
-                                            <button type="submit" class="btn btn-danger btn-sm" <%- request.status === 'rejected' ? 'disabled' : '' %>>ປະຕິເສດ</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                </div>
-            <% } else { %>
-                <div class="col-12 text-center">
-                    <p>ບໍ່ມີຄຳຂໍຂາຍໃນຂະນະນີ້</p>
-                </div>
-            <% } %>
-        </div>
+        <h2 class="text-center">ຈັດການຄຳຂໍຂາຍ (จัดการคำขอขาย / 管理銷售請求)</h2>
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>ຍີ່ຫໍ້ (ยี่ห้อ / 品牌)</th>
+                    <th>ຮຸ່ນ (รุ่น / 型號)</th>
+                    <th>ປີ (ปี / 年份)</th>
+                    <th>ລາຄາ (ราคา / 價格)</th>
+                    <th>ການດຳເນີນການ (ดำเนินการ / 操作)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (typeof requests !== 'undefined' && requests.length > 0) { %>
+                    <% requests.forEach(request => { %>
+                        <tr>
+                            <td><%- request.brand %></td>
+                            <td><%- request.model %></td>
+                            <td><%- request.year %></td>
+                            <td>฿<%- request.price.toLocaleString() %></td>
+                            <td>
+                                <form action="/admin-secret/approve-request/<%- request._id %>?_method=PUT" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-gold btn-sm">ອະນຸມັດ (อนุมัติ / 批准)</button>
+                                </form>
+                                <form action="/admin-secret/reject-request/<%- request._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-maroon btn-sm">ປະຕິເສດ (ปฏิเสธ / 拒絕)</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" class="text-center">ບໍ່ມີຄຳຂໍຂາຍ (ไม่มีคำขอขาย / 無銷售請求)</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
 
-    <footer class="footer text-center bg-dark text-light mt-5">
-        <div class="container">
-            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
-            <p>ໂທ: +856 20 1234 5678</p>
-            <p>ອີເມວ: contact@yourcarwebsite.com</p>
-            <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
-            </p>
-            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+    <footer class="footer bg-black text-gold mt-4">
+        <div class="container py-4">
+            <p class="text-center">© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ (สงวนลิขสิทธิ์ / 版權所有)</p>
         </div>
     </footer>
 

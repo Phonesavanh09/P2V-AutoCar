@@ -3,200 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ແກ້ໄຂລົດ - ແອດມິນ">
-    <title>ແກ້ໄຂລົດ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
+    <title>ແກ້ໄຂລົດ (แก้ไขรถ / 編輯汽車)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath+OT:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <div class="container">
-            <a class="navbar-brand" href="/admin/dashboard">
-                <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
-                ແຜງຄວບຄຸມແອດມິນ
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/admin/dashboard">ແຜງຄວບຄຸມ</a>
-                    <a class="nav-link" href="/admin/manage-car">ຈັດການລົດ</a>
-                    <a class="nav-link active" href="/admin/add-car">ເພີ່ມລົດ</a>
-                    <a class="nav-link" href="/admin/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ</a>
-                    <a class="nav-link" href="/admin/logout">ອອກຈາກລະບົບ</a>
-                </div>
+            <a class="navbar-brand" href="/admin-secret/dashboard">ແອັດມິນ (แอดมิน / 管理員)</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin-secret/manage-car">ຈັດການລົດ (จัดการรถ / 管理汽車)</a>
+                <a class="nav-link" href="/admin-secret/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ (จัดการคำขอขาย / 管理銷售請求)</a>
+                <a class="nav-link" href="/admin-secret/logout">ອອກຈາກລະບົບ (ออกจากระบบ / 登出)</a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h2>ແກ້ໄຂລົດ</h2>
-                    </div>
-                    <div class="card-body">
-                        <% if (typeof error !== 'undefined' && error) { %>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <%- error %>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <% } %>
-                        <% if (typeof success !== 'undefined' && success) { %>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <%- success %>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <% } %>
-                        <% if (typeof car !== 'undefined' && car) { %>
-                            <form action="/admin/edit-car/<%- car._id %>?_method=PUT" method="post" enctype="multipart/form-data" id="editCarForm">
-                                <div class="mb-3">
-                                    <label class="form-label">ຍີ່ຫໍ້</label>
-                                    <select name="brand" class="form-control" required>
-                                        <option value="Toyota" <%- car.brand === 'Toyota' ? 'selected' : '' %>>Toyota</option>
-                                        <option value="Honda" <%- car.brand === 'Honda' ? 'selected' : '' %>>Honda</option>
-                                        <option value="Mazda" <%- car.brand === 'Mazda' ? 'selected' : '' %>>Mazda</option>
-                                        <option value="Mitsubishi" <%- car.brand === 'Mitsubishi' ? 'selected' : '' %>>Mitsubishi</option>
-                                        <option value="Isuzu" <%- car.brand === 'Isuzu' ? 'selected' : '' %>>Isuzu</option>
-                                        <option value="Nissan" <%- car.brand === 'Nissan' ? 'selected' : '' %>>Nissan</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ລຸ້ນ</label>
-                                    <input type="text" name="model" class="form-control" value="<%- car.model || '' %>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ປະເພດລົດ</label>
-                                    <select name="carType" class="form-control" required>
-                                        <option value="Sedan" <%- car.carType === 'Sedan' ? 'selected' : '' %>>ລົດເກົງ</option>
-                                        <option value="Hatchback" <%- car.carType === 'Hatchback' ? 'selected' : '' %>>ລົດແຮທຊ໌ແບັກ</option>
-                                        <option value="Pickup" <%- car.carType === 'Pickup' ? 'selected' : '' %>>ລົດກະບະ</option>
-                                        <option value="Crossover" <%- car.carType === 'Crossover' ? 'selected' : '' %>>ລົດຄຣອສໂອເວີ</option>
-                                        <option value="SUV" <%- car.carType === 'SUV' ? 'selected' : '' %>>ລົດ SUV</option>
-                                        <option value="PPV" <%- car.carType === 'PPV' ? 'selected' : '' %>>ລົດ PPV</option>
-                                        <option value="MPV" <%- car.carType === 'MPV' ? 'selected' : '' %>>ລົດ MPV</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ປີ</label>
-                                    <input type="number" name="year" class="form-control" value="<%- car.year || '' %>" required min="1900" max="<%- new Date().getFullYear() %>">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ລາຄາ (ກີບ)</label>
-                                    <input type="number" name="price" class="form-control" value="<%- car.price || '' %>" required min="0">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ເກຍ</label>
-                                    <select name="transmission" class="form-control" required>
-                                        <option value="Automatic" <%- car.transmission === 'Automatic' ? 'selected' : '' %>>ອັດຕະໂນມັດ</option>
-                                        <option value="Manual" <%- car.transmission === 'Manual' ? 'selected' : '' %>>ຄູ່ມື</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ໄມລ໌ (ກິໂລແມັດ)</label>
-                                    <input type="number" name="mileage" class="form-control" value="<%- car.mileage || '' %>" placeholder="ກິໂລແມັດ" min="0">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ລາຍລະອຽດ</label>
-                                    <textarea name="description" class="form-control" rows="4" placeholder="ລາຍລະອຽດລົດ"><%- car.description || '' %></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ແຂວງ</label>
-                                    <select name="province" class="form-control" required>
-                                        <option value="">ເລືອກແຂວງ</option>
-                                        <% if (typeof provinces !== 'undefined' && provinces.length > 0) { %>
-                                            <% provinces.forEach(province => { %>
-                                                <option value="<%- province %>" <%- car.province === province ? 'selected' : '' %>><%- province %></option>
-                                            <% }) %>
-                                        <% } %>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ຮູບພາບປັດຈຸບັນ</label>
-                                    <div class="row">
-                                        <% if (typeof car.images !== 'undefined' && car.images.length > 0) { %>
-                                            <% car.images.forEach((image, index) => { %>
-                                                <div class="col-md-3 mb-2">
-                                                    <img src="<%- image %>" class="img-thumbnail" alt="Car Image">
-                                                    <input type="checkbox" name="deleteImages[]" value="<%- index %>" class="form-check-input">
-                                                    <label class="form-check-label">ລົບ</label>
-                                                </div>
-                                            <% }) %>
-                                        <% } else { %>
-                                            <p>ບໍ່ມີຮູບພາບ</p>
-                                        <% } %>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ອັບໂຫຼດຮູບພາບໃໝ່ (ສູງສຸດ 10 ຮູບ)</label>
-                                    <input type="file" name="images" class="form-control" multiple accept="image/*">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ຮູບປົກ (ເລືອກຮູບທີ)</label>
-                                    <input type="number" name="coverImageIndex" class="form-control" value="<%- car.coverImageIndex || 0 %>" min="0">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">ການກວດສອບຄຸນນະພາບ</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" name="noFlood" class="form-check-input" id="noFlood" <%- car.inspected && car.inspected.noFlood ? 'checked' : '' %>>
-                                        <label class="form-check-label" for="noFlood">ບໍ່ເຄີຍນໍ້າຖ້ວມ</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" name="noMajorAccident" class="form-check-input" id="noMajorAccident" <%- car.inspected && car.inspected.noMajorAccident ? 'checked' : '' %>>
-                                        <label class="form-check-label" for="noMajorAccident">ບໍ່ເຄີຍອຸປະຕິເຫດໜັກ</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" name="noFire" class="form-check-input" id="noFire" <%- car.inspected && car.inspected.noFire ? 'checked' : '' %>>
-                                        <label class="form-check-label" for="noFire">ບໍ່ເຄີຍໄຟໄໝ້</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="isPremium" class="form-check-input" id="isPremium" <%- car.isPremium ? 'checked' : '' %>>
-                                        <label class="form-check-label" for="isPremium">ພຣີມຽມ</label>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3">
-                                    <button type="submit" class="btn btn-primary w-100 w-md-auto">ບັນທຶກການແກ້ໄຂ</button>
-                                    <a href="/admin/manage-car" class="btn btn-outline-primary w-100 w-md-auto">ກັບຄືນ</a>
-                                </div>
-                            </form>
-                        <% } else { %>
-                            <div class="text-center">
-                                <p>ບໍ່ພົບຂໍ້ມູນລົດ</p>
-                                <a href="/admin/manage-car" class="btn btn-primary">ກັບຄືນ</a>
-                            </div>
-                        <% } %>
-                    </div>
-                </div>
+        <h2 class="text-center">ແກ້ໄຂລົດ (แก้ไขรถ / 編輯汽車)</h2>
+        <form action="/admin-secret/edit-car/<%- car._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="brand" class="form-label">ຍີ່ຫໍ້ (ยี่ห้อ / 品牌)</label>
+                <input type="text" class="form-control" id="brand" name="brand" value="<%- car.brand %>" required>
             </div>
-        </div>
+            <div class="mb-3">
+                <label for="model" class="form-label">ຮຸ່ນ (รุ่น / 型號)</label>
+                <input type="text" class="form-control" id="model" name="model" value="<%- car.model %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="year" class="form-label">ປີ (ปี / 年份)</label>
+                <input type="number" class="form-control" id="year" name="year" value="<%- car.year %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">ລາຄາ (ราคา / 價格)</label>
+                <input type="number" class="form-control" id="price" name="price" value="<%- car.price %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="color" class="form-label">ສີ (สี / 顏色)</label>
+                <input type="text" class="form-control" id="color" name="color" value="<%- car.color %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">ສະຖານທີ່ (สถานที่ / 地點)</label>
+                <select class="form-control" id="location" name="location" required>
+                    <% provinces.forEach(province => { %>
+                        <option value="<%- province %>" <%- car.location === province ? 'selected' : '' %>><%- province %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="images" class="form-label">ຮູບພາບລົດ (รูปภาพรถ / 汽車圖片)</label>
+                <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="isPremium" name="isPremium" <%- car.isPremium ? 'checked' : '' %>>
+                <label class="form-check-label" for="isPremium">ລົດພຣີມຽມ (รถพรีเมียม / 高級汽車)</label>
+            </div>
+            <button type="submit" class="btn btn-gold">ບັນທຶກການປ່ຽນແປງ (บันทึกการเปลี่ยนแปลง / 保存更改)</button>
+        </form>
     </div>
 
-    <footer class="footer text-center bg-dark text-light mt-5">
-        <div class="container">
-            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
-            <p>ໂທ: +856 20 1234 5678</p>
-            <p>ອີເມວ: contact@yourcarwebsite.com</p>
-            <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
-            </p>
-            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+    <footer class="footer bg-black text-gold mt-4">
+        <div class="container py-4">
+            <p class="text-center">© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ (สงวนลิขสิทธิ์ / 版權所有)</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('editCarForm').addEventListener('submit', function(e) {
-            const images = document.querySelector('input[name="images"]').files;
-            if (images.length > 10) {
-                e.preventDefault();
-                alert('ສາມາດອັບໂຫຼດຮູບພາບໄດ້ສູງສຸດ 10 ຮູບ!');
-            }
-        });
-    </script>
 </body>
 </html>

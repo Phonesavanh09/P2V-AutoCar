@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ເຂົ້າສູ່ລະບົບແອດມິນ - ລົດມືສອງຄຸນນະພາບ">
-    <title>ເຂົ້າສູ່ລະບົບແອດມິນ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
+    <title>ໜ້າລັອກອິນແອັດມິນ (หน้า Login แอดมิน / 管理員登錄)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath+OT:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -13,45 +13,28 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h2>ເຂົ້າສູ່ລະບົບແອດມິນ</h2>
-                    </div>
+                <div class="card bg-dark text-gold">
                     <div class="card-body">
-                        <% if (typeof error !== 'undefined' && error) { %>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <%- error %>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <% } %>
-                        <form action="/admin/login" method="post">
+                        <h2 class="text-center">ໜ້າລັອກອິນແອັດມິນ (หน้า Login แอดมิน / 管理員登錄)</h2>
+                        <form action="/admin-secret/login" method="POST">
                             <div class="mb-3">
-                                <label class="form-label">ຊື່ຜູ້ໃຊ້</label>
-                                <input type="text" name="username" class="form-control" required>
+                                <label for="username" class="form-label">ຊື່ຜູ້ໃຊ້ (ชื่อผู้ใช้ / 用戶名)</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">ລະຫັດຜ່ານ</label>
-                                <input type="password" name="password" class="form-control" required>
+                                <label for="password" class="form-label">ລະຫັດຜ່ານ (รหัสผ่าน / 密碼)</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">ເຂົ້າສູ່ລະບົບ</button>
+                            <button type="submit" class="btn btn-gold w-100">ເຂົ້າສູ່ລະບົບ (เข้าสู่ระบบ / 登錄)</button>
                         </form>
+                        <% if (typeof error !== 'undefined' && error) { %>
+                            <div class="alert alert-danger mt-3"><%- error %></div>
+                        <% } %>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <footer class="footer text-center bg-dark text-light mt-5">
-        <div class="container">
-            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
-            <p>ໂທ: +856 20 1234 5678</p>
-            <p>ອີເມວ: contact@yourcarwebsite.com</p>
-            <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
-            </p>
-            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

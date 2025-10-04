@@ -3,49 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ຂໍ້ຜິດພາດ - ລົດມືສອງຄຸນນະພາບ">
-    <title>ຂໍ້ຜິດພາດ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600&display=swap" rel="stylesheet">
+    <title>ຂໍ້ຜິດພາດ (ข้อผิดพลาด / 錯誤)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Phetsarath+OT:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
-                ລົດມືສອງຄຸນນະພາບ
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/">ໜ້າຫຼັກ</a>
-                    <a class="nav-link" href="/sell-car">ສະເໜີຂາຍລົດ</a>
-                    <a class="nav-link" href="/admin/login">ແອດມິນ</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
     <div class="container mt-5 text-center">
-        <div class="alert alert-danger">
-            <h2>ຂໍ້ຜິດພາດ</h2>
-            <p><%- typeof message !== 'undefined' ? message : 'ມີບາງຢ່າງຜິດພາດ!' %></p>
-            <a href="/" class="btn btn-primary mt-3">ກັບຄືນໜ້າຫຼັກ</a>
-        </div>
+        <h2 class="text-gold">ຂໍ້ຜິດພາດ (ข้อผิดพลาด / 錯誤)</h2>
+        <p class="text-gold"><%- typeof message !== 'undefined' ? message : 'ບໍ່ພົບໜ້າທີ່ທ່ານຕ້ອງການ (ไม่พบหน้าที่คุณต้องการ / 未找到您想要的頁面)' %></p>
+        <a href="/" class="btn btn-gold">ກັບຄືນໜ້າຫຼັກ (กลับหน้าหลัก / 返回主頁)</a>
     </div>
 
-    <footer class="footer text-center bg-dark text-light mt-5">
-        <div class="container">
-            <p>ທີ່ຢູ່: ນະຄອນຫຼວງວຽງຈັນ, ປະເທດລາວ</p>
-            <p>ໂທ: +856 20 1234 5678</p>
-            <p>ອີເມວ: contact@yourcarwebsite.com</p>
-            <p>ຕິດຕາມພວກເຮົາ:
-                <a href="https://www.facebook.com/yourpage" target="_blank" class="text-primary mx-2">Facebook</a>
-            </p>
-            <p>© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ.</p>
+    <footer class="footer bg-black text-gold mt-4">
+        <div class="container py-4">
+            <p class="text-center">© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ (สงวนลิขสิทธิ์ / 版權所有)</p>
         </div>
     </footer>
 

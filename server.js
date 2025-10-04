@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const path = require('path');
 const methodOverride = require('method-override');
 const session = require('express-session');
+const path = require('path');
+
 const app = express();
 
 // Middleware
@@ -11,12 +12,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false
 }));
-app.set('view engine', 'ejs');
 
 // MongoDB Connection
 mongoose.connect('mongodb://localhost:27017/car_dealer', {
@@ -25,7 +28,38 @@ mongoose.connect('mongodb://localhost:27017/car_dealer', {
 }).then(() => console.log('MongoDB Connected'))
   .catch(err => console.error('MongoDB Connection Error:', err));
 
-// Multer Setup
+// Schemas
+const carSchema = new mongoose.Schema({
+    brand: String,
+    model: String,
+    year: Number,
+    price: Number,
+    color: String,
+    location: String,
+    images: [String],
+    coverImage: String,
+    coverImageIndex: Number,
+    isPremium: Boolean,
+    isDeal: Boolean,
+    isWorryFree: Boolean,
+    isHot: Boolean,
+    isNew: Boolean
+});
+
+const sellRequestSchema = new mongoose.Schema({
+    brand: String,
+    model: String,
+    year: Number,
+    price: Number,
+    color: String,
+    location: String,
+    images: [String]
+});
+
+const Car = mongoose.model('Car', carSchema);
+const SellRequest = mongoose.model('SellRequest', sellRequestSchema);
+
+// File Upload
 const storage = multer.diskStorage({
     destination: './public/uploads/',
     filename: (req, file, cb) => {
@@ -40,76 +74,40 @@ const upload = multer({
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = filetypes.test(file.mimetype);
         if (extname && mimetype) {
-            cb(null, true);
+            return cb(null, true);
         } else {
-            cb(new Error('ໄຟລ໌ຕ້ອງເປັນຮູບພາບ (jpg, jpeg, png)'));
+            cb('Error: Images only!');
         }
     }
 }).array('images', 10);
 
-// Sample Provinces
+// Provinces
 const provinces = [
-    'ນະຄອນຫຼວງວຽງຈັນ', 'ຜົ້ງສາລີ', 'ຫຼວງນໍ້າທາ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງພະບາງ',
+    'ນະຄອນຫຼວງວຽງຈັນ', 'ຜົ້ງສາລີ', 'ຫຼວງນ້ຳທາ', 'ອຸດົມໄຊ', 'ບໍ່ແກ້ວ', 'ຫຼວງພະບາງ',
     'ຫົວພັນ', 'ໄຊຍະບູລີ', 'ຊຽງຂວາງ', 'ວຽງຈັນ', 'ບໍລິຄຳໄຊ', 'ຄຳມ່ວນ', 'ສະຫວັນນະເຂດ',
     'ສາລະວັນ', 'ເຊກອງ', 'ຈຳປາສັກ', 'ອັດຕະປື', 'ໄຊສົມບູນ'
 ];
 
-// Car Schema
-const carSchema = new mongoose.Schema({
-    brand: String,
-    model: String,
-    carType: String,
-    year: Number,
-    price: Number,
-    transmission: String,
-    mileage: Number,
-    description: String,
-    province: String,
-    images: [String],
-    coverImage: String,
-    coverImageIndex: Number,
-    isPremium: Boolean,
-    inspected: {
-        noFlood: Boolean,
-        noMajorAccident: Boolean,
-        noFire: Boolean
-    }
-});
-const Car = mongoose.model('Car', carSchema);
-
-// Sell Request Schema
-const sellRequestSchema = new mongoose.Schema({
-    sellerName: String,
-    phone: String,
-    brand: String,
-    model: String,
-    carType: String,
-    year: Number,
-    price: Number,
-    transmission: String,
-    mileage: Number,
-    description: String,
-    province: String,
-    images: [String],
-    status: { type: String, default: 'pending' }
-});
-const SellRequest = mongoose.model('SellRequest', sellRequestSchema);
-
 // Routes
 app.get('/', async (req, res) => {
-    try {
-        const { search = '', carType = '', province = '', page = 1 } = req.query;
-        const limit = 9;
-        const skip = (page - 1) * limit;
-        let query = {};
-        if (search) query.$or = [{ brand: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }];
-        if (carType) query.carType = carType;
-        if (province) query.province = province;
+    const { search = '', carType = '', province = '', sort = 'new-old', page = 1 } = req.query;
+    const perPage = 9;
+    let query = {};
+    if (search) query = { $or: [{ brand: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }] };
+    if (carType) query.carType = carType;
+    if (province) query.location = province;
 
-        const cars = await Car.find(query).skip(skip).limit(limit);
-        const premiumCars = await Car.find({ isPremium: true }).limit(6);
+    let sortOption = {};
+    if (sort === 'price-high-low') sortOption = { price: -1 };
+    else if (sort === 'price-low-high') sortOption = { price: 1 };
+    else if (sort === 'year-old-new') sortOption = { year: 1 };
+    else sortOption = { _id: -1 }; // new-old
+
+    try {
+        const cars = await Car.find(query).sort(sortOption).skip((page - 1) * perPage).limit(perPage);
+        const premiumCars = await Car.find({ isPremium: true }).limit(3);
         const totalCars = await Car.countDocuments(query);
-        const totalPages = Math.ceil(totalCars / limit);
+        const totalPages = Math.ceil(totalCars / perPage);
 
         res.render('index', {
             cars: cars || [],
@@ -119,251 +117,197 @@ app.get('/', async (req, res) => {
             provinceQuery: province,
             provinces: provinces,
             currentPage: parseInt(page),
-            totalPages: totalPages || 1
+            totalPages: totalPages || 1,
+            error: null
         });
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດໂຫຼດຂໍ້ມູນລົດໄດ້', error: null });
+        res.render('error', { message: 'Error fetching cars', error: err.message });
     }
 });
 
 app.get('/car/:id', async (req, res) => {
     try {
         const car = await Car.findById(req.params.id);
-        if (!car) return res.render('error', { message: 'ບໍ່ພົບລົດ', error: null });
-        res.render('car-detail', { car, provinces: provinces, error: null });
+        if (!car) return res.render('error', { message: 'Car not found', error: null });
+        res.render('car-detail', { car, provinces, error: null });
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດໂຫຼດລາຍລະອຽດລົດໄດ້', error: null });
+        res.render('error', { message: 'Error fetching car details', error: err.message });
     }
 });
 
 app.get('/sell-car', (req, res) => {
-    res.render('sell-car', { provinces: provinces, error: null, success: null });
+    res.render('sell-car', { provinces, error: null, success: null });
 });
 
 app.post('/sell-car', upload, async (req, res) => {
     try {
-        const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
-        const sellRequest = new SellRequest({
-            ...req.body,
-            images
-        });
+        const { brand, model, year, price, color, location } = req.body;
+        const images = req.files.map(file => `/uploads/${file.filename}`);
+        const sellRequest = new SellRequest({ brand, model, year, price, color, location, images });
         await sellRequest.save();
-        res.render('sell-car', { provinces: provinces, error: null, success: 'ສົ່ງຄຳຂໍຂາຍສຳເລັດ!' });
+        res.render('sell-car', { provinces, error: null, success: 'Sell request submitted successfully' });
     } catch (err) {
-        console.error(err);
-        res.render('sell-car', { provinces: provinces, error: err.message, success: null });
+        res.render('sell-car', { provinces, error: 'Error submitting sell request', success: null });
     }
 });
 
-app.get('/admin/login', (req, res) => {
+app.get('/admin-secret/login', (req, res) => {
     res.render('admin/login', { error: null });
 });
 
-app.post('/admin/login', (req, res) => {
+app.post('/admin-secret/login', (req, res) => {
     const { username, password } = req.body;
-    // Replace with real authentication in production
     if (username === 'admin' && password === 'password') {
         req.session.isAdmin = true;
-        res.redirect('/admin/dashboard');
-    } else {
-        res.render('admin/login', { error: 'ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ' });
+        return res.redirect('/admin-secret/dashboard');
     }
+    res.render('admin/login', { error: 'Invalid credentials' });
 });
 
-app.get('/admin/dashboard', async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.get('/admin-secret/dashboard', async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
         const totalCars = await Car.countDocuments();
-        const pendingRequests = await SellRequest.countDocuments({ status: 'pending' });
+        const pendingRequests = await SellRequest.countDocuments();
         const premiumCars = await Car.countDocuments({ isPremium: true });
-        const sedanCount = await Car.countDocuments({ carType: 'Sedan' });
-        const hatchbackCount = await Car.countDocuments({ carType: 'Hatchback' });
-        const pickupCount = await Car.countDocuments({ carType: 'Pickup' });
-        const crossoverCount = await Car.countDocuments({ carType: 'Crossover' });
-        const suvCount = await Car.countDocuments({ carType: 'SUV' });
-        const ppvCount = await Car.countDocuments({ carType: 'PPV' });
-        const mpvCount = await Car.countDocuments({ carType: 'MPV' });
-
-        res.render('admin/dashboard', {
-            totalCars: totalCars || 0,
-            pendingRequests: pendingRequests || 0,
-            premiumCars: premiumCars || 0,
-            sedanCount: sedanCount || 0,
-            hatchbackCount: hatchbackCount || 0,
-            pickupCount: pickupCount || 0,
-            crossoverCount: crossoverCount || 0,
-            suvCount: suvCount || 0,
-            ppvCount: ppvCount || 0,
-            mpvCount: mpvCount || 0,
-            error: null
-        });
+        res.render('admin/dashboard', { totalCars, pendingRequests, premiumCars });
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດໂຫຼດແຜງຄວບຄຸມໄດ້', error: null });
+        res.render('error', { message: 'Error fetching dashboard data', error: err.message });
     }
 });
 
-app.get('/admin/manage-car', async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.get('/admin-secret/manage-car', async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
         const cars = await Car.find();
-        res.render('admin/manage-car', { cars: cars || [], error: null });
+        res.render('admin/manage-car', { cars, error: null });
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດໂຫຼດລາຍການລົດໄດ້', error: null });
+        res.render('error', { message: 'Error fetching cars', error: err.message });
     }
 });
 
-app.get('/admin/add-car', (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
-    res.render('admin/add-car', { provinces: provinces, error: null, success: null });
+app.get('/admin-secret/add-car', (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
+    res.render('admin/add-car', { provinces, error: null });
 });
 
-app.post('/admin/add-car', upload, async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.post('/admin-secret/add-car', upload, async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
-        const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
-        const coverImageIndex = parseInt(req.body.coverImageIndex) || 0;
+        const { brand, model, year, price, color, location, isPremium } = req.body;
+        const images = req.files.map(file => `/uploads/${file.filename}`);
         const car = new Car({
-            ...req.body,
-            images,
-            coverImage: images[coverImageIndex] || images[0] || '/images/placeholder.jpg',
-            coverImageIndex,
-            isPremium: req.body.isPremium === 'on',
-            inspected: {
-                noFlood: req.body.noFlood === 'on',
-                noMajorAccident: req.body.noMajorAccident === 'on',
-                noFire: req.body.noFire === 'on'
-            }
+            brand, model, year, price, color, location, images,
+            coverImage: images[0] || '/images/placeholder.jpg',
+            coverImageIndex: 0,
+            isPremium: isPremium === 'on',
+            isDeal: false,
+            isWorryFree: false,
+            isHot: false,
+            isNew: true
         });
         await car.save();
-        res.render('admin/add-car', { provinces: provinces, error: null, success: 'ເພີ່ມລົດສຳເລັດ!' });
+        res.redirect('/admin-secret/manage-car');
     } catch (err) {
-        console.error(err);
-        res.render('admin/add-car', { provinces: provinces, error: err.message, success: null });
+        res.render('admin/add-car', { provinces, error: 'Error adding car' });
     }
 });
 
-app.get('/admin/edit-car/:id', async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.get('/admin-secret/edit-car/:id', async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
         const car = await Car.findById(req.params.id);
-        if (!car) return res.render('error', { message: 'ບໍ່ພົບລົດ', error: null });
-        res.render('admin/edit-car', { car, provinces: provinces, error: null, success: null });
+        if (!car) return res.render('error', { message: 'Car not found', error: null });
+        res.render('admin/edit-car', { car, provinces, error: null });
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດໂຫຼດລົດໄດ້', error: null });
+        res.render('error', { message: 'Error fetching car', error: err.message });
     }
 });
 
-app.put('/admin/edit-car/:id', upload, async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.put('/admin-secret/edit-car/:id', upload, async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
-        const car = await Car.findById(req.params.id);
-        if (!car) return res.render('error', { message: 'ບໍ່ພົບລົດ', error: null });
-
-        const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : car.images;
-        const deleteImages = req.body.deleteImages || [];
-        car.images = car.images.filter((_, index) => !deleteImages.includes(index.toString())).concat(images);
-        const coverImageIndex = parseInt(req.body.coverImageIndex) || 0;
-
-        Object.assign(car, {
-            ...req.body,
-            images,
-            coverImage: car.images[coverImageIndex] || car.images[0] || '/images/placeholder.jpg',
-            coverImageIndex,
-            isPremium: req.body.isPremium === 'on',
-            inspected: {
-                noFlood: req.body.noFlood === 'on',
-                noMajorAccident: req.body.noMajorAccident === 'on',
-                noFire: req.body.noFire === 'on'
-            }
-        });
-
-        await car.save();
-        res.render('admin/edit-car', { car, provinces: provinces, error: null, success: 'ແກ້ໄຂລົດສຳເລັດ!' });
+        const { brand, model, year, price, color, location, isPremium } = req.body;
+        const images = req.files.length > 0 ? req.files.map(file => `/uploads/${file.filename}`) : undefined;
+        const updateData = { brand, model, year, price, color, location, isPremium: isPremium === 'on' };
+        if (images) {
+            updateData.images = images;
+            updateData.coverImage = images[0];
+            updateData.coverImageIndex = 0;
+        }
+        await Car.findByIdAndUpdate(req.params.id, updateData);
+        res.redirect('/admin-secret/manage-car');
     } catch (err) {
-        console.error(err);
-        res.render('admin/edit-car', { car: req.body, provinces: provinces, error: err.message, success: null });
+        res.render('admin/edit-car', { car: req.body, provinces, error: 'Error updating car' });
     }
 });
 
-app.delete('/admin/delete-car/:id', async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.delete('/admin-secret/delete-car/:id', async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
         await Car.findByIdAndDelete(req.params.id);
-        res.redirect('/admin/manage-car');
+        res.redirect('/admin-secret/manage-car');
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດລົບລົດໄດ້', error: null });
+        res.render('error', { message: 'Error deleting car', error: err.message });
     }
 });
 
-app.get('/admin/manage-sell-requests', async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.get('/admin-secret/manage-sell-requests', async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
         const requests = await SellRequest.find();
-        res.render('admin/manage-sell-requests', { requests: requests || [], error: null });
+        res.render('admin/manage-sell-requests', { requests, error: null });
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດໂຫຼດຄຳຂໍຂາຍໄດ້', error: null });
+        res.render('error', { message: 'Error fetching sell requests', error: err.message });
     }
 });
 
-app.put('/admin/approve-sell-request/:id', async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.put('/admin-secret/approve-request/:id', async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
         const request = await SellRequest.findById(req.params.id);
-        if (!request) return res.render('error', { message: 'ບໍ່ພົບຄຳຂໍ', error: null });
-        request.status = 'approved';
-        await request.save();
-
+        if (!request) return res.render('error', { message: 'Request not found', error: null });
         const car = new Car({
-            ...request.toObject(),
+            brand: request.brand,
+            model: request.model,
+            year: request.year,
+            price: request.price,
+            color: request.color,
+            location: request.location,
+            images: request.images,
             coverImage: request.images[0] || '/images/placeholder.jpg',
             coverImageIndex: 0,
             isPremium: false,
-            inspected: {
-                noFlood: false,
-                noMajorAccident: false,
-                noFire: false
-            }
+            isDeal: true,
+            isWorryFree: true,
+            isHot: false,
+            isNew: true
         });
         await car.save();
-        res.redirect('/admin/manage-sell-requests');
+        await SellRequest.findByIdAndDelete(req.params.id);
+        res.redirect('/admin-secret/manage-sell-requests');
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດອະນຸມັດຄຳຂໍໄດ້', error: null });
+        res.render('error', { message: 'Error approving request', error: err.message });
     }
 });
 
-app.put('/admin/reject-sell-request/:id', async (req, res) => {
-    if (!req.session.isAdmin) return res.redirect('/admin/login');
+app.delete('/admin-secret/reject-request/:id', async (req, res) => {
+    if (!req.session.isAdmin) return res.redirect('/admin-secret/login');
     try {
-        const request = await SellRequest.findById(req.params.id);
-        if (!request) return res.render('error', { message: 'ບໍ່ພົບຄຳຂໍ', error: null });
-        request.status = 'rejected';
-        await request.save();
-        res.redirect('/admin/manage-sell-requests');
+        await SellRequest.findByIdAndDelete(req.params.id);
+        res.redirect('/admin-secret/manage-sell-requests');
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: 'ບໍ່ສາມາດປະຕິເສດຄຳຂໍໄດ້', error: null });
+        res.render('error', { message: 'Error rejecting request', error: err.message });
     }
 });
 
-app.get('/admin/logout', (req, res) => {
+app.get('/admin-secret/logout', (req, res) => {
     req.session.destroy();
-    res.redirect('/admin/login');
+    res.redirect('/admin-secret/login');
 });
 
-// Error Handling Middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.render('error', { message: err.message || 'ມີບາງຢ່າງຜິດພາດ!', error: null });
+app.use((req, res) => {
+    res.status(404).render('error', { message: 'Page not found', error: null });
 });
 
-// Start Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(3000, () => console.log('Server running on port 3000'));
