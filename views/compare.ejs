@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+<% if(lang==='lo'){ %>ເປັບບຽບລົດ<% } %>
+<% if(lang==='en'){ %>Compare Cars<% } %>
+<% if(lang==='cn'){ %>车辆对比<% } %>
+</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<%- include('partials/header', { lang: lang }) %>
+
+<main>
+<h1>
+<% if(lang==='lo'){ %>ເປັບບຽບລົດ<% } %>
+<% if(lang==='en'){ %>Compare Cars<% } %>
+<% if(lang==='cn'){ %>车辆对比<% } %>
+</h1>
+
+<table>
+<tr>
+<th>Name</th><th>Brand</th><th>Year</th><th>Price</th><th>Status</th>
+</tr>
+<% cars.forEach(car => { %>
+<tr>
+<td><%= car.name %></td>
+<td><%= car.brand %></td>
+<td><%= car.year %></td>
+<td>$<%= car.price %></td>
+<td class="status <%= car.status %>"><%= car.status %></td>
+</tr>
+<% }) %>
+</table>
+</main>
+
+<%- include('partials/footer', { lang: lang }) %>
+</body>
+</html>

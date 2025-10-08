@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
-const carSchema = new mongoose.Schema({
-    brand: { type: String, required: true },
-    model: { type: String, required: true },
-    year: { type: Number, required: true },
-    price: { type: Number, required: true },
-    transmission: { type: String, required: true },
-    images: [{ type: String }],
-    description: { type: String },
-    province: { type: String, required: true },
-    coverImage: { type: String },
-    postedDate: { type: Date, default: Date.now }, // เพิ่มวันที่โพสต์
-    status: { type: String, default: 'available' } // เพิ่มสถานะ (available, sold)
+const CarSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  brand: String,
+  year: Number,
+  price: Number,
+  mileage: String,
+  fuel: String,
+  transmission: String,
+  color: String,
+  images: [String],
+  status: { type: String, enum: ['ขายแล้ว','โปรโมชั่น','รถมาใหม่'], default: 'รถมาใหม่' },
+  dateAdded: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Car', carSchema);
+module.exports = mongoose.model('Car', CarSchema);

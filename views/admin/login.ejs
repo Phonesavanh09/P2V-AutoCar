@@ -1,41 +1,30 @@
 <!DOCTYPE html>
 <html lang="lo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ໜ້າລັອກອິນແອັດມິນ (หน้า Login แอดมิน / 管理員登錄)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Phetsarath+OT:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+<% if(lang==='lo'){ %>ເຂົ້າລະບົບຜູ້ດູແລ<% } %>
+<% if(lang==='en'){ %>Admin Login<% } %>
+<% if(lang==='cn'){ %>管理员登录<% } %>
+</title>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card bg-dark text-gold">
-                    <div class="card-body">
-                        <h2 class="text-center">ໜ້າລັອກອິນແອັດມິນ (หน้า Login แอดมิน / 管理員登錄)</h2>
-                        <form action="/admin-secret/login" method="POST">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">ຊື່ຜູ້ໃຊ້ (ชื่อผู้ใช้ / 用戶名)</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">ລະຫັດຜ່ານ (รหัสผ่าน / 密碼)</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
-                            <button type="submit" class="btn btn-gold w-100">ເຂົ້າສູ່ລະບົບ (เข้าสู่ระบบ / 登錄)</button>
-                        </form>
-                        <% if (typeof error !== 'undefined' && error) { %>
-                            <div class="alert alert-danger mt-3"><%- error %></div>
-                        <% } %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<main style="max-width:400px;margin:auto;padding:50px;">
+<h1>
+<% if(lang==='lo'){ %>ເຂົ້າລະບົບຜູ້ດູແລ<% } %>
+<% if(lang==='en'){ %>Admin Login<% } %>
+<% if(lang==='cn'){ %>管理员登录<% } %>
+</h1>
+<form action="/admin/login" method="POST">
+<input type="password" name="password" placeholder="<%= lang==='lo' ? 'ລະຫັດຜ່ານ' : lang==='en' ? 'Password' : '密码' %>" required>
+<button type="submit">
+<% if(lang==='lo'){ %>ເຂົ້າລະບົບ<% } %>
+<% if(lang==='en'){ %>Login<% } %>
+<% if(lang==='cn'){ %>登录<% } %>
+</button>
+</form>
+</main>
 </body>
 </html>

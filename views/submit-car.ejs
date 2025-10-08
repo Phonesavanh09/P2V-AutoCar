@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+<% if(lang==='lo'){ %>ຝາກຂາຍລົດ<% } %>
+<% if(lang==='en'){ %>Submit Car<% } %>
+<% if(lang==='cn'){ %>提交车辆<% } %>
+</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<%- include('partials/header', { lang: lang }) %>
+
+<main>
+<h1>
+<% if(lang==='lo'){ %>ຝາກຂາຍລົດ<% } %>
+<% if(lang==='en'){ %>Submit Car<% } %>
+<% if(lang==='cn'){ %>提交车辆<% } %>
+</h1>
+
+<form action="/submit-car" method="POST">
+<input type="text" name="name" placeholder="<%= lang==='lo' ? 'ຊື່ລົດ' : lang==='en' ? 'Car Name' : '车辆名称' %>" required>
+<input type="text" name="brand" placeholder="<%= lang==='lo' ? 'ຍີ່ຫໍ້' : lang==='en' ? 'Brand' : '品牌' %>">
+<input type="number" name="year" placeholder="Year">
+<input type="number" name="price" placeholder="Price">
+<input type="text" name="mileage" placeholder="Mileage">
+<input type="text" name="fuel" placeholder="Fuel Type">
+<input type="text" name="transmission" placeholder="Transmission">
+<input type="text" name="color" placeholder="Color">
+<input type="text" name="status" placeholder="Status">
+<input type="text" name="images" placeholder="Image URLs separated by comma">
+<button type="submit">
+<% if(lang==='lo'){ %>ສົ່ງ<% } %>
+<% if(lang==='en'){ %>Submit<% } %>
+<% if(lang==='cn'){ %>提交<% } %>
+</button>
+</form>
+</main>
+
+<%- include('partials/footer', { lang: lang }) %>
+</body>
+</html>

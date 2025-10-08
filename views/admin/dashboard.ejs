@@ -1,62 +1,41 @@
 <!DOCTYPE html>
 <html lang="lo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ແດສບອດແອັດມິນ (แดชบอร์ดแอดมิน / 管理員儀表板)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Phetsarath+OT:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-        <div class="container">
-            <a class="navbar-brand" href="/admin-secret/dashboard">ແອັດມິນ (แอดมิน / 管理員)</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/admin-secret/manage-car">ຈັດການລົດ (จัดการรถ / 管理汽車)</a>
-                <a class="nav-link" href="/admin-secret/manage-sell-requests">ຈັດການຄຳຂໍຂາຍ (จัดการคำขอขาย / 管理銷售請求)</a>
-                <a class="nav-link" href="/admin-secret/logout">ອອກຈາກລະບົບ (ออกจากระบบ / 登出)</a>
-            </div>
-        </div>
-    </nav>
+<header>
+<h1>Admin Dashboard</h1>
+<nav>
+<a href="/admin/add-car"><% if(lang==='lo'){ %>ເພີ່ມລົດ<% } %><% if(lang==='en'){ %>Add Car<% } %><% if(lang==='cn'){ %>添加车辆<% } %></a> |
+<a href="/admin/logout"><% if(lang==='lo'){ %>ອອກຈາກລະບົບ<% } %><% if(lang==='en'){ %>Logout<% } %><% if(lang==='cn'){ %>退出<% } %></a>
+</nav>
+</header>
 
-    <div class="container mt-4">
-        <h2 class="text-center">ແດສບອດແອັດມິນ (แดชบอร์ดแอดมิน / 管理員儀表板)</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card bg-dark text-gold">
-                    <div class="card-body">
-                        <h5>ຈຳນວນລົດທັງໝົດ (จำนวนรถทั้งหมด / 汽車總數)</h5>
-                        <p><%- typeof totalCars !== 'undefined' ? totalCars : 0 %></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-dark text-gold">
-                    <div class="card-body">
-                        <h5>ຄຳຂໍຂາຍທີ່ຍັງຄ້າງ (คำขอขายที่ค้างอยู่ / 待處理銷售請求)</h5>
-                        <p><%- typeof pendingRequests !== 'undefined' ? pendingRequests : 0 %></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-dark text-gold">
-                    <div class="card-body">
-                        <h5>ລົດພຣີມຽມ (รถพรีเมียม / 高級汽車)</h5>
-                        <p><%- typeof premiumCars !== 'undefined' ? premiumCars : 0 %></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer class="footer bg-black text-gold mt-4">
-        <div class="container py-4">
-            <p class="text-center">© 2025 Used Car Sales. ສະຫງວນລິຂະສິດ (สงวนลิขสิทธิ์ / 版權所有)</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<main>
+<h2>All Cars</h2>
+<table>
+<tr>
+<th>Name</th><th>Brand</th><th>Year</th><th>Price</th><th>Status</th><th>Actions</th>
+</tr>
+<% cars.forEach(car => { %>
+<tr>
+<td><%= car.name %></td>
+<td><%= car.brand %></td>
+<td><%= car.year %></td>
+<td>$<%= car.price %></td>
+<td class="status <%= car.status %>"><%= car.status %></td>
+<td>
+<a href="/admin/edit-car/<%= car._id %>"><% if(lang==='lo'){ %>ແກ້ໄຂ<% } %><% if(lang==='en'){ %>Edit<% } %><% if(lang==='cn'){ %>编辑<% } %></a> |
+<a href="/admin/delete-car/<%= car._id %>" onclick="return confirm('Are you sure?')">
+<% if(lang==='lo'){ %>ລຶບ<% } %><% if(lang==='en'){ %>Delete<% } %><% if(lang==='cn'){ %>删除<% } %></a>
+</td>
+</tr>
+<% }) %>
+</table>
+</main>
 </body>
 </html>
